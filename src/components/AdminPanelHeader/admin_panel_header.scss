@@ -1,0 +1,39 @@
+.admin-panel-header {
+    background-color: #222;
+    text-align: center;
+    font-size: 12px;
+    .navbar{
+        .navbar-brand{
+            font-size: 13px;
+            color: #FFF;
+            &:hover{
+                color: #0F0;
+            }
+        }
+        .navbar-toggler{
+            background-color: #FFF;
+        }
+        .navbar-nav{
+            .nav-link{
+                color: #FFF;
+                &:hover{
+                    color: #0F0;
+                }
+            }
+            .nav-item{
+                cursor: pointer;
+                &.sign-out-btn{
+                    border-radius: 5px;
+                }
+                .dropdown-menu{
+                    .dropdown-item{
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+        .logout-btn{
+            font-size: 13px;
+        }
+    }
+}
