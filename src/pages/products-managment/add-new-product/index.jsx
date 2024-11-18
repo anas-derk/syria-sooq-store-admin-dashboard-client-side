@@ -9,8 +9,6 @@ import { inputValuesValidation } from "../../../../public/global_functions/valid
 import { getAdminInfo, getAllCategoriesWithHierarechy } from "../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import { HiOutlineBellAlert } from "react-icons/hi2";
-import { countries } from "countries-list";
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import NotFoundError from "@/components/NotFoundError";
 import CategoriesTree from "@/components/CategoryTree";
 
@@ -173,15 +171,6 @@ export default function AddNewProduct() {
                         }
                     },
                 },
-                // {
-                //     name: "countries",
-                //     value: selectedCountriesList,
-                //     rules: {
-                //         isRequired: {
-                //             msg: "Sorry, This Field Can't Be Empty !!",
-                //         },
-                //     },
-                // },
                 {
                     name: "image",
                     value: productData.image,
@@ -218,9 +207,6 @@ export default function AddNewProduct() {
                 }
                 formData.append("discount", productData.discount);
                 formData.append("quantity", productData.quantity);
-                for (let country of selectedCountriesList) {
-                    formData.append("countries[]", country);
-                }
                 formData.append("productImage", productData.image);
                 for (let galleryImage of productData.galleryImages) {
                     formData.append("galleryImages", galleryImage);
@@ -279,27 +265,6 @@ export default function AddNewProduct() {
 
     const handleSelectCategory = (categoryId, isChecked) => {
         setSelectedCategories(isChecked ? [ ...selectedCategories, categoryId ] : selectedCategories.filter((id) => id !== categoryId));
-    }
-
-    const handleSearchOfCountry = (e) => {
-        const searchedCountry = e.target.value;
-        if (searchedCountry) {
-            setFilteredCountryList(filteredCountryList.filter((country) => countries[country].name.toLowerCase().startsWith(searchedCountry.toLowerCase())));
-        } else {
-            setFilteredCountryList(countryList);
-        }
-    }
-
-    const handleSelectCountry = (countryCode) => {
-        setCountryList(countryList.filter((country) => country !== countryCode));
-        setFilteredCountryList(filteredCountryList.filter((country) => country !== countryCode));
-        setSelectedCountriesList([...selectedCountriesList, countryCode]);
-    }
-
-    const handleRemoveCountryFromCountryList = (countryCode) => {
-        setCountryList([...countryList, countryCode]);
-        setFilteredCountryList([...filteredCountryList, countryCode]);
-        setSelectedCountriesList(selectedCountriesList.filter((country) => country !== countryCode));
     }
 
     return (
@@ -392,31 +357,6 @@ export default function AddNewProduct() {
                                 <span>{formValidationErrors["quantity"]}</span>
                             </p>}
                         </section>
-                        <h6 className="mb-3 fw-bold">Please Select Countries</h6>
-                        <div className="select-country-box select-box mb-4">
-                            <input
-                                type="text"
-                                className="search-box form-control p-2 border-2 mb-4"
-                                placeholder="Please Enter Your Country Name Or Part Of This"
-                                onChange={handleSearchOfCountry}
-                            />
-                            <ul className="countries-list options-list bg-white border border-dark">
-                                {filteredCountryList.length > 0 ? filteredCountryList.map((countryCode) => (
-                                    <li key={countryCode} onClick={() => handleSelectCountry(countryCode)}>{countries[countryCode].name}</li>
-                                )) : <li>Sorry, Can't Find Any Counties Match This Name !!</li>}
-                            </ul>
-                        </div>
-                        {selectedCountriesList.length > 0 ? <div className="selected-countries row mb-4">
-                            {selectedCountriesList.map((countryCode) => <div className="col-md-4 mb-3" key={countryCode}>
-                                <div className="selected-country-box bg-white p-2 border border-2 border-dark text-center">
-                                    <span className="me-2 country-name">{countries[countryCode].name}</span>
-                                    <IoIosCloseCircleOutline className="remove-icon" onClick={() => handleRemoveCountryFromCountryList(countryCode)} />
-                                </div>
-                            </div>)}
-                        </div> : <p className="bg-danger p-2 m-0 text-white mb-4">
-                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                            <span>Sorry, Can't Find Any Countries Added To The Selected Countries List !!</span>
-                        </p>}
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
                         <section className="image mb-4">
                             <input
