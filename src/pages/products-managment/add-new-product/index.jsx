@@ -51,15 +51,7 @@ export default function AddNewProduct() {
     const productImageFileElementRef = useRef();
 
     const productGalleryImagesFilesElementRef = useRef();
-
-    const allCountries = Object.keys(countries)
-
-    const [countryList, setCountryList] = useState(allCountries);
-
-    const [filteredCountryList, setFilteredCountryList] = useState(allCountries);
-
-    const [selectedCountriesList, setSelectedCountriesList] = useState([]);
-
+    
     const router = useRouter();
 
     useEffect(() => {
