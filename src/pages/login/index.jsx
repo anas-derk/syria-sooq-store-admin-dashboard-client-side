@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import ubuybluesLogo from "../../../public/images/UbuyBlues_Logo_merged_Purple.webp";
+import StoreLogo from "../../../public/images/StoreLogo.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiSolidUser } from "react-icons/bi";
 import { FiLogIn } from "react-icons/fi";
@@ -120,7 +120,7 @@ export default function AdminLogin() {
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <div className="page-content text-center p-4">
                 <div className="container p-4">
-                    <img src={ubuybluesLogo.src} alt="logo" width="200" height="200" className="mb-5" />
+                    <img src={StoreLogo.src} alt="logo" width="200" height="150" className="mb-5" />
                     <form className="admin-login-form mb-3" onSubmit={adminLogin}>
                         <div className="email-field-box">
                             <input
