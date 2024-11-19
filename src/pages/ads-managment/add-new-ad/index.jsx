@@ -72,51 +72,37 @@ export default function AddNewAd() {
         try {
             e.preventDefault();
             setFormValidationErrors({});
-            let validationInputs = [];
-            if (advertisementType === "text") {
-                validationInputs = [
-                    {
-                        name: "adContent",
-                        value: adContent,
-                        rules: {
-                            isRequired: {
-                                msg: "Sorry, This Field Can't Be Empty !!",
-                            },
+            const errorsObject = inputValuesValidation([
+                {
+                    name: "adContent",
+                    value: adContent,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
                         },
                     },
-                ];
-            } else {
-                validationInputs = [
-                    {
-                        name: "adImage",
-                        value: adImage,
-                        rules: {
-                            isRequired: {
-                                msg: "Sorry, This Field Can't Be Empty !!",
-                            },
-                            isImage: {
-                                msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
-                            },
+                },
+                {
+                    name: "adImage",
+                    value: adImage,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        isImage: {
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
-                ];
-            }
-            const errorsObject = inputValuesValidation(validationInputs);
+                },
+            ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                let advertisementData = {};
-                if (advertisementType === "text") {
-                    advertisementData = {
-                        content: adContent,
-                        storeId: adminInfo.storeId
-                    };
-                } else {
-                    advertisementData = new FormData();
-                    advertisementData.append("adImage", adImage);
-                    advertisementData.append("storeId", adminInfo.storeId);
-                }
+                let advertisementData = new FormData();
+                advertisementData.append("content", adContent);
+                advertisementData.append("adImage", adImage);
+                advertisementData.append("storeId", adminInfo.storeId);
                 setWaitMsg("Please Waiting To Add New Advertisement ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/ads/add-new-${advertisementType}-ad?language=${process.env.defaultLanguage}`, advertisementData, {
+                const result = (await axios.post(`${process.env.BASE_API_URL}/ads/add-new-ad?language=${process.env.defaultLanguage}`, advertisementData, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                     }
@@ -128,9 +114,7 @@ export default function AddNewAd() {
                         setSuccessMsg("");
                         setAdContent("");
                         setAdImage(null);
-                        if (advertisementType === "image") {
-                            adImageFileRef.current.value = "";
-                        }
+                        adImageFileRef.current.value = "";
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
@@ -171,30 +155,12 @@ export default function AddNewAd() {
                         <PiHandWavingThin className="me-2" />
                         Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Add New Advertisement Page
                     </h1>
-                    <section className="filters mb-3 bg-white border-3 border-info p-3 text-start w-100">
-                        <h5 className="section-name fw-bold text-center">Select Advertisement Type:</h5>
-                        <hr />
-                        <div className="row mb-4">
-                            <div className="col-md-12">
-                                <h6 className="me-2 fw-bold text-center">Advertisement Type</h6>
-                                <select
-                                    className="select-advertisement-type form-select"
-                                    onChange={(e) => setAdvertisementType(e.target.value)}
-                                    defaultValue="text"
-                                >
-                                    <option value="" hidden>Pleae Select Advertisement Type</option>
-                                    <option value="text">Text</option>
-                                    <option value="image">Image</option>
-                                </select>
-                            </div>
-                        </div>
-                    </section>
                     <form className="add-new-ad-form admin-dashbboard-form" onSubmit={addNewAd}>
-                        {advertisementType === "text" ? <section className="ad-content mb-4">
+                        <section className="ad-content mb-4">
                             <input
                                 type="text"
                                 className={`form-control p-2 border-2 ad-name-field ${formValidationErrors["adContent"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Enter Ad Name"
+                                placeholder="Please Enter Ad Content"
                                 onChange={(e) => setAdContent(e.target.value)}
                                 value={adContent}
                             />
@@ -202,7 +168,8 @@ export default function AddNewAd() {
                                 <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
                                 <span>{formValidationErrors["adContent"]}</span>
                             </p>}
-                        </section> : <section className="ad-image mb-4">
+                        </section>
+                        <section className="ad-image mb-4">
                             <input
                                 type="file"
                                 className={`form-control p-2 border-2 ad-image-field ${formValidationErrors["adImage"] ? "border-danger mb-3" : "mb-4"}`}
@@ -215,7 +182,7 @@ export default function AddNewAd() {
                                 <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
                                 <span>{formValidationErrors["adImage"]}</span>
                             </p>}
-                        </section>}
+                        </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
