@@ -316,7 +316,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="shipping-cost-box text-start p-3">
                                             <h6 className="fw-bold">Shipping Cost</h6>
-                                            <hr />
+                                            {/* <hr /> */}
                                             <p className="shipping-cost shipping-cost-for-local-products fw-bold">For Local Products: {orderDetails.shippingCost.forLocalProducts}</p>
                                             <p className="shipping-cost shipping-cost-for-international-products fw-bold">For Interantional Products: {orderDetails.shippingCost.forInternationalProducts}</p>
                                             <p className="shipping-cost total-shipping-cost fw-bold m-0">Total Cost: {orderDetails.shippingCost.forLocalProducts + orderDetails.shippingCost.forInternationalProducts}</p>
@@ -324,10 +324,10 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                     </div>
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="shipping-methods-box text-start p-3">
-                                            <h6 className="fw-bold">Shipping Methods</h6>
+                                            <h6 className="fw-bold">Shipping Method</h6>
                                             <hr />
-                                            <p className="shipping-method shipping-method-for-local-products fw-bold">For Local Products: {orderDetails.shippingMethod.forLocalProducts}</p>
-                                            <p className="shipping-method shipping-method-for-international-products fw-bold m-0">For Interantional Products: {orderDetails.shippingMethod.forInternationalProducts}</p>
+                                            {/* <p className="shipping-method shipping-method-for-local-products fw-bold">For Local Products: {orderDetails.shippingMethod.forLocalProducts}</p>
+                                            <p className="shipping-method shipping-method-for-international-products fw-bold m-0">For Interantional Products: {orderDetails.shippingMethod.forInternationalProducts}</p> */}
                                         </div>
                                     </div>
                                 </div>
@@ -337,7 +337,6 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                 <div className="row">
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="creator-box text-start p-3">
-                                            <h6 className="fw-bold">Creator: {orderDetails.creator}</h6>
                                             <h6 className="fw-bold m-0">User Id: {orderDetails.userId}</h6>
                                         </div>
                                     </div>
