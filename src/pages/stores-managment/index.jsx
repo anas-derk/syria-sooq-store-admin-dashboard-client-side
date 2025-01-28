@@ -227,20 +227,11 @@ export default function StoresManagment() {
                     },
                 },
                 {
-                    name: "ownerEmail",
-                    value: allStoresInsideThePage[storeIndex].ownerEmail,
+                    name: "email",
+                    value: allStoresInsideThePage[storeIndex].email,
                     rules: {
                         isEmail: {
                             msg: "Sorry, Invalid Email !!",
-                        },
-                    },
-                },
-                {
-                    name: "productsType",
-                    value: allStoresInsideThePage[storeIndex].productsType,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
                         },
                     },
                 },
@@ -251,8 +242,7 @@ export default function StoresManagment() {
                 setWaitMsg("Please Wait To Updating ...");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/update-store-info/${allStoresInsideThePage[storeIndex]._id}?language=${process.env.defaultLanguage}`, {
                     name: allStoresInsideThePage[storeIndex].name,
-                    ownerEmail: allStoresInsideThePage[storeIndex].ownerEmail,
-                    productsType: allStoresInsideThePage[storeIndex].productsType,
+                    email: allStoresInsideThePage[storeIndex].email,
                 }, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -490,8 +480,7 @@ export default function StoresManagment() {
                                         <th width="50">Store Id</th>
                                         <th width="250">Name</th>
                                         <th>Owner Full Name</th>
-                                        <th width="300">Owner Email</th>
-                                        <th width="300">Products Type</th>
+                                        <th width="300">Email</th>
                                         <th width="250">Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -515,34 +504,19 @@ export default function StoresManagment() {
                                                     </p>}
                                                 </section>
                                             </td>
-                                            <td>{store.ownerFirstName + " " + store.ownerLastName}</td>
+                                            <td>{store.ownerFullName}</td>
                                             <td>
-                                                <section className="store-owner-email mb-4">
+                                                <section className="store-email mb-4">
                                                     <input
                                                         type="text"
-                                                        defaultValue={store.ownerEmail}
-                                                        className={`form-control d-block mx-auto p-2 border-2 store-owner-email-field ${formValidationErrors["ownerEmail"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter Owner Email"
-                                                        onChange={(e) => changeStoreData(storeIndex, "ownerEmail", e.target.value)}
+                                                        defaultValue={store.email}
+                                                        className={`form-control d-block mx-auto p-2 border-2 store-email-field ${formValidationErrors["email"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
+                                                        placeholder="Pleae Enter Email"
+                                                        onChange={(e) => changeStoreData(storeIndex, "email", e.target.value)}
                                                     />
-                                                    {formValidationErrors["ownerEmail"] && storeIndex === selectedStoreIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                    {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                         <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["ownerEmail"]}</span>
-                                                    </p>}
-                                                </section>
-                                            </td>
-                                            <td>
-                                                <section className="store-products-type mb-4">
-                                                    <input
-                                                        type="text"
-                                                        defaultValue={store.productsType}
-                                                        className={`form-control d-block mx-auto p-2 border-2 store-products-type-field ${formValidationErrors["productsType"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter Products Type"
-                                                        onChange={(e) => changeStoreData(storeIndex, "productsType", e.target.value)}
-                                                    />
-                                                    {formValidationErrors["productsType"] && storeIndex === selectedStoreIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["productsType"]}</span>
+                                                        <span>{formValidationErrors["email"]}</span>
                                                     </p>}
                                                 </section>
                                             </td>
