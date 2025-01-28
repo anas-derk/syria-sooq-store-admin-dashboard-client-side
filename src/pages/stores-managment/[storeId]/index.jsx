@@ -80,6 +80,29 @@ export default function StoreDetails({ storeId }) {
         } else router.replace("/login");
     }, []);
 
+    <button
+        className="btn btn-success"
+        onClick={() => downloadFile(`${process.env.BASE_API_URL}/${storeDetails.commercialRegisterFilePath}`, "commercial-register-file")}
+    >
+        Download
+    </button>
+
+    const downloadFile = async (URL, fileType) => {
+        try {
+            setWaitMsg("Downloading File Now ...");
+            const res = await axios.get(URL, { responseType: "blob" });
+            const imageAsBlob = res.data;
+            const localURL = window.URL.createObjectURL(imageAsBlob);
+            const tempAnchorLink = document.createElement("a");
+            tempAnchorLink.href = localURL;
+            tempAnchorLink.download = "file.png";
+            tempAnchorLink.click();
+            setWaitMsg("");
+        } catch (err) {
+            setWaitMsg("");
+        }
+    }
+
     const updateStoreData = async (storeId) => {
         try {
             setFormValidationErrors({});
@@ -273,18 +296,18 @@ export default function StoreDetails({ storeId }) {
                                                 className="d-block mx-auto mb-4"
                                             />
                                             <hr />
-                                            <section className="update-store-image mb-4">
+                                            <section className="update-store-cover-image mb-4">
                                                 <input
                                                     type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 brand-image-field ${formValidationErrors["image"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, image: e.target.files[0] })}
+                                                    className={`form-control d-block mx-auto p-2 border-2 store-cover-image-field ${formValidationErrors["coverImage"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, coverImage: e.target.files[0] })}
                                                     accept=".png, .jpg, .webp"
                                                     ref={storeImageFileElementRef}
                                                     value={storeImageFileElementRef.current?.value}
                                                 />
-                                                {formValidationErrors["image"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                {formValidationErrors["coverImage"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                     <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
+                                                    <span>{formValidationErrors["coverImage"]}</span>
                                                 </p>}
                                             </section>
                                             {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
@@ -312,25 +335,25 @@ export default function StoreDetails({ storeId }) {
                                         </th>
                                         <td className="update-store-profile-image-cell">
                                             <img
-                                                src={`${process.env.BASE_API_URL}/${storeDetails.coverImagePath}`}
-                                                alt={`${storeDetails.name} Store Cover Image !!`}
+                                                src={`${process.env.BASE_API_URL}/${storeDetails.profileImagePath}`}
+                                                alt={`${storeDetails.name} Store Profile Image !!`}
                                                 width="100"
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
                                             />
                                             <hr />
-                                            <section className="update-store-image mb-4">
+                                            <section className="update-store-profile-image mb-4">
                                                 <input
                                                     type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 brand-image-field ${formValidationErrors["image"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, image: e.target.files[0] })}
+                                                    className={`form-control d-block mx-auto p-2 border-2 store-profile-image-field ${formValidationErrors["profileImage"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, profileImage: e.target.files[0] })}
                                                     accept=".png, .jpg, .webp"
                                                     ref={storeImageFileElementRef}
                                                     value={storeImageFileElementRef.current?.value}
                                                 />
-                                                {formValidationErrors["image"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                {formValidationErrors["profileImage"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                     <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
+                                                    <span>{formValidationErrors["profileImage"]}</span>
                                                 </p>}
                                             </section>
                                             {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
@@ -357,26 +380,25 @@ export default function StoreDetails({ storeId }) {
                                             Commercial Register File
                                         </th>
                                         <td className="update-store-commercial-register-cell">
-                                            <img
-                                                src={`${process.env.BASE_API_URL}/${storeDetails.commercialRegisterFilePath}`}
-                                                alt={`${storeDetails.name} Store Commercial Register Image !!`}
-                                                width="100"
-                                                height="100"
-                                                className="d-block mx-auto mb-4"
-                                            />
+                                            <button
+                                                className="btn btn-success"
+                                                onClick={() => downloadFile(`${process.env.BASE_API_URL}/${storeDetails.commercialRegisterFilePath}`, "commercial-register-file")}
+                                            >
+                                                Download
+                                            </button>
                                             <hr />
-                                            <section className="update-store-image mb-4">
+                                            <section className="update-store-commercial-register mb-4">
                                                 <input
                                                     type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 brand-image-field ${formValidationErrors["image"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, image: e.target.files[0] })}
+                                                    className={`form-control d-block mx-auto p-2 border-2 commercial-register-field ${formValidationErrors["commercialRegister"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, commercialRegister: e.target.files[0] })}
                                                     accept=".png, .jpg, .webp"
                                                     ref={storeImageFileElementRef}
                                                     value={storeImageFileElementRef.current?.value}
                                                 />
-                                                {formValidationErrors["image"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                {formValidationErrors["commercialRegister"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                     <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
+                                                    <span>{formValidationErrors["commercialRegister"]}</span>
                                                 </p>}
                                             </section>
                                             {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
@@ -403,13 +425,12 @@ export default function StoreDetails({ storeId }) {
                                             Tax Card File
                                         </th>
                                         <td className="update-store-tax-card-cell">
-                                            <img
-                                                src={`${process.env.BASE_API_URL}/${storeDetails.taxCardFilePath}`}
-                                                alt={`${storeDetails.name} Store Commercial Register Image !!`}
-                                                width="100"
-                                                height="100"
-                                                className="d-block mx-auto mb-4"
-                                            />
+                                            <button
+                                                className="btn btn-success"
+                                                onClick={() => downloadFile(`${process.env.BASE_API_URL}/${storeDetails.taxCardFilePath}`, "tax-card-file")}
+                                            >
+                                                Download
+                                            </button>
                                             <hr />
                                             <section className="update-store-image mb-4">
                                                 <input
@@ -446,29 +467,28 @@ export default function StoreDetails({ storeId }) {
                                     </tr>
                                     <tr className="store-address-proof-cell">
                                         <th className="store-address-proof-cell">
-                                            Store Address Proof File
+                                            Address Proof File
                                         </th>
                                         <td className="update-store-address-proof-cell">
-                                            <img
-                                                src={`${process.env.BASE_API_URL}/${storeDetails.addressProofFilePath}`}
-                                                alt={`${storeDetails.name} Store Address Proof Image !!`}
-                                                width="100"
-                                                height="100"
-                                                className="d-block mx-auto mb-4"
-                                            />
+                                            <button
+                                                className="btn btn-success"
+                                                onClick={() => downloadFile(`${process.env.BASE_API_URL}/${storeDetails.addressProofFilePath}`, "address-proof-file")}
+                                            >
+                                                Download
+                                            </button>
                                             <hr />
-                                            <section className="update-store-image mb-4">
+                                            <section className="update-store-address-proof mb-4">
                                                 <input
                                                     type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 brand-image-field ${formValidationErrors["image"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, image: e.target.files[0] })}
+                                                    className={`form-control d-block mx-auto p-2 border-2 address-proof-field ${formValidationErrors["addressProof"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, addressProof: e.target.files[0] })}
                                                     accept=".png, .jpg, .webp"
                                                     ref={storeImageFileElementRef}
                                                     value={storeImageFileElementRef.current?.value}
                                                 />
-                                                {formValidationErrors["image"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                {formValidationErrors["addressProof"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                     <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
+                                                    <span>{formValidationErrors["addressProof"]}</span>
                                                 </p>}
                                             </section>
                                             {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
