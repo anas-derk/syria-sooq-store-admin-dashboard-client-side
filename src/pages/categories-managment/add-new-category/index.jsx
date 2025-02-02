@@ -24,6 +24,8 @@ export default function AddNewCategory() {
 
     const [categoryName, setCategoryName] = useState("");
 
+    const [categoryColor, setCategoryColor] = useState("");
+
     const [searchedCategoryParent, setSearchedCategoryParent] = useState("");
 
     const [selectedCategoryParent, setSelectedCategoryParent] = useState("");
@@ -130,6 +132,7 @@ export default function AddNewCategory() {
                 setWaitMsg("Please Waiting To Add New Category ...");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/categories/add-new-category?language=${process.env.defaultLanguage}`, {
                     name: categoryName,
+                    color: categoryColor,
                     parent: selectedCategoryParent._id,
                 }, {
                     headers: {
@@ -197,6 +200,19 @@ export default function AddNewCategory() {
                                 <span>{formValidationErrors["categoryName"]}</span>
                             </p>}
                         </section>
+                        <section className="category-color mb-4">
+                            <input
+                                type="color"
+                                className={`form-control p-2 border-2 category-color-field ${formValidationErrors["categoryColor"] ? "border-danger mb-3" : "mb-4"}`}
+                                placeholder="Please Enter Category Color"
+                                onChange={(e) => setCategoryColor(e.target.value)}
+                                value={categoryColor}
+                            />
+                            {formValidationErrors["categoryColor"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                                <span>{formValidationErrors["categoryColor"]}</span>
+                            </p>}
+                        </section>
                         <section className="category-parent mb-4">
                             <h6 className="fw-bold mb-3">Please Select Category Parent</h6>
                             {selectedCategoryParent.name && <h6 className="bg-secondary p-3 mb-4 text-white border border-2 border-dark">Category Parent: {selectedCategoryParent.name}</h6>}
@@ -210,8 +226,8 @@ export default function AddNewCategory() {
                                 <ul className={`categories-list options-list bg-white border ${formValidationErrors["categoryParent"] ? "border-danger mb-4" : "border-dark"}`}>
                                     <li onClick={() => handleSelectCategoryParent("")}>No Parent</li>
                                     {filteredCategories.length > 0 && filteredCategories.map((category) => (
-                                            <li key={category} onClick={() => handleSelectCategoryParent(category)}>{category.name}</li>
-                                        ))
+                                        <li key={category} onClick={() => handleSelectCategoryParent(category)}>{category.name}</li>
+                                    ))
                                     }
                                 </ul>
                                 {filteredCategories.length === 0 && searchedCategoryParent && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Category Parent Match This Name !!</p>}
