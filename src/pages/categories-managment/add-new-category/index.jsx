@@ -201,6 +201,7 @@ export default function AddNewCategory() {
                             </p>}
                         </section>
                         <section className="category-color mb-4">
+                            <h6 className="fw-bold mb-3">Please Select Category Color</h6>
                             <input
                                 type="color"
                                 className={`form-control p-2 border-2 category-color-field ${formValidationErrors["categoryColor"] ? "border-danger mb-3" : "mb-4"}`}
