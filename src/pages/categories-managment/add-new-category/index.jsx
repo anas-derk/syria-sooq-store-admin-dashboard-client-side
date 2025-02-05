@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { PiHandWavingThin } from "react-icons/pi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import LoaderPage from "@/components/LoaderPage";
@@ -26,6 +26,8 @@ export default function AddNewCategory() {
 
     const [categoryColor, setCategoryColor] = useState("");
 
+    const [categoryImage, setCategoryImage] = useState("");
+
     const [searchedCategoryParent, setSearchedCategoryParent] = useState("");
 
     const [selectedCategoryParent, setSelectedCategoryParent] = useState("");
@@ -41,6 +43,8 @@ export default function AddNewCategory() {
     });
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
+
+    const fileElementRef = useRef();
 
     const router = useRouter();
 
@@ -126,15 +130,37 @@ export default function AddNewCategory() {
                         },
                     },
                 },
+                {
+                    name: "categoryColor",
+                    value: categoryColor,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
+                },
+                {
+                    name: "categoryImage",
+                    value: categoryImage,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        isImage: {
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or Webp Image File !!",
+                        },
+                    },
+                },
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Waiting To Add New Category ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/categories/add-new-category?language=${process.env.defaultLanguage}`, {
-                    name: categoryName,
-                    color: categoryColor,
-                    parent: selectedCategoryParent._id,
-                }, {
+                let formData = new FormData();
+                formData.append("categoryImg", categoryImage);
+                formData.append("name", categoryName);
+                formData.append("parent", selectedCategoryParent._id);
+                formData.append("color", categoryColor);
+                const result = (await axios.post(`${process.env.BASE_API_URL}/categories/add-new-category?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                     }
@@ -153,6 +179,8 @@ export default function AddNewCategory() {
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setCategoryName("");
+                        setCategoryColor("");
+                        fileElementRef.current.value = "";
                         clearTimeout(errorTimeout);
                     }, 1500);
                 }
@@ -237,6 +265,20 @@ export default function AddNewCategory() {
                                     <span>{formValidationErrors["categoryParent"]}</span>
                                 </p>}
                             </div>
+                        </section>
+                        <section className="category-image mb-4">
+                            <input
+                                type="file"
+                                className={`form-control p-2 border-2 category-image-field ${formValidationErrors["categoryImage"] ? "border-danger mb-3" : "mb-4"}`}
+                                onChange={(e) => setCategoryImage(e.target.files[0])}
+                                ref={fileElementRef}
+                                value={fileElementRef.current?.value}
+                                accept=".png, .jpg, .webp"
+                            />
+                            {formValidationErrors["categoryImage"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                                <span>{formValidationErrors["categoryImage"]}</span>
+                            </p>}
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
