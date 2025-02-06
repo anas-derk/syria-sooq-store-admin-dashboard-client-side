@@ -11,7 +11,11 @@ const getProductsCount = async (filters) => {
 
 const getAllProductsInsideThePage = async (pageNumber, pageSize, filters, sortDetails) => {
     try {
-        return ( await axios.get(`${process.env.BASE_API_URL}/products/all-products-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}&${sortDetails ? sortDetails : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/products/all-products-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&userType=admin&language=${process.env.defaultLanguage}&${filters ? filters : ""}&${sortDetails ? sortDetails : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;
@@ -50,7 +54,11 @@ const getCategoriesCount = async (filters) => {
 
 const getAllCategoriesInsideThePage = async (pageNumber, pageSize, filters) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/categories/all-categories-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/categories/all-categories-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&userType=admin&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;
@@ -59,7 +67,11 @@ const getAllCategoriesInsideThePage = async (pageNumber, pageSize, filters) => {
 
 const getAllCategories = async (filters) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/categories/all-categories?language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/categories/all-categories?userType=admin&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;
@@ -137,14 +149,14 @@ const getDateInUTCFormat = (localTimeAndDateAsString) => {
 }
 
 async function getAdminInfo() {
-    try{
+    try {
         return (await axios.get(`${process.env.BASE_API_URL}/admins/user-info?language=${process.env.defaultLanguage}`, {
             headers: {
                 Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
             },
         })).data;
     }
-    catch(err) {
+    catch (err) {
         throw err;
     }
 }
@@ -165,7 +177,11 @@ const handleSelectUserLanguage = (userLanguage, changeLanguageFunc) => {
 
 const getProductInfo = async (productId) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/products/product-info/${productId}?language=${process.env.defaultLanguage}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/products/product-info/${productId}?language=${process.env.defaultLanguage}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw Error(err);
