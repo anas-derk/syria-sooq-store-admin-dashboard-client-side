@@ -20,7 +20,7 @@ export default function CategoriesTree({ categories, selectedCategories, handleS
                             onChange={(e) => handleSelectCategory(category._id, e.target.checked)}
                         />
                         <label className="form-check-label" htmlFor={category._id}>
-                            { category.name }
+                            {category.name}
                         </label>
                     </div>
                     {category?.subcategories.length > 0 && <CategoriesTree
