@@ -100,7 +100,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Wait To Updating ...");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/products/${productData._id}?language=${process.env.defaultLanguage}`, {
-                    categories: productData.categories,
+                    categories: productData.categories.map(category => category._id),
                 }, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -138,9 +138,9 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
         }
     }
 
-    const handleSelectCategory = (categoryId, isChecked) => {
+    const handleSelectCategory = (category, isChecked) => {
         setProductData((data) => {
-            return isChecked ? { ...data, categories: [...productData.categories, categoryId] } : { ...data, categories: productData.categories.filter((id) => id !== categoryId) };
+            return isChecked ? { ...data, categories: [...productData.categories, category] } : { ...data, categories: productData.categories.filter((category) => category._id !== category._id) };
         });
     }
 
@@ -161,8 +161,8 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
                             <h6 className="mb-3 fw-bold">Please Select Categories</h6>
                             <CategoriesTree
                                 categories={allCategories}
-                                handleSelectCategory={handleSelectCategory}
                                 selectedCategories={productData.categories.map((selectedCategory) => selectedCategory._id)}
+                                handleSelectCategory={handleSelectCategory}
                             />
                             {formValidationErrors["categories"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                 <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>

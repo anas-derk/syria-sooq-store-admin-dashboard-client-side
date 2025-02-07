@@ -17,7 +17,7 @@ export default function CategoriesTree({ categories, selectedCategories, handleS
                             type="checkbox"
                             checked={selectedCategories?.includes(category._id)}
                             id={category._id}
-                            onChange={(e) => handleSelectCategory(category._id, e.target.checked)}
+                            onChange={(e) => handleSelectCategory(category, e.target.checked)}
                         />
                         <label className="form-check-label" htmlFor={category._id}>
                             {category.name}
