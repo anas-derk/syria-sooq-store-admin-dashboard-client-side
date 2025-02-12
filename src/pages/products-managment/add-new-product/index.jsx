@@ -32,6 +32,7 @@ export default function AddNewProduct() {
         categories: [],
         discount: "",
         quantity: "",
+        isAvailableForDelivery: false,
         image: null,
         galleryImages: [],
     });
@@ -349,6 +350,21 @@ export default function AddNewProduct() {
                                 <span>{formValidationErrors["quantity"]}</span>
                             </p>}
                         </section>
+                        <div className="is-available-for-delivery mb-4">
+                            <h6 className="fw-bold mb-3">Is Available For Delivery ?</h6>
+                            <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                <input
+                                    className="form-check-input m-0 me-2"
+                                    type="checkbox"
+                                    id="isAvailableForDelivery"
+                                    onChange={(e) => setProductData({ ...productData, isAvailableForDelivery: e.target.checked })}
+                                    value={productData.isAvailableForDelivery}
+                                />
+                                <label className="form-check-label" htmlFor="isAvailableForDelivery" onClick={(e) => setProductData({ ...productData, isAvailableForDelivery: e.target.checked })}>
+                                    Is Available For Delivery
+                                </label>
+                            </div>
+                        </div>
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
                         <section className="image mb-4">
                             <input
