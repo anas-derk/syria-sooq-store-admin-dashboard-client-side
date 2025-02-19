@@ -290,6 +290,7 @@ export default function UpdateAndDeleteAds() {
                         <table className="ads-table mb-4 managment-table bg-white w-100">
                             <thead>
                                 <tr>
+                                    <th>Type</th>
                                     <th>Content</th>
                                     <th>Image</th>
                                     <th>Process</th>
@@ -298,8 +299,9 @@ export default function UpdateAndDeleteAds() {
                             <tbody>
                                 {allAds.map((ad, adIndex) => (
                                     <tr key={ad._id}>
+                                        <td className="ad-type">{ad.type}</td>
                                         <td className="ad-content-cell">
-                                            <section className="ad-content mb-4">
+                                            {ad.type === "elite" ? <section className="ad-content mb-4">
                                                 <input
                                                     type="text"
                                                     className={`form-control d-block mx-auto p-2 border-2 ad-content-field ${formValidationErrors["adContent"] && adIndex === selectedAdIndex ? "border-danger mb-3" : "mb-4"}`}
@@ -310,7 +312,7 @@ export default function UpdateAndDeleteAds() {
                                                     <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
                                                     <span>{formValidationErrors["adContent"]}</span>
                                                 </p>}
-                                            </section>
+                                            </section> : <p>No Content</p>}
                                         </td>
                                         <td className="ad-image-cell">
                                             <img
