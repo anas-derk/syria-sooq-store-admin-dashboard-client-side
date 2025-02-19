@@ -45,7 +45,11 @@ const getStoreDetails = async (storeId) => {
 
 const getCategoriesCount = async (filters) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/categories/categories-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/categories/categories-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;

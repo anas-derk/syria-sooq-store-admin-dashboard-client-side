@@ -6,11 +6,11 @@ import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getAllCategoriesWithHierarechy } from "../../../../public/global_functions/popular";
+import { getAdminInfo, getAllCategoriesInsideThePage, getCategoriesCount } from "../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
-import CategoriesTree from "@/components/CategoryTree";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 export default function AddNewProduct() {
 
@@ -20,9 +20,7 @@ export default function AddNewProduct() {
 
     const [adminInfo, setAdminInfo] = useState({});
 
-    const [allCategories, setAllCategories] = useState([]);
-
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [categoriesCount, setCategoriesCount] = useState([]);
 
     const [productData, setProductData] = useState({
         name: "",
@@ -43,9 +41,11 @@ export default function AddNewProduct() {
 
     const [successMsg, setSuccessMsg] = useState("");
 
-    const [filters, setFilters] = useState({
-        storeId: "",
-    });
+    const [searchedCategoryName, setSearchedCategoryName] = useState("");
+
+    const [searchedCategories, setSearchedCategories] = useState([]);
+
+    const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
@@ -70,14 +70,13 @@ export default function AddNewProduct() {
                             await router.replace("/login");
                         } else {
                             setAdminInfo(adminDetails);
-                            const tempFilters = { ...filters, storeId: adminDetails.storeId };
-                            setFilters(tempFilters);
-                            setAllCategories((await getAllCategoriesWithHierarechy(getFilteringString(tempFilters))).data);
+                            setCategoriesCount((await getCategoriesCount()).data);
                             setIsLoadingPage(false);
                         }
                     }
                 })
                 .catch(async (err) => {
+                    console.log(err)
                     if (err?.response?.status === 401) {
                         localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
                         await router.replace("/login");
@@ -89,13 +88,6 @@ export default function AddNewProduct() {
                 });
         } else router.replace("/login");
     }, []);
-
-    const getFilteringString = (filters) => {
-        let filteringString = "";
-        if (filters.storeId) filteringString += `storeId=${filters.storeId}&`;
-        if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
-        return filteringString;
-    }
 
     const addNewProduct = async (e, productData) => {
         try {
@@ -256,8 +248,38 @@ export default function AddNewProduct() {
         }
     }
 
-    const handleSelectCategory = (category, isChecked) => {
-        setSelectedCategories(isChecked ? [...selectedCategories, category._id] : selectedCategories.filter((selectedCategory) => selectedCategory !== category._id));
+    const handleGetCategoriesByName = async (e) => {
+        try {
+            setWaitMsg("Please Waiting To Get Categories ...");
+            const searchedCategoryName = e.target.value;
+            setSearchedCategoryName(searchedCategoryName);
+            if (searchedCategoryName) {
+                setSearchedCategories((await getAllCategoriesInsideThePage(1, 1000, `name=${searchedCategoryName}`)).data.categories);
+            } else {
+                setSearchedCategories([]);
+            }
+            setWaitMsg("");
+        }
+        catch (err) {
+            setWaitMsg("");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Someting Went Wrong, Please Repeate The Search !!");
+            let errorTimeout = setTimeout(() => {
+                setErrorMsg("");
+                clearTimeout(errorTimeout);
+            }, 1500);
+        }
+    }
+
+    const handleSelectCategory = (selectedCategory) => {
+        if ((selectedCategories.filter((category) => category._id !== selectedCategory._id)).length === selectedCategories.length) {
+            setSearchedCategories(searchedCategories.filter((category) => category._id !== selectedCategory._id));
+            setSelectedCategories([...selectedCategories, selectedCategory]);
+        }
+    }
+
+    const handleRemoveCategoryFromSelectedCategoriesList = (category) => {
+        setSelectedCategories(selectedCategories.filter((selectedCategory) => category._id !== selectedCategory._id));
+        if (searchedCategoryName) setSearchedCategories([...searchedCategories, category]);
     }
 
     return (
@@ -272,7 +294,7 @@ export default function AddNewProduct() {
                         <PiHandWavingThin className="me-2" />
                         Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Add New Product Page
                     </h1>
-                    {allCategories.length > 0 ? <form className="add-new-product-form admin-dashbboard-form" onSubmit={(e) => addNewProduct(e, productData)}>
+                    {categoriesCount > 0 ? <form className="add-new-product-form admin-dashbboard-form" onSubmit={(e) => addNewProduct(e, productData)}>
                         <section className="name mb-4">
                             <input
                                 type="text"
@@ -314,16 +336,37 @@ export default function AddNewProduct() {
                         </section>
                         <section className="category mb-4 overflow-auto">
                             <h6 className="mb-3 fw-bold">Please Select Categories</h6>
-                            <CategoriesTree
-                                categories={allCategories}
-                                selectedCategories={selectedCategories}
-                                handleSelectCategory={handleSelectCategory}
-                            />
-                            {formValidationErrors["category"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                <span>{formValidationErrors["category"]}</span>
-                            </p>}
+                            <div className="select-categories-box select-box">
+                                <input
+                                    type="text"
+                                    className="search-box form-control p-2 border-2 mb-4"
+                                    placeholder="Please Enter Category Name Or Part Of This"
+                                    onChange={handleGetCategoriesByName}
+                                />
+                                <ul className={`categories-list options-list bg-white border ${formValidationErrors["categories"] ? "border-danger mb-4" : "border-dark"}`}>
+                                    <li className="text-center fw-bold border-bottom border-2 border-dark">Seached Categories List</li>
+                                    {searchedCategories.length > 0 && searchedCategories.map((category) => (
+                                        <li key={category._id} onClick={() => handleSelectCategory(category)}>{category.name}</li>
+                                    ))}
+                                </ul>
+                                {searchedCategories.length === 0 && searchedCategoryName && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Related Categories Match This Name !!</p>}
+                                {formValidationErrors["categories"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                                    <span>{formValidationErrors["categories"]}</span>
+                                </p>}
+                            </div>
                         </section>
+                        {selectedCategories.length > 0 ? <div className="selected-categories row mb-4">
+                            {selectedCategories.map((category) => <div className="col-md-4 mb-3" key={category._id}>
+                                <div className="selected-category-box bg-white p-2 border border-2 border-dark text-center">
+                                    <span className="me-2 category-name">{category.name}</span>
+                                    <IoIosCloseCircleOutline className="remove-icon" onClick={() => handleRemoveCategoryFromSelectedCategoriesList(category)} />
+                                </div>
+                            </div>)}
+                        </div> : <p className="bg-danger p-2 m-0 text-white mb-4">
+                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                            <span>Sorry, Can't Find Any Categories Added To The Selected Categories List !!</span>
+                        </p>}
                         <section className="discount mb-4">
                             <input
                                 type="text"
