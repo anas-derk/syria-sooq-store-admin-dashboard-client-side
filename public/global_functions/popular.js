@@ -181,7 +181,7 @@ const handleSelectUserLanguage = (userLanguage, changeLanguageFunc) => {
 
 const getProductInfo = async (productId) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/products/product-info/${productId}?language=${process.env.defaultLanguage}`, {
+        return (await axios.get(`${process.env.BASE_API_URL}/products/product-info/${productId}?userType=admin&language=${process.env.defaultLanguage}`, {
             headers: {
                 Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
             },
