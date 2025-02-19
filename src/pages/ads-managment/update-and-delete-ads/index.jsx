@@ -355,11 +355,13 @@ export default function UpdateAndDeleteAds() {
                                         </td>
                                         <td className="update-cell">
                                             {selectedAdIndex !== adIndex && <>
-                                                <button
-                                                    className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                    onClick={() => updateAdInfo(adIndex)}
-                                                >Update</button>
-                                                <hr />
+                                                {ad.type === "elite" && <>
+                                                    <button
+                                                        className="btn btn-success d-block mb-3 mx-auto global-button"
+                                                        onClick={() => updateAdInfo(adIndex)}
+                                                    >Update</button>
+                                                    <hr />
+                                                </>}
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteAd(adIndex)}
