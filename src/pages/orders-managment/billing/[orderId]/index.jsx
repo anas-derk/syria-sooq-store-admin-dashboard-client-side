@@ -7,18 +7,13 @@ import { useTranslation } from "react-i18next";
 import { getAdminInfo, getStoreDetails, getOrderDetails, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
-import { getCurrencyNameByCountry, getUSDPriceAgainstCurrency } from "../../../../../public/global_functions/prices";
 import NotFoundError from "@/components/NotFoundError";
 
-export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
+export default function ShowBilling({ orderIdAsProperty }) {
 
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
     const [errorMsgOnLoadingThePage, setErrorMsgOnLoadingThePage] = useState("");
-
-    const [usdPriceAgainstCurrency, setUsdPriceAgainstCurrency] = useState(1);
-
-    const [currencyNameByCountry, setCurrencyNameByCountry] = useState("");
 
     const [isGetOrderDetails, setIsGetOrderDetails] = useState(true);
 
@@ -41,21 +36,6 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
         handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : "en", i18n.changeLanguage);
     }, []);
-
-    useEffect(() => {
-        setIsLoadingPage(true);
-        getUSDPriceAgainstCurrency(countryAsProperty).then((price) => {
-            setUsdPriceAgainstCurrency(price);
-            setCurrencyNameByCountry(getCurrencyNameByCountry(countryAsProperty));
-            if (!isGetOrderDetails) {
-                setIsLoadingPage(false);
-            }
-        })
-            .catch((err) => {
-                setIsLoadingPage(false);
-                setErrorMsgOnLoadingThePage(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Try Again !");
-            });
-    }, [countryAsProperty]);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -160,13 +140,13 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                     </span>}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
-                                    {(product.unitPrice * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                    {product.unitPrice.toFixed(2)} {t("SY")}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
-                                    {product.discount * usdPriceAgainstCurrency} {t(currencyNameByCountry)}
+                                    {product.discount} {t("SY")}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
-                                    {((product.unitPrice - product.discount) * product.quantity * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                    {((product.unitPrice - product.discount) * product.quantity).toFixed(2)} {t("SY")}
                                 </div>
                             </div>
                         ))}
@@ -175,7 +155,7 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                 {t("Total Price Before Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(pricesDetailsSummary.totalPriceBeforeDiscount * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                {pricesDetailsSummary.totalPriceBeforeDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-price-discount total pb-3 mb-5">
@@ -183,7 +163,7 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                 {t("Total Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(pricesDetailsSummary.totalDiscount * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                {pricesDetailsSummary.totalDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-price-after-discount total pb-3 mb-5">
@@ -191,23 +171,7 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                 {t("Total Price After Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(orderDetails.totalPriceAfterDiscount * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
-                            </div>
-                        </div>
-                        <div className="row shipping-cost-for-local-products total pb-3 mb-5">
-                            <div className="col-md-3 fw-bold p-0">
-                                {t("Shipping Cost For Local Products")}
-                            </div>
-                            <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(orderDetails.shippingCost.forLocalProducts * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
-                            </div>
-                        </div>
-                        <div className="row shipping-cost-for-local-products total pb-3 mb-5">
-                            <div className="col-md-3 fw-bold p-0">
-                                {t("Shipping Cost For International Products")}
-                            </div>
-                            <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(orderDetails.shippingCost.forInternationalProducts * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                {orderDetails.totalPriceAfterDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-shipping-cost total pb-3 mb-5">
@@ -215,7 +179,7 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                 {t("Total Shipping Cost")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {((orderDetails.shippingCost.forLocalProducts + orderDetails.shippingCost.forInternationalProducts) * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                {orderDetails.shippingCost.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-amount total pb-3 mb-5">
@@ -223,7 +187,7 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
                                 {t("Total Amount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {(orderDetails.orderAmount * usdPriceAgainstCurrency).toFixed(2)} {t(currencyNameByCountry)}
+                                {orderDetails.orderAmount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="thanks-icon-box mb-4">
@@ -243,54 +207,18 @@ export default function ShowBilling({ orderIdAsProperty, countryAsProperty }) {
     );
 }
 
-export async function getServerSideProps({ query, params }) {
+export async function getServerSideProps({ params }) {
     if (!params.orderId) {
         return {
             redirect: {
                 permanent: false,
                 destination: "/orders-managment",
             },
-            props: {
-                countryAsProperty: "kuwait",
-            },
-        }
-    }
-    const allowedCountries = ["kuwait", "germany", "turkey"];
-    if (query.country) {
-        if (!allowedCountries.includes(query.country)) {
-            return {
-                redirect: {
-                    permanent: false,
-                    destination: `/orders-managment/${params.orderId}`,
-                },
-                props: {
-                    countryAsProperty: "kuwait",
-                    orderIdAsProperty: params.orderId,
-                },
-            }
-        }
-        if (Object.keys(query).filter((key) => key !== "country").length > 1) {
-            return {
-                redirect: {
-                    permanent: false,
-                    destination: `/orders-managment/${params.orderId}?country=${query.country}`,
-                },
-                props: {
-                    countryAsProperty: query.country,
-                    orderIdAsProperty: params.orderId,
-                },
-            }
-        }
-        return {
-            props: {
-                countryAsProperty: query.country,
-                orderIdAsProperty: params.orderId,
-            },
+            props: {},
         }
     }
     return {
         props: {
-            countryAsProperty: "kuwait",
             orderIdAsProperty: params.orderId,
         },
     }
