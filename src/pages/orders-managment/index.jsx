@@ -72,11 +72,9 @@ export default function OrdersManagment() {
                             await router.replace("/login");
                         } else {
                             setAdminInfo(adminDetails);
-                            result = await getOrdersCount(getFilteringString(filters));
-                            if (result.data > 0) {
-                                setAllOrdersInsideThePage((await getAllOrdersInsideThePage(1, pageSize, getFilteringString(filters))).data);
-                                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                            }
+                            result = await getAllOrdersInsideThePage(1, pageSize, getFilteringString(filters));
+                            setAllOrdersInsideThePage(result.data.orders);
+                            setTotalPagesCount(Math.ceil(result.ordersCount / pageSize));
                             setIsLoadingPage(false);
                         }
                     }

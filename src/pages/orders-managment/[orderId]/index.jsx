@@ -284,28 +284,18 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                         <div className="billing-address-box text-start p-3">
                                             <h6 className="fw-bold">Billing Address</h6>
                                             <hr />
-                                            <p className="city fw-bold">City: {orderDetails.billingAddress.city}</p>
-                                            <p className="email fw-bold">Email: {orderDetails.billingAddress.email}</p>
-                                            <p className="name fw-bold">Name: {orderDetails.billingAddress.firstName}</p>
-                                            <p className="family-name fw-bold">Family Name: {orderDetails.billingAddress.lastName}</p>
-                                            <p className="phone fw-bold">Phone: {orderDetails.billingAddress.phone}</p>
-                                            <p className="postal-code fw-bold">Postal Code: {orderDetails.billingAddress.postalCode}</p>
-                                            <p className="street-address fw-bold">Street Address: {orderDetails.billingAddress.streetAddress}</p>
-                                            <p className="apartment-number fw-bold m-0">Apartment Number: {orderDetails.billingAddress.apartmentNumber}</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 bg-white border border-2 border-dark">
-                                        <div className="shipping-address-box text-start p-3">
-                                            <h6 className="fw-bold">Shipping Address</h6>
-                                            <hr />
-                                            <p className="city fw-bold">City: {orderDetails.shippingAddress.city}</p>
-                                            <p className="email fw-bold">Email: {orderDetails.shippingAddress.email}</p>
-                                            <p className="name fw-bold">Name: {orderDetails.shippingAddress.firstName}</p>
-                                            <p className="family-name fw-bold">Family Name: {orderDetails.shippingAddress.lastName}</p>
-                                            <p className="phone fw-bold">Phone: {orderDetails.shippingAddress.phone}</p>
-                                            <p className="postal-code fw-bold">Postal Code: {orderDetails.shippingAddress.postalCode}</p>
-                                            <p className="street-address fw-bold">Street Address: {orderDetails.shippingAddress.streetAddress}</p>
-                                            <p className="apartment-number fw-bold m-0">Apartment Number: {orderDetails.shippingAddress.apartmentNumber}</p>
+                                            <p className="city fw-bold">City: {orderDetails.city}</p>
+                                            <p className="address fw-bold">Address: {orderDetails.address}</p>
+                                            <p className="address-details fw-bold">Address Details: {orderDetails.addressDetails}</p>
+                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint}</p>
+                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint}</p>
+                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.additionalAddressDetails}</p>
+                                            <p className="floor-number fw-bold">Floor Number: {orderDetails.floorNumber}</p>
+                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.additionalNotes}</p>
+                                            <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.mobilePhone}</p>
+                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone}</p>
+                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone}</p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -313,21 +303,11 @@ export default function OrderDetails({ orderIdAsProperty }) {
                             <section className="shipping-info mb-5">
                                 <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">Shipping Info</h4>
                                 <div className="row">
-                                    <div className="col-md-6 bg-white border border-2 border-dark">
+                                    <div className="col-md-12 bg-white border border-2 border-dark">
                                         <div className="shipping-cost-box text-start p-3">
                                             <h6 className="fw-bold">Shipping Cost</h6>
-                                            {/* <hr /> */}
-                                            <p className="shipping-cost shipping-cost-for-local-products fw-bold">For Local Products: {orderDetails.shippingCost.forLocalProducts}</p>
-                                            <p className="shipping-cost shipping-cost-for-international-products fw-bold">For Interantional Products: {orderDetails.shippingCost.forInternationalProducts}</p>
-                                            <p className="shipping-cost total-shipping-cost fw-bold m-0">Total Cost: {orderDetails.shippingCost.forLocalProducts + orderDetails.shippingCost.forInternationalProducts}</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 bg-white border border-2 border-dark">
-                                        <div className="shipping-methods-box text-start p-3">
-                                            <h6 className="fw-bold">Shipping Method</h6>
                                             <hr />
-                                            {/* <p className="shipping-method shipping-method-for-local-products fw-bold">For Local Products: {orderDetails.shippingMethod.forLocalProducts}</p>
-                                            <p className="shipping-method shipping-method-for-international-products fw-bold m-0">For Interantional Products: {orderDetails.shippingMethod.forInternationalProducts}</p> */}
+                                            <p className="shipping-cost fw-bold">Shipping Cost: {orderDetails.shippingCost}</p>
                                         </div>
                                     </div>
                                 </div>
