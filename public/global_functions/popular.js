@@ -33,13 +33,13 @@ const getDateFormated = (date) => {
 const getStoreDetails = async (storeId) => {
     try {
         if (!storeId) {
-            return (await axios.get(`${process.env.BASE_API_URL}/stores/main-store-details?language=${process.env.defaultLanguage}`, {
+            return (await axios.get(`${process.env.BASE_API_URL}/stores/main-store-details?userType=admin&language=${process.env.defaultLanguage}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 },
             })).data;
         } else {
-            return (await axios.get(`${process.env.BASE_API_URL}/stores/store-details/${storeId}?language=${process.env.defaultLanguage}`, {
+            return (await axios.get(`${process.env.BASE_API_URL}/stores/store-details/${storeId}?userType=admin&language=${process.env.defaultLanguage}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 },
