@@ -294,21 +294,12 @@ export default function UsersManagment() {
                                     />
                                 </div>
                                 <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">First Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">Full Name</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter First Name"
-                                        onChange={(e) => setFilters({ ...filters, firstName: e.target.value.trim() })}
-                                    />
-                                </div>
-                                <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">Last Name</h6>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Pleae Enter Last Name"
-                                        onChange={(e) => setFilters({ ...filters, lastName: e.target.value.trim() })}
+                                        placeholder="Pleae Enter Full Name"
+                                        onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
                             </div>
@@ -331,8 +322,7 @@ export default function UsersManagment() {
                                     <tr>
                                         <th>Id</th>
                                         <th>Email</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+                                        <th>Full Name</th>
                                         <th>Date Of Creation</th>
                                         <th>Process</th>
                                     </tr>
@@ -340,17 +330,14 @@ export default function UsersManagment() {
                                 <tbody>
                                     {allUsersInsideThePage.map((user, userIndex) => (
                                         <tr key={user._id}>
-                                            <td className="user-email-cell">
+                                            <td className="user-id-cell">
                                                 {user._id}
                                             </td>
                                             <td className="user-email-cell">
                                                 {user.email}
                                             </td>
-                                            <td className="user-email-cell">
-                                                {user.firstName ? user.firstName : "---------"}
-                                            </td>
-                                            <td className="user-email-cell">
-                                                {user.lastName ? user.lastName : "---------"}
+                                            <td className="user-full-name-cell">
+                                                {user.fullName}
                                             </td>
                                             <td className="user-email-cell">
                                                 {getDateFormated(user.dateOfCreation)}
