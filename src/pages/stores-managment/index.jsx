@@ -75,11 +75,9 @@ export default function StoresManagment() {
                         const adminDetails = result.data;
                         if (adminDetails.isWebsiteOwner) {
                             setAdminInfo(adminDetails);
-                            result = await getStoresCount();
-                            if (result.data > 0) {
-                                setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize)).data);
-                                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                            }
+                            result = (await getAllStoresInsideThePage(1, pageSize)).data;
+                            setAllStoresInsideThePage(result.stores);
+                            setTotalPagesCount(Math.ceil(result.storesCount / pageSize));
                             setIsLoadingPage(false);
                         } else {
                             await router.replace("/");
@@ -104,7 +102,7 @@ export default function StoresManagment() {
             setIsGetStores(true);
             setErrorMsgOnGetStoresData("");
             const newCurrentPage = currentPage - 1;
-            setAllStoresInsideThePage((await getAllStoresInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data);
+            setAllStoresInsideThePage((await getAllStoresInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data.stores);
             setCurrentPage(newCurrentPage);
             setIsGetStores(false);
         }
@@ -124,7 +122,7 @@ export default function StoresManagment() {
             setIsGetStores(true);
             setErrorMsgOnGetStoresData("");
             const newCurrentPage = currentPage + 1;
-            setAllStoresInsideThePage((await getAllStoresInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data);
+            setAllStoresInsideThePage((await getAllStoresInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data.stores);
             setCurrentPage(newCurrentPage);
             setIsGetStores(false);
         }
@@ -143,7 +141,7 @@ export default function StoresManagment() {
         try {
             setIsGetStores(true);
             setErrorMsgOnGetStoresData("");
-            setAllStoresInsideThePage((await getAllStoresInsideThePage(pageNumber, pageSize, getFilteringString(filters))).data);
+            setAllStoresInsideThePage((await getAllStoresInsideThePage(pageNumber, pageSize, getFilteringString(filters))).data.stores);
             setCurrentPage(pageNumber);
             setIsGetStores(false);
         }
@@ -175,16 +173,10 @@ export default function StoresManagment() {
             setIsGetStores(true);
             setCurrentPage(1);
             const filteringString = getFilteringString(filters);
-            const result = await getStoresCount(filteringString);
-            if (result.data > 0) {
-                setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, filteringString)).data);
-                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                setIsGetStores(false);
-            } else {
-                setAllStoresInsideThePage([]);
-                setTotalPagesCount(0);
-                setIsGetStores(false);
-            }
+            const result = (await getAllStoresInsideThePage(1, pageSize, filteringString)).data;
+            setAllStoresInsideThePage(result.stores);
+            setTotalPagesCount(Math.ceil(<result className="storesCount"></result> / pageSize));
+            setIsGetStores(false);
         }
         catch (err) {
             if (err?.response?.status === 401) {

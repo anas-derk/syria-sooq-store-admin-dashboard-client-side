@@ -93,7 +93,11 @@ const getAllCategoriesWithHierarechy = async (filters) => {
 
 const getStoresCount = async (filters) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/stores/stores-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/stores/stores-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;
@@ -102,7 +106,11 @@ const getStoresCount = async (filters) => {
 
 const getAllStoresInsideThePage = async (pageNumber, pageSize, filters) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/stores/all-stores-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
+        return (await axios.get(`${process.env.BASE_API_URL}/stores/all-stores-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
     }
     catch (err) {
         throw err;
