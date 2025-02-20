@@ -58,8 +58,8 @@ export default function UpdateAndDeleteProducts() {
     const [totalPagesCount, setTotalPagesCount] = useState(0);
 
     const [filters, setFilters] = useState({
-        storeId: "",
-        categoryId: "",
+        category: "",
+        name: ""
     });
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
@@ -84,14 +84,9 @@ export default function UpdateAndDeleteProducts() {
                         }
                         else {
                             setAdminInfo(adminDetails);
-                            const tempFilters = { ...filters, storeId: adminDetails.storeId };
-                            setFilters(tempFilters);
-                            setAllCategories((await getAllCategoriesWithHierarechy(getFilteringString(tempFilters))).data);
-                            result = await getProductsCount(getFilteringString(tempFilters));
-                            if (result.data > 0) {
-                                setAllProductsInsideThePage((await getAllProductsInsideThePage(1, pageSize, getFilteringString(tempFilters))).data.products);
-                                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                            }
+                            result = (await getAllProductsInsideThePage(1, pageSize)).data;
+                            setAllProductsInsideThePage(result.products);
+                            setTotalPagesCount(Math.ceil(result.productsCount / pageSize));
                             setIsLoadingPage(false);
                         }
                     }
@@ -170,27 +165,20 @@ export default function UpdateAndDeleteProducts() {
 
     const getFilteringString = (filters) => {
         let filteringString = "";
-        if (filters.categoryId) filteringString += `categoryId=${filters.categoryId}&`;
-        if (filters.storeId) filteringString += `storeId=${filters.storeId}&`;
+        if (filters.category) filteringString += `category=${filters.category}&`;
+        if (filters.name) filteringString += `name=${filters.name}&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
     }
 
-    const filterProductsByCategory = async () => {
+    const filterProducts = async (filters) => {
         try {
             setIsGetProducts(true);
             setCurrentPage(1);
-            let filteringString = getFilteringString(filters);
-            const result = await getProductsCount(filteringString);
-            if (result.data > 0) {
-                setAllProductsInsideThePage((await getAllProductsInsideThePage(1, pageSize, filteringString)).data.products);
-                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                setIsGetProducts(false);
-            } else {
-                setAllProductsInsideThePage([]);
-                setTotalPagesCount(0);
-                setIsGetProducts(false);
-            }
+            const result = (await getAllProductsInsideThePage(1, pageSize, getFilteringString(filters))).data;
+            setAllProductsInsideThePage(result.products);
+            setTotalPagesCount(Math.ceil(result.productsCount / pageSize));
+            setIsGetProducts(false);
         }
         catch (err) {
             if (err?.response?.status === 401) {
@@ -487,23 +475,36 @@ export default function UpdateAndDeleteProducts() {
                         <h5 className="section-name fw-bold text-center">Filters: </h5>
                         <hr />
                         <div className="row mb-4">
-                            <div className="col-md-12">
+                            <div className="col-md-6">
                                 <h6 className="me-2 fw-bold text-center">Category</h6>
-                                <select
-                                    className="select-product-category form-select"
-                                    onChange={(e) => setFilters({ ...filters, categoryId: e.target.value })}
-                                >
-                                    <option value="" hidden>Pleae Select Category</option>
-                                    <option value="">All</option>
-                                    {allCategories.map((category) => (
-                                        <option value={category._id} key={category._id}>{category.name}</option>
-                                    ))}
-                                </select>
+                                <input
+                                    type="text"
+                                    className={`form-control p-2 border-2 category-name-field ${formValidationErrors["categoryName"] ? "border-danger mb-3" : ""}`}
+                                    placeholder="Please Enter Category Name"
+                                    onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                                />
+                                {formValidationErrors["categoryName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                                    <span>{formValidationErrors["categoryName"]}</span>
+                                </p>}
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className="me-2 fw-bold text-center">Name</h6>
+                                <input
+                                    type="text"
+                                    className={`form-control p-2 border-2 product-name-field ${formValidationErrors["productName"] ? "border-danger mb-3" : ""}`}
+                                    placeholder="Please Enter Product Name"
+                                    onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+                                />
+                                {formValidationErrors["productName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
+                                    <span>{formValidationErrors["productName"]}</span>
+                                </p>}
                             </div>
                         </div>
                         {!isGetProducts && <button
                             className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
-                            onClick={async () => await filterProductsByCategory()}
+                            onClick={async () => await filterProducts(filters)}
                         >
                             Filter
                         </button>}
