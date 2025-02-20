@@ -167,7 +167,7 @@ async function getAdminInfo() {
 
 const getOrderDetails = async (orderId) => {
     try {
-        return (await axios.get(`${process.env.BASE_API_URL}/orders/order-details/${orderId}?language=${process.env.defaultLanguage}`, {
+        return (await axios.get(`${process.env.BASE_API_URL}/orders/order-details/${orderId}?destination=admin&language=${process.env.defaultLanguage}`, {
             headers: {
                 Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
             },
