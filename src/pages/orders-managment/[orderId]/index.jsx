@@ -277,25 +277,20 @@ export default function OrderDetails({ orderIdAsProperty }) {
                             </table>
                         </div> : <p className="alert alert-danger order-not-found-error">Sorry, This Order Is Not Found !!</p>}
                         {Object.keys(orderDetails).length > 0 && <div className="rest-info">
-                            <section className="customer-addresses mb-5">
-                                <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">Addresses</h4>
+                            <section className="customer-info mb-5">
+                                <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">Customer Info</h4>
                                 <div className="row">
-                                    <div className="col-md-6 bg-white border border-2 border-dark">
-                                        <div className="billing-address-box text-start p-3">
-                                            <h6 className="fw-bold">Billing Address</h6>
-                                            <hr />
+                                    <div className="col-md-12 bg-white border border-2 border-dark">
+                                        <div className="customer-info-box text-start p-3">
                                             <p className="city fw-bold">City: {orderDetails.city}</p>
                                             <p className="address fw-bold">Address: {orderDetails.address}</p>
                                             <p className="address-details fw-bold">Address Details: {orderDetails.addressDetails}</p>
-                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint}</p>
                                             <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint}</p>
                                             <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.additionalAddressDetails}</p>
                                             <p className="floor-number fw-bold">Floor Number: {orderDetails.floorNumber}</p>
                                             <p className="additional-notes fw-bold">Additional Notes: {orderDetails.additionalNotes}</p>
                                             <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.mobilePhone}</p>
                                             <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone}</p>
-                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone}</p>
-
                                         </div>
                                     </div>
                                 </div>
