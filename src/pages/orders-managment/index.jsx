@@ -57,7 +57,7 @@ export default function OrdersManagment({ ordersType }) {
 
     const pageSize = 10;
 
-    const orderStatus = ["pending", "shipping", "completing"];
+    const orderStatus = ["pending", "shipping", "completed", "cancelled"];
 
     const returnedOrderStatus = ["awaiting products", "received products", "checking products", "returned products"];
 
