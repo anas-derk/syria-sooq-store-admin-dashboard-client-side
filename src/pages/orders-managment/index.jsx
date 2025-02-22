@@ -13,7 +13,7 @@ import { getAdminInfo, getDateFormated } from "../../../public/global_functions/
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 
-export default function OrdersManagment() {
+export default function OrdersManagment({ ordersType }) {
 
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
@@ -57,6 +57,10 @@ export default function OrdersManagment() {
 
     const pageSize = 10;
 
+    const orderStatus = ["pending", "shipping", "completing"];
+
+    const returnedOrderStatus = ["awaiting products", "received products", "checking products", "returned products"];
+
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
         if (adminToken) {
@@ -90,7 +94,7 @@ export default function OrdersManagment() {
                     }
                 });
         } else router.replace("/login");
-    }, []);
+    }, [ordersType]);
 
     const getFilteringString = (filters) => {
         let filteringString = "destination=admin&";
@@ -120,7 +124,7 @@ export default function OrdersManagment() {
 
     const getAllOrdersInsideThePage = async (pageNumber, pageSize, filters) => {
         try {
-            return (await axios.get(`${process.env.BASE_API_URL}/orders/all-orders-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            return (await axios.get(`${process.env.BASE_API_URL}/orders/all-orders-inside-the-page?ordersType=${ordersType}&pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage)
                 }
@@ -209,17 +213,10 @@ export default function OrdersManagment() {
             if (Object.keys(errorsObject).length == 0) {
                 setIsGetOrders(true);
                 setCurrentPage(1);
-                let filteringString = getFilteringString(filters);
-                const result = await getOrdersCount(filteringString);
-                if (result.data > 0) {
-                    setAllOrdersInsideThePage((await getAllOrdersInsideThePage(1, pageSize, filteringString)).data);
-                    setTotalPagesCount(Math.ceil(result.data / pageSize));
-                    setIsGetOrders(false);
-                } else {
-                    setAllOrdersInsideThePage([]);
-                    setTotalPagesCount(0);
-                    setIsGetOrders(false);
-                }
+                const result = (await getAllOrdersInsideThePage(1, pageSize, getFilteringString(filters))).data;
+                setAllOrdersInsideThePage(result.orders);
+                setTotalPagesCount(Math.ceil(result.ordersCount / pageSize));
+                setIsGetOrders(false);
             }
         }
         catch (err) {
@@ -268,7 +265,7 @@ export default function OrdersManagment() {
             setSelectedOrderIndex(orderIndex);
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Wait To Updating ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/update-order/${allOrdersInsideThePage[orderIndex]._id}?language=${process.env.defaultLanguage}${isSendEmailToTheCustomerList[orderIndex] && allOrdersInsideThePage[orderIndex].status !== "pending" ? "&isSendEmailToTheCustomer=true" : ""}`, {
+                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/update-order/${allOrdersInsideThePage[orderIndex]._id}?ordersType=${ordersType}&language=${process.env.defaultLanguage}${isSendEmailToTheCustomerList[orderIndex] && allOrdersInsideThePage[orderIndex].status !== "pending" ? "&isSendEmailToTheCustomer=true" : ""}`, {
                     orderAmount: allOrdersInsideThePage[orderIndex].orderAmount,
                     status: allOrdersInsideThePage[orderIndex].status,
                 }, {
@@ -588,4 +585,21 @@ export default function OrdersManagment() {
             {errorMsgOnLoadingThePage && <ErrorOnLoadingThePage errorMsg={errorMsgOnLoadingThePage} />}
         </div>
     );
+}
+
+export function getServerSideProps({ query }) {
+    const { ordersType } = query;
+    if (ordersType !== "normal" && ordersType !== "returned") {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/",
+            },
+        }
+    }
+    return {
+        props: {
+            ordersType,
+        }
+    }
 }

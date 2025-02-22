@@ -174,7 +174,6 @@ export default function AddNewCategory() {
                     let successTimeout = setTimeout(() => {
                         setSuccessMsg("");
                         setCategoryName("");
-                        setAllCategories([...searchedCategories, result.data]);
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {

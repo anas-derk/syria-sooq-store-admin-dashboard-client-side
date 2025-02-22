@@ -188,7 +188,7 @@ export default function AddNewProduct() {
                 formData.append("price", productData.price);
                 formData.append("description", productData.description);
                 for (let category of selectedCategories) {
-                    formData.append("categories[]", category);
+                    formData.append("categories[]", category._id);
                 }
                 formData.append("discount", productData.discount);
                 formData.append("quantity", productData.quantity);
@@ -213,9 +213,12 @@ export default function AddNewProduct() {
                             price: "",
                             description: "",
                             discount: "",
+                            quantity: "",
+                            isAvailableForDelivery: false,
                             image: null,
                             galleryImages: [],
                         });
+                        setSearchedCategoryName("");
                         productImageFileElementRef.current.value = "";
                         productGalleryImagesFilesElementRef.current.value = "";
                         clearTimeout(successTimeout);
@@ -401,7 +404,7 @@ export default function AddNewProduct() {
                                     type="checkbox"
                                     id="isAvailableForDelivery"
                                     onChange={(e) => setProductData({ ...productData, isAvailableForDelivery: e.target.checked })}
-                                    value={productData.isAvailableForDelivery}
+                                    checked={productData.isAvailableForDelivery}
                                 />
                                 <label className="form-check-label" htmlFor="isAvailableForDelivery" onClick={(e) => setProductData({ ...productData, isAvailableForDelivery: e.target.checked })}>
                                     Is Available For Delivery
