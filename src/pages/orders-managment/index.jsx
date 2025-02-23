@@ -246,49 +246,30 @@ export default function OrdersManagment({ ordersType }) {
     const updateOrderData = async (orderIndex) => {
         try {
             setFormValidationErrors({});
-            const errorsObject = inputValuesValidation([
-                {
-                    name: "totalAmount",
-                    value: allOrdersInsideThePage[orderIndex].orderAmount,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
-                        },
-                        minNumber: {
-                            value: 1,
-                            msg: "Sorry, Min Number Is: 1 !!",
-                        },
-                    },
-                },
-            ]);
-            setFormValidationErrors(errorsObject);
             setSelectedOrderIndex(orderIndex);
-            if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Wait To Updating ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/update-order/${allOrdersInsideThePage[orderIndex]._id}?ordersType=${ordersType}&language=${process.env.defaultLanguage}${isSendEmailToTheCustomerList[orderIndex] && allOrdersInsideThePage[orderIndex].status !== "pending" ? "&isSendEmailToTheCustomer=true" : ""}`, {
-                    orderAmount: allOrdersInsideThePage[orderIndex].orderAmount,
-                    status: allOrdersInsideThePage[orderIndex].status,
-                }, {
-                    headers: {
-                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                    }
-                })).data;
-                setWaitMsg("");
-                if (!result.error) {
-                    setSuccessMsg("Updating Successfull !!");
-                    let successTimeout = setTimeout(() => {
-                        setSuccessMsg("");
-                        setSelectedOrderIndex(-1);
-                        clearTimeout(successTimeout);
-                    }, 3000);
-                } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                    let errorTimeout = setTimeout(() => {
-                        setErrorMsg("");
-                        setSelectedOrderIndex(-1);
-                        clearTimeout(errorTimeout);
-                    }, 3000);
+            setWaitMsg("Please Wait To Updating ...");
+            const result = (await axios.post(`${process.env.BASE_API_URL}/orders/update-order/${allOrdersInsideThePage[orderIndex]._id}?ordersType=${ordersType}&language=${process.env.defaultLanguage}${isSendEmailToTheCustomerList[orderIndex] && allOrdersInsideThePage[orderIndex].status !== "pending" ? "&isSendEmailToTheCustomer=true" : ""}`, {
+                status: allOrdersInsideThePage[orderIndex].status,
+            }, {
+                headers: {
+                    Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 }
+            })).data;
+            setWaitMsg("");
+            if (!result.error) {
+                setSuccessMsg("Updating Successfull !!");
+                let successTimeout = setTimeout(() => {
+                    setSuccessMsg("");
+                    setSelectedOrderIndex(-1);
+                    clearTimeout(successTimeout);
+                }, 3000);
+            } else {
+                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    setSelectedOrderIndex(-1);
+                    clearTimeout(errorTimeout);
+                }, 3000);
             }
         }
         catch (err) {
@@ -495,19 +476,7 @@ export default function OrdersManagment({ ordersType }) {
                                                 </>}
                                             </td>
                                             <td>
-                                                {order.checkoutStatus === "Checkout Successfull" ? <section className="order-total-amount mb-4">
-                                                    <input
-                                                        type="text"
-                                                        defaultValue={order.orderAmount}
-                                                        className={`form-control d-block mx-auto p-2 border-2 brand-title-field ${formValidationErrors["totalAmount"] && orderIndex === selectedOrderIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter Order Amount"
-                                                        onChange={(e) => changeOrderData(orderIndex, "orderAmount", e.target.value ? e.target.value : "")}
-                                                    />
-                                                    {formValidationErrors["totalAmount"] && orderIndex === selectedOrderIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["totalAmount"]}</span>
-                                                    </p>}
-                                                </section> : order.orderAmount}
+                                                {order.orderAmount}
                                             </td>
                                             <td>{getDateFormated(order.addedDate)}</td>
                                             <td>
