@@ -44,8 +44,7 @@ export default function StoresManagment() {
         storeId: "",
         name: "",
         status: "",
-        ownerFirstName: "",
-        ownerLastName: "",
+        ownerFullName: "",
         email: "",
     });
 
@@ -175,7 +174,7 @@ export default function StoresManagment() {
             const filteringString = getFilteringString(filters);
             const result = (await getAllStoresInsideThePage(1, pageSize, filteringString)).data;
             setAllStoresInsideThePage(result.stores);
-            setTotalPagesCount(Math.ceil(<result className="storesCount"></result> / pageSize));
+            setTotalPagesCount(Math.ceil(result.storesCount / pageSize));
             setIsGetStores(false);
         }
         catch (err) {
@@ -285,17 +284,12 @@ export default function StoresManagment() {
             })).data;
             setWaitMsg("");
             if (!result.error) {
-                setSuccessMsg(true);
+                setSuccessMsg("Deleting Successfull !!");
                 let successTimeout = setTimeout(async () => {
-                    setSuccessMsg("Deleting Successfull !!");
+                    setSuccessMsg("");
                     setSelectedStoreIndex(-1);
                     setIsGetStores(true);
-                    result = await getStoresCount();
-                    if (result.data > 0) {
-                        setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize)).data);
-                        setTotalPagesCount(Math.ceil(result.data / pageSize));
-                    }
-                    setCurrentPage(1);
+                    setAllStoresInsideThePage(allStoresInsideThePage.filter((store, index) => index !== storeIndex));
                     setIsGetStores(false);
                     clearTimeout(successTimeout);
                 }, 3000);
@@ -330,28 +324,22 @@ export default function StoresManagment() {
                 case "approving": {
                     setIsGetStores(true);
                     const filteringString = getFilteringString(filters);
-                    setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, filteringString)).data);
+                    setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, filteringString)).data.stores);
                     setCurrentPage(currentPage);
                     setIsGetStores(false);
                     return;
                 }
                 case "rejecting": {
                     setIsGetStores(true);
-                    const filteringString = getFilteringString(filters);
-                    const result = await getStoresCount(filteringString);
-                    if (result.data > 0) {
-                        setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize)).data);
-                        setTotalPagesCount(Math.ceil(result.data / pageSize));
-                    }
-                    setCurrentPage(1);
+                    const result = (await getAllStoresInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllStoresInsideThePage(result.stores);
                     setIsGetStores(false);
                     return;
                 }
                 case "blocking": {
                     setIsGetStores(true);
-                    const filteringString = getFilteringString(filters);
-                    setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, filteringString)).data);
-                    setCurrentPage(currentPage);
+                    const result = (await getAllStoresInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllStoresInsideThePage(result.stores);
                     setIsGetStores(false);
                     return;
                 }
@@ -425,21 +413,12 @@ export default function StoresManagment() {
                                     </select>
                                 </div>
                                 <div className="col-md-4 mt-5">
-                                    <h6 className="me-2 fw-bold text-center">Owner First Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">Owner Full Name</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Owner First Name"
-                                        onChange={(e) => setFilters({ ...filters, ownerFirstName: e.target.value.trim() })}
-                                    />
-                                </div>
-                                <div className="col-md-4 mt-5">
-                                    <h6 className="me-2 fw-bold text-center">Owner Last Name</h6>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Pleae Enter Owner Last Name"
-                                        onChange={(e) => setFilters({ ...filters, ownerLastName: e.target.value.trim() })}
+                                        placeholder="Pleae Enter Owner Full Name"
+                                        onChange={(e) => setFilters({ ...filters, ownerFullName: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-4 mt-5">
