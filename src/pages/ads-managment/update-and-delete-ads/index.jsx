@@ -284,7 +284,7 @@ export default function UpdateAndDeleteAds() {
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Update / Delete Ads Page
+                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Ads Page
                     </h1>
                     {allAds.length > 0 && <section className="ads-box w-100">
                         <table className="ads-table mb-4 managment-table bg-white w-100">

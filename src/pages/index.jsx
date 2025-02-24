@@ -53,7 +53,7 @@ export default function Home() {
                 <div className="page-content d-flex justify-content-center align-items-center">
                     <h1 className="fw-bold w-fit pb-2 text-center">
                         <PiHandWavingThin className="me-2" />
-                        Welcome { `${adminInfo.firstName} ${adminInfo.lastName}` } In Your Admin Dashboard Page
+                        Welcome {`${adminInfo.fullName}`} In Your Admin Dashboard Page
                     </h1>
                 </div>
             </>}

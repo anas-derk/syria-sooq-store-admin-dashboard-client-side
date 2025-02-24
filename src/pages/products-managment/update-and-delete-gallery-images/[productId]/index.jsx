@@ -200,7 +200,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Update / Delete Product Gallery Images Page
+                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Product Gallery Images Page
                     </h1>
                     {allGalleryImages.length > 0 && <section className="gallery-images-box admin-dashbboard-data-box w-100">
                         <table className="gallery-images-table mb-4 managment-table bg-white admin-dashbboard-data-table">

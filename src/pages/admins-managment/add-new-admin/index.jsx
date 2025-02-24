@@ -166,7 +166,7 @@ export default function AddNewAdmin() {
                 <div className="page-content d-flex justify-content-center align-items-center flex-column pt-5 pb-5 p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Add New Admin Page
+                        Hi, Mr {adminInfo.fullName}In Your Add New Admin Page
                     </h1>
                     <form className="add-new-admin-form admin-dashbboard-form" onSubmit={(e) => addNewAdmin(e, newAdminData)}>
                         <section className="first-name mb-4">

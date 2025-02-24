@@ -140,7 +140,7 @@ export default function AddNewProductGalleryImage({ productIdAsProperty }) {
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr { adminInfo.firstName + " " + adminInfo.lastName } In Your Add New Product Gallery Images Page
+                        Hi, Mr {adminInfo.fullName} In Your Add New Product Gallery Images Page
                     </h1>
                     <form className="add-new-gallery-images-form admin-dashbboard-form" onSubmit={addNewGalleryImages}>
                         <h6 className="mb-3 fw-bold">Please Select Gallery Images</h6>

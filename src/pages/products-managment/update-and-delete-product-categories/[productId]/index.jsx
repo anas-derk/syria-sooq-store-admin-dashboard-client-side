@@ -171,7 +171,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
                 <div className="page-content d-flex justify-content-center align-items-center flex-column pt-5 pb-5 p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Update Product Categories Page
+                        Hi, Mr {adminInfo.fullName} In Your Update Product Categories Page
                     </h1>
                     {productData?._id ? <form className="update-product-categories-form admin-dashbboard-form" onSubmit={updateProductCategories}>
                         <section className="category mb-4 overflow-auto">

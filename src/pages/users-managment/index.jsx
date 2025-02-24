@@ -269,7 +269,7 @@ export default function UsersManagment() {
                     <div className="container-fluid">
                         <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">
                             <PiHandWavingThin className="me-2" />
-                            Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Users Managment Page
+                            Hi, Mr {adminInfo.fullName} In Your Users Managment Page
                         </h1>
                         <section className="filters mb-5 bg-white border-3 border-info p-3 text-start">
                             <h5 className="section-name fw-bold text-center">Filters: </h5>
