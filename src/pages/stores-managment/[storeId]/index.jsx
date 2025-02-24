@@ -25,7 +25,7 @@ export default function StoreDetails({ storeId }) {
 
     const [waitMsg, setWaitMsg] = useState("");
 
-    const [isWaitChangeStoreImage, setIsWaitChangeStoreImage] = useState(false);
+    const [waitChangeStoreImageMsg, setWaitChangeStoreImageMsg] = useState("");
 
     const [errorMsg, setErrorMsg] = useState("");
 
@@ -80,14 +80,7 @@ export default function StoreDetails({ storeId }) {
         } else router.replace("/login");
     }, []);
 
-    <button
-        className="btn btn-success"
-        onClick={() => downloadFile(`${process.env.BASE_API_URL}/${storeDetails.commercialRegisterFilePath}`, "commercial-register-file")}
-    >
-        Download
-    </button>
-
-    const downloadFile = async (URL, fileType) => {
+    const downloadFile = async (URL) => {
         try {
             setWaitMsg("Downloading File Now ...");
             const res = await axios.get(URL, { responseType: "blob" });
@@ -126,11 +119,23 @@ export default function StoreDetails({ storeId }) {
                     },
                 },
                 {
-                    name: "ownerLastName",
-                    value: storeDetails.ownerLastName,
+                    name: "phoneNumber",
+                    value: storeDetails.phoneNumber,
                     rules: {
                         isRequired: {
                             msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
+                },
+                {
+                    name: "email",
+                    value: storeDetails.email,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        isEmail: {
+                            msg: "Sorry, Invalid Email !!",
                         },
                     },
                 },
@@ -140,11 +145,9 @@ export default function StoreDetails({ storeId }) {
                 setWaitMsg("Please Wait To Updating Store Data ...");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/update-store-info/${storeId}?language=${process.env.defaultLanguage}`, {
                     name: storeDetails.name,
-                    ownerFirstName: storeDetails.ownerFirstName,
-                    ownerLastName: storeDetails.ownerLastName,
-                    ownerEmail: storeDetails.ownerEmail,
-                    productsType: storeDetails.productsType,
-                    productsDescription: storeDetails.productsDescription,
+                    ownerFullName: storeDetails.ownerFullName,
+                    phoneNumber: storeDetails.phoneNumber,
+                    email: storeDetails.email,
                 }, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -182,13 +185,15 @@ export default function StoreDetails({ storeId }) {
         }
     }
 
-    const changeStoreImage = async (storeId) => {
+    const changeStoreImage = async (storeId, type) => {
         try {
             setFormValidationErrors({});
+            const imageName = `${type}Image`;
+            const imageFile = storeDetails[imageName];
             const errorsObject = inputValuesValidation([
                 {
-                    name: "image",
-                    value: storeDetails.image,
+                    name: imageName,
+                    value: imageFile,
                     rules: {
                         isRequired: {
                             msg: "Sorry, This Field Can't Be Empty !!",
@@ -201,16 +206,16 @@ export default function StoreDetails({ storeId }) {
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                setIsWaitChangeStoreImage(true);
+                setWaitChangeStoreImageMsg("");
                 let formData = new FormData();
-                formData.append("storeImage", storeDetails.image);
+                formData.append(imageName, imageFile);
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/change-store-image/${storeId}?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                     }
                 })).data;
                 if (!result.error) {
-                    setIsWaitChangeStoreImage(false);
+                    setWaitChangeStoreImageMsg("");
                     setSuccessChangeStoreImageMsg(result.msg);
                     let successTimeout = setTimeout(async () => {
                         setSuccessChangeStoreImageMsg("");
@@ -233,7 +238,7 @@ export default function StoreDetails({ storeId }) {
                 await router.replace("/login");
             }
             else {
-                setIsWaitChangeStoreImage(false);
+                setWaitChangeStoreImageMsg("");
                 setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeStoreImageMsg("");
@@ -310,13 +315,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["coverImage"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId)}
+                                                    onClick={() => changeStoreImage(storeId, "cover")}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
@@ -356,13 +361,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["profileImage"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId)}
+                                                    onClick={() => changeStoreImage(storeId, "profile")}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
@@ -401,13 +406,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["commercialRegister"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId)}
+                                                    onClick={() => changeStoreImage(storeId, "profile")}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
@@ -446,13 +451,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["image"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeStoreImage(storeId)}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
@@ -491,13 +496,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["addressProof"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeStoreImage(storeId)}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
@@ -676,13 +681,13 @@ export default function StoreDetails({ storeId }) {
                                                     <span>{formValidationErrors["image"]}</span>
                                                 </p>}
                                             </section>
-                                            {!isWaitChangeStoreImage && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
+                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeStoreImage(storeId)}
                                                 >Change</button>
                                             }
-                                            {isWaitChangeStoreImage && <button
+                                            {waitChangeStoreImageMsg && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                             >Please Waiting</button>}
                                             {successChangeStoreImageMsg && <button
