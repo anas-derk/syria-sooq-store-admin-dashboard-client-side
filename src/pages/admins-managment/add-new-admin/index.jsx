@@ -20,8 +20,7 @@ export default function AddNewAdmin() {
     const [adminInfo, setAdminInfo] = useState({});
 
     const [newAdminData, setNewAdminData] = useState({
-        firstName: "",
-        lastName: "",
+        fullName: "",
         email: "",
         password: "",
     });
@@ -76,8 +75,8 @@ export default function AddNewAdmin() {
             setFormValidationErrors({});
             const errorsObject = inputValuesValidation([
                 {
-                    name: "firstName",
-                    value: newAdminData.firstName,
+                    name: "fullName",
+                    value: newAdminData.fullName,
                     rules: {
                         isRequired: {
                             msg: "Sorry, This Field Can't Be Empty !!",
@@ -85,18 +84,6 @@ export default function AddNewAdmin() {
                         isName: {
                             msg: "Sorry, This Name Is Not Valid !!",
                         }
-                    },
-                },
-                {
-                    name: "lastName",
-                    value: newAdminData.lastName,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
-                        },
-                        isName: {
-                            msg: "Sorry, This Name Is Not Valid !!",
-                        },
                     },
                 },
                 {
@@ -138,8 +125,7 @@ export default function AddNewAdmin() {
                     let successTimeout = setTimeout(() => {
                         setSuccessMsg("");
                         setNewAdminData({
-                            firstName: "",
-                            lastName: "",
+                            fullName: "",
                             email: "",
                             password: "",
                         });
@@ -182,31 +168,18 @@ export default function AddNewAdmin() {
                         <PiHandWavingThin className="me-2" />
                         Hi, Mr {adminInfo.firstName + " " + adminInfo.lastName} In Your Add New Admin Page
                     </h1>
-                    <form className="add-new-product-form admin-dashbboard-form" onSubmit={(e) => addNewAdmin(e, newAdminData)}>
+                    <form className="add-new-admin-form admin-dashbboard-form" onSubmit={(e) => addNewAdmin(e, newAdminData)}>
                         <section className="first-name mb-4">
                             <input
                                 type="text"
-                                className={`form-control p-2 border-2 product-name-field ${formValidationErrors["firstName"] ? "border-danger mb-3" : "mb-4"}`}
+                                className={`form-control p-2 border-2 admin-name-field ${formValidationErrors["fullName"] ? "border-danger mb-3" : "mb-4"}`}
                                 placeholder="Please Enter First Name"
-                                onChange={(e) => setNewAdminData({ ...newAdminData, firstName: e.target.value })}
-                                value={newAdminData.firstName}
+                                onChange={(e) => setNewAdminData({ ...newAdminData, fullName: e.target.value })}
+                                value={newAdminData.fullName}
                             />
-                            {formValidationErrors["firstName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                            {formValidationErrors["fullName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                 <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                <span>{formValidationErrors["firstName"]}</span>
-                            </p>}
-                        </section>
-                        <section className="last-name mb-4">
-                            <input
-                                type="text"
-                                className={`form-control p-2 border-2 product-name-field ${formValidationErrors["lastName"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Enter Last Name"
-                                onChange={(e) => setNewAdminData({ ...newAdminData, lastName: e.target.value })}
-                                value={newAdminData.lastName}
-                            />
-                            {formValidationErrors["lastName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                <span>{formValidationErrors["lastName"]}</span>
+                                <span>{formValidationErrors["fullName"]}</span>
                             </p>}
                         </section>
                         <section className="email mb-4">

@@ -40,8 +40,7 @@ export default function UpdateAndDeleteAdmins() {
 
     const [filters, setFilters] = useState({
         adminId: "",
-        firstName: "",
-        lastName: "",
+        fullName: "",
         email: "",
     });
 
@@ -68,11 +67,9 @@ export default function UpdateAndDeleteAdmins() {
                             setAdminInfo(adminDetails);
                             const tempFilters = { ...filters, storeId: adminDetails.storeId };
                             setFilters(tempFilters);
-                            result = await getAdminsCount();
-                            if (result.data > 0) {
-                                setAllAdminsInsideThePage((await getAllAdminsInsideThePage(1, pageSize, getFilteringString(tempFilters))).data);
-                                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                            }
+                            result = (await getAllAdminsInsideThePage(1, pageSize, getFilteringString(tempFilters))).data;
+                            setAllAdminsInsideThePage(result.admins);
+                            setTotalPagesCount(Math.ceil(result.adminsCount / pageSize));
                             setIsLoadingPage(false);
                         }
                     }
@@ -89,19 +86,6 @@ export default function UpdateAndDeleteAdmins() {
                 });
         } else router.replace("/login");
     }, []);
-
-    const getAdminsCount = async (filters) => {
-        try {
-            return (await axios.get(`${process.env.BASE_API_URL}/admins/admins-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
-                headers: {
-                    Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage)
-                }
-            })).data;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
 
     const getAllAdminsInsideThePage = async (pageNumber, pageSize, filters) => {
         try {
@@ -121,7 +105,7 @@ export default function UpdateAndDeleteAdmins() {
             setIsGetAdmins(true);
             setErrorMsgOnGetAdminsData("");
             const newCurrentPage = currentPage - 1;
-            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data);
+            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data.admins);
             setCurrentPage(newCurrentPage);
             setIsGetAdmins(false);
         }
@@ -141,7 +125,7 @@ export default function UpdateAndDeleteAdmins() {
             setIsGetAdmins(true);
             setErrorMsgOnGetAdminsData("");
             const newCurrentPage = currentPage + 1;
-            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data);
+            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(newCurrentPage, pageSize, getFilteringString(filters))).data.admins);
             setCurrentPage(newCurrentPage);
             setIsGetAdmins(false);
         }
@@ -160,7 +144,7 @@ export default function UpdateAndDeleteAdmins() {
         try {
             setIsGetAdmins(true);
             setErrorMsgOnGetAdminsData("");
-            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(pageNumber, pageSize, getFilteringString(filters))).data);
+            setAllAdminsInsideThePage((await getAllAdminsInsideThePage(pageNumber, pageSize, getFilteringString(filters))).data.admins);
             setCurrentPage(pageNumber);
             setIsGetAdmins(false);
         }
@@ -179,8 +163,7 @@ export default function UpdateAndDeleteAdmins() {
         let filteringString = "";
         if (filters.storeId) filteringString += `storeId=${filters.storeId}&`;
         if (filters.adminId) filteringString += `_id=${filters.adminId}&`;
-        if (filters.firstName) filteringString += `firstName=${filters.firstName}&`;
-        if (filters.lastName) filteringString += `lastName=${filters.lastName}&`;
+        if (filters.fullName) filteringString += `fullName=${filters.fullName}&`;
         if (filters.email) filteringString += `email=${filters.email}&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
@@ -190,17 +173,10 @@ export default function UpdateAndDeleteAdmins() {
         try {
             setIsGetAdmins(true);
             setCurrentPage(1);
-            const filteringString = getFilteringString(filters);
-            const result = await getAdminsCount(filteringString);
-            if (result.data > 0) {
-                setAllAdminsInsideThePage((await getAllAdminsInsideThePage(1, pageSize, filteringString)).data);
-                setTotalPagesCount(Math.ceil(result.data / pageSize));
-                setIsGetAdmins(false);
-            } else {
-                setAllAdminsInsideThePage([]);
-                setTotalPagesCount(0);
-                setIsGetAdmins(false);
-            }
+            const result = (await getAllAdminsInsideThePage(1, pageSize, getFilteringString(filters))).data;
+            setAllAdminsInsideThePage(result.admins);
+            setTotalPagesCount(Math.ceil(result.adminsCount / pageSize));
+            setIsGetAdmins(false);
         }
         catch (err) {
             if (err?.response?.status === 401) {
@@ -228,20 +204,8 @@ export default function UpdateAndDeleteAdmins() {
             setFormValidationErrors({});
             const errorsObject = inputValuesValidation([
                 {
-                    name: "firstName",
-                    value: allAdminsInsideThePage[adminIndex].firstName,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
-                        },
-                        isName: {
-                            msg: "Sorry, This Name Is Not Valid !!",
-                        },
-                    },
-                },
-                {
-                    name: "lastName",
-                    value: allAdminsInsideThePage[adminIndex].lastName,
+                    name: "fullName",
+                    value: allAdminsInsideThePage[adminIndex].fullName,
                     rules: {
                         isRequired: {
                             msg: "Sorry, This Field Can't Be Empty !!",
@@ -269,8 +233,7 @@ export default function UpdateAndDeleteAdmins() {
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Wait To Updating ...");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/admins/update-admin-info/${allAdminsInsideThePage[adminIndex]._id}?language=${process.env.defaultLanguage}`, {
-                    firstName: allAdminsInsideThePage[adminIndex].firstName,
-                    lastName: allAdminsInsideThePage[adminIndex].lastName,
+                    fullName: allAdminsInsideThePage[adminIndex].fullName,
                     email: allAdminsInsideThePage[adminIndex].email,
                 }, {
                     headers: {
@@ -316,7 +279,7 @@ export default function UpdateAndDeleteAdmins() {
         try {
             setWaitMsg("Please Wait To Deleting ...");
             setSelectedAdminIndex(adminIndex);
-            let result = (await axios.delete(`${process.env.BASE_API_URL}/admins/delete-admin/${allAdminsInsideThePage[adminIndex]._id}?language=${process.env.defaultLanguage}`, {
+            const result = (await axios.delete(`${process.env.BASE_API_URL}/admins/delete-admin/${allAdminsInsideThePage[adminIndex]._id}?language=${process.env.defaultLanguage}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 }
@@ -328,12 +291,7 @@ export default function UpdateAndDeleteAdmins() {
                     setSuccessMsg("");
                     setSelectedAdminIndex(-1);
                     setIsGetAdmins(true);
-                    result = await getAdminsCount();
-                    if (result.data > 0) {
-                        setAllAdminsInsideThePage((await getAllAdminsInsideThePage(currentPage, pageSize)).data);
-                        setTotalPagesCount(Math.ceil(result.data / pageSize));
-                    }
-                    setCurrentPage(1);
+                    setAllAdminsInsideThePage(allAdminsInsideThePage.filter((admin, index) => index !== adminIndex));
                     setIsGetAdmins(false);
                     clearTimeout(successTimeout);
                 }, 3000);
@@ -399,21 +357,12 @@ export default function UpdateAndDeleteAdmins() {
                                     />
                                 </div>
                                 <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">First Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">Full Name</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter First Name"
-                                        onChange={(e) => setFilters({ ...filters, firstName: e.target.value.trim() })}
-                                    />
-                                </div>
-                                <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">Last Name</h6>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Pleae Enter Last Name"
-                                        onChange={(e) => setFilters({ ...filters, lastName: e.target.value.trim() })}
+                                        placeholder="Pleae Enter Full Name"
+                                        onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
                             </div>
@@ -435,8 +384,7 @@ export default function UpdateAndDeleteAdmins() {
                                 <thead>
                                     <tr>
                                         <th>Admin Id</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Action</th>
                                     </tr>
@@ -446,32 +394,17 @@ export default function UpdateAndDeleteAdmins() {
                                         <tr key={admin._id}>
                                             <td>{admin._id}</td>
                                             <td>
-                                                <section className="first-name mb-4">
+                                                <section className="full-name mb-4">
                                                     <input
                                                         type="text"
-                                                        defaultValue={admin.firstName}
-                                                        className={`form-control d-block mx-auto p-2 border-2 first-name-field ${formValidationErrors["firstName"] && adminIndex === selectedAdminIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter New First Name"
-                                                        onChange={(e) => changeAdminData(adminIndex, "firstName", e.target.value)}
+                                                        defaultValue={admin.fullName}
+                                                        className={`form-control d-block mx-auto p-2 border-2 full-name-field ${formValidationErrors["fullName"] && adminIndex === selectedAdminIndex ? "border-danger mb-3" : "mb-4"}`}
+                                                        placeholder="Pleae Enter New Full Name"
+                                                        onChange={(e) => changeAdminData(adminIndex, "fullName", e.target.value)}
                                                     />
-                                                    {formValidationErrors["firstName"] && adminIndex === selectedAdminIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
+                                                    {formValidationErrors["fullName"] && adminIndex === selectedAdminIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
                                                         <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["firstName"]}</span>
-                                                    </p>}
-                                                </section>
-                                            </td>
-                                            <td>
-                                                <section className="last-name mb-4">
-                                                    <input
-                                                        type="text"
-                                                        defaultValue={admin.lastName}
-                                                        className={`form-control d-block mx-auto p-2 border-2 last-name-field ${formValidationErrors["lastName"] && adminIndex === selectedAdminIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter New Last Name"
-                                                        onChange={(e) => changeAdminData(adminIndex, "lastName", e.target.value)}
-                                                    />
-                                                    {formValidationErrors["lastName"] && adminIndex === selectedAdminIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["lastName"]}</span>
+                                                        <span>{formValidationErrors["fullName"]}</span>
                                                     </p>}
                                                 </section>
                                             </td>
