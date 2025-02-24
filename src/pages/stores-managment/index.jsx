@@ -551,7 +551,7 @@ export default function StoresManagment() {
                                                         !waitMsg &&
                                                         !successMsg &&
                                                         !errorMsg &&
-                                                        store.status === "pending" || store.status === "approving" &&
+                                                        (store.status === "pending" || store.status === "approving") &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "blocking")}
