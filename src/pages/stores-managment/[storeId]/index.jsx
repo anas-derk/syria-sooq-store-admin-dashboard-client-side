@@ -300,7 +300,7 @@ export default function StoreDetails({ storeId }) {
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
                                             />
-                                            <hr />
+                                            {/* <hr />
                                             <section className="update-store-cover-image mb-4">
                                                 <input
                                                     type="file"
@@ -331,7 +331,7 @@ export default function StoreDetails({ storeId }) {
                                             {errorChangeStoreImageMsg && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeStoreImageMsg}</button>}
+                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-profile-image-cell">
@@ -346,7 +346,7 @@ export default function StoreDetails({ storeId }) {
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
                                             />
-                                            <hr />
+                                            {/* <hr />
                                             <section className="update-store-profile-image mb-4">
                                                 <input
                                                     type="file"
@@ -377,7 +377,7 @@ export default function StoreDetails({ storeId }) {
                                             {errorChangeStoreImageMsg && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeStoreImageMsg}</button>}
+                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-commercial-register-cell">
@@ -391,7 +391,7 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            <hr />
+                                            {/* <hr />
                                             <section className="update-store-commercial-register mb-4">
                                                 <input
                                                     type="file"
@@ -422,7 +422,7 @@ export default function StoreDetails({ storeId }) {
                                             {errorChangeStoreImageMsg && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeStoreImageMsg}</button>}
+                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-tax-card-cell">
@@ -436,7 +436,7 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            <hr />
+                                            {/* <hr />
                                             <section className="update-store-image mb-4">
                                                 <input
                                                     type="file"
@@ -467,7 +467,7 @@ export default function StoreDetails({ storeId }) {
                                             {errorChangeStoreImageMsg && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeStoreImageMsg}</button>}
+                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-address-proof-cell">
@@ -481,7 +481,7 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            <hr />
+                                            {/* <hr />
                                             <section className="update-store-address-proof mb-4">
                                                 <input
                                                     type="file"
@@ -512,7 +512,7 @@ export default function StoreDetails({ storeId }) {
                                             {errorChangeStoreImageMsg && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeStoreImageMsg}</button>}
+                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr>
