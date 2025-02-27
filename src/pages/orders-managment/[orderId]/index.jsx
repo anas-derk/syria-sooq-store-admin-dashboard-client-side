@@ -76,7 +76,6 @@ export default function OrderDetails({ orderIdAsProperty }) {
             const result = (await axios.put(`${process.env.BASE_API_URL}/orders/products/update-product/${orderDetails._id}/${orderDetails.products[orderProductIndex].productId}?language=${process.env.defaultLanguage}`, {
                 quantity: orderDetails.products[orderProductIndex].quantity,
                 name: orderDetails.products[orderProductIndex].name,
-                totalAmount: orderDetails.products[orderProductIndex].totalAmount,
                 unitPrice: orderDetails.products[orderProductIndex].unitPrice,
             }, {
                 headers: {
@@ -183,6 +182,8 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                         <th>Quantity</th>
                                         <th>Name</th>
                                         <th>Unit Price</th>
+                                        <th>Unit Discount</th>
+                                        <th>Total Amount Before Discount</th>
                                         <th>Total</th>
                                         <th>Image</th>
                                         <th>Action</th>
@@ -219,14 +220,14 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
                                                 />
                                             </td>
+                                             <td>
+                                                {orderProduct.unitDiscount}
+                                            </td>
                                             <td>
-                                                <input
-                                                    type="text"
-                                                    className="form-control total-amount"
-                                                    defaultValue={orderProduct.totalAmount}
-                                                    onChange={(e) => changeOrderProductData(orderProductIndex, "totalAmount", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
-                                                />
+                                                {orderProduct.unitPrice * orderProduct.quantity}
+                                            </td>
+                                            <td>
+                                                {(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.quantity}
                                             </td>
                                             <td>
                                                 <img
