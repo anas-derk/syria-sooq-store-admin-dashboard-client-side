@@ -245,7 +245,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     >
                                                         Update
                                                     </button>}
-                                                    {waitMsg && selectedOrderProductIndex === orderProductIndex && <button
+                                                    {waitMsg === "Please Wait To Updating ..." && selectedOrderProductIndex === orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
@@ -257,7 +257,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     >
                                                         Delete
                                                     </button>}
-                                                    {waitMsg && selectedOrderProductIndex === orderProductIndex && <button
+                                                    {waitMsg === "Please Wait To Deleting ..." && selectedOrderProductIndex === orderProductIndex && <button
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
