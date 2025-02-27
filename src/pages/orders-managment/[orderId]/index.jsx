@@ -287,12 +287,12 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                             <p className="city fw-bold">City: {orderDetails.city}</p>
                                             <p className="address fw-bold">Address: {orderDetails.address}</p>
                                             <p className="address-details fw-bold">Address Details: {orderDetails.addressDetails}</p>
-                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint}</p>
-                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.additionalAddressDetails}</p>
+                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint ? orderDetails.closestPoint : "-------"}</p>
+                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.additionalAddressDetails ? orderDetails.additionalAddressDetails : "-------"}</p>
                                             <p className="floor-number fw-bold">Floor Number: {orderDetails.floorNumber}</p>
-                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.additionalNotes}</p>
+                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.additionalNotes ? orderDetails.additionalNotes : "-------"}</p>
                                             <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.mobilePhone}</p>
-                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone}</p>
+                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone ? orderDetails.backupMobilePhone : "-------"}</p>
                                         </div>
                                     </div>
                                 </div>
