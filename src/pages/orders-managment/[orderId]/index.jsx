@@ -102,8 +102,8 @@ export default function OrderDetails({ orderIdAsProperty }) {
         catch (err) {
             console.log(err);
             if (err?.response?.status === 401) {
-                // localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
-                // await router.replace("/login");
+                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
+                await router.replace("/login");
             }
             else {
                 setWaitMsg("");
@@ -220,7 +220,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
                                                 />
                                             </td>
-                                             <td>
+                                            <td>
                                                 {orderProduct.unitDiscount}
                                             </td>
                                             <td>
