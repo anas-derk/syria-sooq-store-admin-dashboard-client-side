@@ -87,7 +87,6 @@ export default function ShowBilling({ orderIdAsProperty }) {
                         <h1 className="welcome-msg text-center mb-4 fw-bold border-bottom border-4 border-dark w-fit mx-auto pb-2">{t("Your Order Billing From Store")}: {storeDetails.name}</h1>
                         <h5 className="fw-bold mb-4 text-center">{t("Your Request")}</h5>
                         <div className="order-id-and-number border border-2 border-dark p-4 mb-5">
-                            <h5 className="mb-4 text-center">{t("Order Id")}: {orderDetails._id}</h5>
                             <h5 className="mb-0 text-center">{t("Order Number")}: {orderDetails.orderNumber}</h5>
                         </div>
                         <h5 className="mb-5 text-center border border-2 border-dark p-4">{t("Order Details")}</h5>
