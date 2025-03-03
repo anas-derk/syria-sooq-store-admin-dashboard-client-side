@@ -6,9 +6,9 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import LoaderPage from "@/components/LoaderPage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
 import { getAdminInfo } from "../../../../../public/global_functions/popular";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function AddNewProductGalleryImage({ productIdAsProperty }) {
 
@@ -154,10 +154,7 @@ export default function AddNewProductGalleryImage({ productIdAsProperty }) {
                                 value={fileElementRef.current?.value}
                                 accept=".png, .jpg, .webp"
                             />
-                            {formValidationErrors["newGalleryImageFiles"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                <span>{formValidationErrors["newGalleryImageFiles"]}</span>
-                            </p>}
+                            {formValidationErrors["newGalleryImageFiles"] && <FormFieldErrorBox errorMsg={formValidationErrors["newGalleryImageFiles"]} />}
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"

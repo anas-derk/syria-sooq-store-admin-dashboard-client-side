@@ -9,10 +9,10 @@ import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo, getAllCategoriesInsideThePage } from "../../../../public/global_functions/popular";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 import Link from "next/link";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateAndDeleteCategories() {
 
@@ -407,10 +407,7 @@ export default function UpdateAndDeleteCategories() {
                                     placeholder="Please Enter Category Name"
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                 />
-                                {formValidationErrors["categoryName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                    <span>{formValidationErrors["categoryName"]}</span>
-                                </p>}
+                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
                             </div>
                         </div>
                         {!isGetCategories && <button
@@ -447,11 +444,8 @@ export default function UpdateAndDeleteCategories() {
                                                     className={`form-control d-block mx-auto p-2 border-2 brand-title-field ${formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     defaultValue={category.name}
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "name", e.target.value.trim())}
-                                                ></input>
-                                                {formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["categoryName"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
                                             </section>
                                         </td>
                                         <td className="category-color-cell">
@@ -461,11 +455,8 @@ export default function UpdateAndDeleteCategories() {
                                                     className={`form-control d-block mx-auto p-2 border-2 -category-color-field ${formValidationErrors["categoryColor"] && categoryIndex === selectedCategoryIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     defaultValue={category.color}
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "color", e.target.value.trim())}
-                                                ></input>
-                                                {formValidationErrors["categoryColor"] && categoryIndex === selectedCategoryIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["categoryColor"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["categoryColor"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["categoryColor"]} />}
                                             </section>
                                         </td>
                                         <td className="category-parent-cell">
@@ -486,10 +477,7 @@ export default function UpdateAndDeleteCategories() {
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && categoryIndex === selectedCateogryImageIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
-                                                </p>}
+                                                {formValidationErrors["image"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
                                             </section>
                                             {(selectedCateogryImageIndex !== categoryIndex && selectedCategoryIndex !== categoryIndex) &&
                                                 <button

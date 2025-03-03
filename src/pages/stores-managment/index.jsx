@@ -8,9 +8,8 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import ChangeStoreStatusBox from "@/components/ChangeStoreStatusBox";
-import { getAdminInfo, getStoresCount, getAllStoresInsideThePage } from "../../../public/global_functions/popular";
+import { getAdminInfo, getAllStoresInsideThePage } from "../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 
@@ -469,10 +468,7 @@ export default function StoresManagment() {
                                                         placeholder="Pleae Enter Store Name"
                                                         onChange={(e) => changeStoreData(storeIndex, "name", e.target.value)}
                                                     />
-                                                    {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["name"]}</span>
-                                                    </p>}
+                                                    {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
                                                 </section>
                                             </td>
                                             <td>{store.ownerFullName}</td>
@@ -485,10 +481,7 @@ export default function StoresManagment() {
                                                         placeholder="Pleae Enter Email"
                                                         onChange={(e) => changeStoreData(storeIndex, "email", e.target.value)}
                                                     />
-                                                    {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["email"]}</span>
-                                                    </p>}
+                                                    {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
                                                 </section>
                                             </td>
                                             <td>

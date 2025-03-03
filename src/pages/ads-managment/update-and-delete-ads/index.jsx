@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo } from "../../../../public/global_functions/popular";
 import { HiOutlineBellAlert } from "react-icons/hi2";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateAndDeleteAds() {
 
@@ -307,11 +308,8 @@ export default function UpdateAndDeleteAds() {
                                                     className={`form-control d-block mx-auto p-2 border-2 ad-content-field ${formValidationErrors["adContent"] && adIndex === selectedAdIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     defaultValue={ad.content}
                                                     onChange={(e) => changeAdData(adIndex, "content", e.target.value.trim())}
-                                                ></input>
-                                                {formValidationErrors["adContent"] && adIndex === selectedAdIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["adContent"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["adContent"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["adContent"]} />}
                                             </section> : <p>No Content</p>}
                                         </td>
                                         <td className="ad-image-cell">
@@ -329,10 +327,7 @@ export default function UpdateAndDeleteAds() {
                                                     onChange={(e) => changeAdData(adIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && adIndex === selectedAdImageIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
-                                                </p>}
+                                                {formValidationErrors["image"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
                                             </section>
                                             {(selectedAdImageIndex !== adIndex && selectedAdIndex !== adIndex) &&
                                                 <button

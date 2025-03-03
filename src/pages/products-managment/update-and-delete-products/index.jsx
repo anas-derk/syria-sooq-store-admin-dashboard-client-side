@@ -8,18 +8,17 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import {
     getAdminInfo,
     getProductsCount,
     getAllProductsInsideThePage,
     getTimeAndDateByLocalTime,
     getDateInUTCFormat,
-    getAllCategoriesWithHierarechy
 } from "../../../../public/global_functions/popular";
 import Link from "next/link";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateAndDeleteProducts() {
 
@@ -32,8 +31,6 @@ export default function UpdateAndDeleteProducts() {
     const [allProductsInsideThePage, setAllProductsInsideThePage] = useState([]);
 
     const [isGetProducts, setIsGetProducts] = useState(false);
-
-    const [allCategories, setAllCategories] = useState([]);
 
     const [waitMsg, setWaitMsg] = useState("");
 
@@ -483,10 +480,7 @@ export default function UpdateAndDeleteProducts() {
                                     placeholder="Please Enter Category Name"
                                     onChange={(e) => setFilters({ ...filters, category: e.target.value })}
                                 />
-                                {formValidationErrors["categoryName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                    <span>{formValidationErrors["categoryName"]}</span>
-                                </p>}
+                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
                             </div>
                             <div className="col-md-6">
                                 <h6 className="me-2 fw-bold text-center">Name</h6>
@@ -496,10 +490,7 @@ export default function UpdateAndDeleteProducts() {
                                     placeholder="Please Enter Product Name"
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                 />
-                                {formValidationErrors["productName"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                    <span>{formValidationErrors["productName"]}</span>
-                                </p>}
+                                {formValidationErrors["productName"] && <FormFieldErrorBox errorMsg={formValidationErrors["productName"]} />}
                             </div>
                         </div>
                         {!isGetProducts && <button
@@ -539,11 +530,8 @@ export default function UpdateAndDeleteProducts() {
                                                     defaultValue={product.name}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-name-field ${formValidationErrors["name"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "name", e.target.value.trim())}
-                                                ></input>
-                                                {formValidationErrors["name"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["name"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["name"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
                                             </section>
                                         </td>
                                         <td className="product-price-cell">
@@ -554,11 +542,8 @@ export default function UpdateAndDeleteProducts() {
                                                     defaultValue={product.price}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-price-field ${formValidationErrors["price"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "price", e.target.value)}
-                                                ></input>
-                                                {formValidationErrors["price"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["price"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["price"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["price"]} />}
                                             </section>
                                         </td>
                                         <td className="product-quantity-cell">
@@ -571,11 +556,8 @@ export default function UpdateAndDeleteProducts() {
                                                     defaultValue={product.quantity}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-quantity-field ${formValidationErrors["quantity"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "quantity", e.target.value)}
-                                                ></input>
-                                                {formValidationErrors["quantity"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["quantity"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["quantity"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["quantity"]} />}
                                             </section>
                                         </td>
                                         <td className="product-description-cell" width="400">
@@ -586,10 +568,7 @@ export default function UpdateAndDeleteProducts() {
                                                     className={`form-control d-block mx-auto p-2 border-2 product-description-field ${formValidationErrors["description"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "description", e.target.value.trim())}
                                                 ></textarea>
-                                                {formValidationErrors["description"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["description"]}</span>
-                                                </p>}
+                                                {formValidationErrors["description"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["description"]} />}
                                             </section>
                                         </td>
                                         <td className="product-price-discount-cell">
@@ -600,11 +579,8 @@ export default function UpdateAndDeleteProducts() {
                                                     defaultValue={product.discount}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-price-discount ${formValidationErrors["discount"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "discount", e.target.value)}
-                                                ></input>
-                                                {formValidationErrors["discount"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["discount"]}</span>
-                                                </p>}
+                                                />
+                                                {formValidationErrors["discount"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["discount"]} />}
                                             </section>
                                             <div className="limited-period-box border border-2 p-3 border-dark">
                                                 <div className="period-box">
@@ -629,11 +605,8 @@ export default function UpdateAndDeleteProducts() {
                                                             defaultValue={product.discountInOfferPeriod}
                                                             className={`form-control d-block mx-auto p-2 border-2 product-price-discount-in-offer-period-field ${formValidationErrors["discount"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-2"}`}
                                                             onChange={(e) => changeProductData(productIndex, "discountInOfferPeriod", e.target.value)}
-                                                        ></input>
-                                                        {formValidationErrors["discountInOfferPeriod"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                            <span>{formValidationErrors["discountInOfferPeriod"]}</span>
-                                                        </p>}
+                                                        />
+                                                        {formValidationErrors["discountInOfferPeriod"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["discountInOfferPeriod"]} />}
                                                     </section>
                                                     <section className="offer-description">
                                                         <input
@@ -642,11 +615,8 @@ export default function UpdateAndDeleteProducts() {
                                                             defaultValue={product.offerDescription}
                                                             className={`form-control d-block mx-auto p-2 border-2 offer-description-field ${formValidationErrors["name"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-2"}`}
                                                             onChange={(e) => changeProductData(productIndex, "offerDescription", e.target.value.trim())}
-                                                        ></input>
-                                                        {formValidationErrors["offerDescription"] && productIndex === selectedProductIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                            <span>{formValidationErrors["offerDescription"]}</span>
-                                                        </p>}
+                                                        />
+                                                        {formValidationErrors["offerDescription"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["offerDescription"]} />}
                                                     </section>
                                                 </div>
                                             </div>
@@ -666,10 +636,7 @@ export default function UpdateAndDeleteProducts() {
                                                     onChange={(e) => changeProductData(productIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && productIndex === selectedProducImageIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
-                                                </p>}
+                                                {formValidationErrors["image"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
                                             </section>
                                             {(selectedProducImageIndex !== productIndex && selectedProductIndex !== productIndex) &&
                                                 <button

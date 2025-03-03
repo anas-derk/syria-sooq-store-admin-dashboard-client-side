@@ -11,6 +11,7 @@ import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateProductCategories({ productIdAsProperty }) {
 
@@ -190,10 +191,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
                                     ))}
                                 </ul>
                                 {searchedCategories.length === 0 && searchedCategoryName && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Related Categories Match This Name !!</p>}
-                                {formValidationErrors["categories"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                    <span>{formValidationErrors["categories"]}</span>
-                                </p>}
+                                {formValidationErrors["categories"] && <FormFieldErrorBox errorMsg={formValidationErrors["categories"]} />}
                             </div>
                         </section>
                         {productData.categories.length > 0 ? <div className="selected-categories row mb-4">

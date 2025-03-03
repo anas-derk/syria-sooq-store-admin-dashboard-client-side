@@ -8,9 +8,9 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo } from "../../../../public/global_functions/popular";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateAndDeleteAdmins() {
 
@@ -402,10 +402,7 @@ export default function UpdateAndDeleteAdmins() {
                                                         placeholder="Pleae Enter New Full Name"
                                                         onChange={(e) => changeAdminData(adminIndex, "fullName", e.target.value)}
                                                     />
-                                                    {formValidationErrors["fullName"] && adminIndex === selectedAdminIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["fullName"]}</span>
-                                                    </p>}
+                                                    {formValidationErrors["fullName"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
                                                 </section>
                                             </td>
                                             <td>
@@ -417,10 +414,7 @@ export default function UpdateAndDeleteAdmins() {
                                                         placeholder="Pleae Enter New Email"
                                                         onChange={(e) => changeAdminData(adminIndex, "email", e.target.value)}
                                                     />
-                                                    {formValidationErrors["email"] && adminIndex === selectedAdminIndex && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                        <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                        <span>{formValidationErrors["email"]}</span>
-                                                    </p>}
+                                                    {formValidationErrors["email"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
                                                 </section>
                                             </td>
                                             <td>
