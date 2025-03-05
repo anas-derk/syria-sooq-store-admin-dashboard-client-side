@@ -42,6 +42,37 @@ export default function StoreDetails({ storeId }) {
 
     const router = useRouter();
 
+    const storeCategories = [
+        "الإلكترونيات والتقنية",
+        "الأزياء والملابس",
+        "المنزل والمطبخ",
+        "الجمال والعناية الشخصية",
+        "الصحة والعافية",
+        "الرياضة واللياقة البدنية",
+        "الألعاب والهوايات",
+        "الكتب والمجلات",
+        "السيارات والمركبات",
+        "البقالة والمواد الغذائية",
+        "مستلزمات الأطفال والرضع",
+        "مستلزمات الحيوانات الأليفة",
+        "الأجهزة المنزلية",
+        "الأدوات وتحسين المنزل",
+        "الحديقة والهواء الطلق",
+        "الصناعية والتجارية",
+        "المستلزمات المكتبية والمدرسية",
+        "الخدمات المهنية والإصلاحات",
+        "الساعات والمجوهرات والإكسسوارات",
+        "الموسيقى والفنون",
+        "التعليم والدورات التدريبية",
+        "الأجهزة الأمنية والمراقبة",
+        "العقارات والتأجير",
+        "الطاقة والأنظمة الشمسية",
+        "الوظائف وفرص العمل",
+        "المنتجات الفاخرة والماركات العالمية",
+        "المنتجات المصنوعة يدويًا",
+        "السفر والرحلات والمستلزمات السياحية",
+    ];
+
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
         if (adminToken) {
@@ -286,6 +317,22 @@ export default function StoreDetails({ storeId }) {
                                             </section>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th>Category</th>
+                                        <td>
+                                            <section className="update-store-category-cell">
+                                                <select
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, category: e.target.value })}
+                                                    className={`form-control mx-auto p-2 border-2 store-category-field ${formValidationErrors["category"] ? "border-danger mb-3" : "mb-4"}`}
+                                                >
+                                                    {storeCategories.map((category) => (
+                                                        <option key={category} value={category}>{category}</option>
+                                                    ))}
+                                                </select>
+                                                {formValidationErrors["category"] && <FormFieldErrorBox errorMsg={formValidationErrors["category"]} />}
+                                            </section>
+                                        </td>
+                                    </tr>
                                     <tr className="store-cover-image-cell">
                                         <th className="store-cover-image-cell">
                                             Cover Image
@@ -298,38 +345,6 @@ export default function StoreDetails({ storeId }) {
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
                                             />
-                                            {/* <hr />
-                                            <section className="update-store-cover-image mb-4">
-                                                <input
-                                                    type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 store-cover-image-field ${formValidationErrors["coverImage"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, coverImage: e.target.files[0] })}
-                                                    accept=".png, .jpg, .webp"
-                                                    ref={storeImageFileElementRef}
-                                                    value={storeImageFileElementRef.current?.value}
-                                                />
-                                                {formValidationErrors["coverImage"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["coverImage"]}</span>
-                                                </p>}
-                                            </section>
-                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
-                                                <button
-                                                    className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId, "cover")}
-                                                >Change</button>
-                                            }
-                                            {waitChangeStoreImageMsg && <button
-                                                className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >Please Waiting</button>}
-                                            {successChangeStoreImageMsg && <button
-                                                className="btn btn-success d-block mx-auto global-button"
-                                                disabled
-                                            >{successChangeStoreImageMsg}</button>}
-                                            {errorChangeStoreImageMsg && <button
-                                                className="btn btn-danger d-block mx-auto global-button"
-                                                disabled
-                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-profile-image-cell">
@@ -344,38 +359,6 @@ export default function StoreDetails({ storeId }) {
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
                                             />
-                                            {/* <hr />
-                                            <section className="update-store-profile-image mb-4">
-                                                <input
-                                                    type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 store-profile-image-field ${formValidationErrors["profileImage"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, profileImage: e.target.files[0] })}
-                                                    accept=".png, .jpg, .webp"
-                                                    ref={storeImageFileElementRef}
-                                                    value={storeImageFileElementRef.current?.value}
-                                                />
-                                                {formValidationErrors["profileImage"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["profileImage"]}</span>
-                                                </p>}
-                                            </section>
-                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
-                                                <button
-                                                    className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId, "profile")}
-                                                >Change</button>
-                                            }
-                                            {waitChangeStoreImageMsg && <button
-                                                className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >Please Waiting</button>}
-                                            {successChangeStoreImageMsg && <button
-                                                className="btn btn-success d-block mx-auto global-button"
-                                                disabled
-                                            >{successChangeStoreImageMsg}</button>}
-                                            {errorChangeStoreImageMsg && <button
-                                                className="btn btn-danger d-block mx-auto global-button"
-                                                disabled
-                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-commercial-register-cell">
@@ -389,38 +372,6 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            {/* <hr />
-                                            <section className="update-store-commercial-register mb-4">
-                                                <input
-                                                    type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 commercial-register-field ${formValidationErrors["commercialRegister"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, commercialRegister: e.target.files[0] })}
-                                                    accept=".png, .jpg, .webp"
-                                                    ref={storeImageFileElementRef}
-                                                    value={storeImageFileElementRef.current?.value}
-                                                />
-                                                {formValidationErrors["commercialRegister"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["commercialRegister"]}</span>
-                                                </p>}
-                                            </section>
-                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
-                                                <button
-                                                    className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId, "profile")}
-                                                >Change</button>
-                                            }
-                                            {waitChangeStoreImageMsg && <button
-                                                className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >Please Waiting</button>}
-                                            {successChangeStoreImageMsg && <button
-                                                className="btn btn-success d-block mx-auto global-button"
-                                                disabled
-                                            >{successChangeStoreImageMsg}</button>}
-                                            {errorChangeStoreImageMsg && <button
-                                                className="btn btn-danger d-block mx-auto global-button"
-                                                disabled
-                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-tax-card-cell">
@@ -434,38 +385,6 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            {/* <hr />
-                                            <section className="update-store-image mb-4">
-                                                <input
-                                                    type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 brand-image-field ${formValidationErrors["image"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, image: e.target.files[0] })}
-                                                    accept=".png, .jpg, .webp"
-                                                    ref={storeImageFileElementRef}
-                                                    value={storeImageFileElementRef.current?.value}
-                                                />
-                                                {formValidationErrors["image"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["image"]}</span>
-                                                </p>}
-                                            </section>
-                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
-                                                <button
-                                                    className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId)}
-                                                >Change</button>
-                                            }
-                                            {waitChangeStoreImageMsg && <button
-                                                className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >Please Waiting</button>}
-                                            {successChangeStoreImageMsg && <button
-                                                className="btn btn-success d-block mx-auto global-button"
-                                                disabled
-                                            >{successChangeStoreImageMsg}</button>}
-                                            {errorChangeStoreImageMsg && <button
-                                                className="btn btn-danger d-block mx-auto global-button"
-                                                disabled
-                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr className="store-address-proof-cell">
@@ -479,38 +398,6 @@ export default function StoreDetails({ storeId }) {
                                             >
                                                 Download
                                             </button>
-                                            {/* <hr />
-                                            <section className="update-store-address-proof mb-4">
-                                                <input
-                                                    type="file"
-                                                    className={`form-control d-block mx-auto p-2 border-2 address-proof-field ${formValidationErrors["addressProof"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    onChange={(e) => setStoreDetails({ ...storeDetails, addressProof: e.target.files[0] })}
-                                                    accept=".png, .jpg, .webp"
-                                                    ref={storeImageFileElementRef}
-                                                    value={storeImageFileElementRef.current?.value}
-                                                />
-                                                {formValidationErrors["addressProof"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                                    <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                                    <span>{formValidationErrors["addressProof"]}</span>
-                                                </p>}
-                                            </section>
-                                            {!waitChangeStoreImageMsg && !errorChangeStoreImageMsg && !successChangeStoreImageMsg &&
-                                                <button
-                                                    className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
-                                                    onClick={() => changeStoreImage(storeId)}
-                                                >Change</button>
-                                            }
-                                            {waitChangeStoreImageMsg && <button
-                                                className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >Please Waiting</button>}
-                                            {successChangeStoreImageMsg && <button
-                                                className="btn btn-success d-block mx-auto global-button"
-                                                disabled
-                                            >{successChangeStoreImageMsg}</button>}
-                                            {errorChangeStoreImageMsg && <button
-                                                className="btn btn-danger d-block mx-auto global-button"
-                                                disabled
-                                            >{errorChangeStoreImageMsg}</button>} */}
                                         </td>
                                     </tr>
                                     <tr>
@@ -619,6 +506,21 @@ export default function StoreDetails({ storeId }) {
                                 <tbody>
                                     <tr>
                                         <th>Id</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <section className="store-category">
+                                                <select
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, category: e.target.value })}
+                                                    className={`form-control mx-auto p-2 border-2 store-category-field ${formValidationErrors["category"] ? "border-danger mb-3" : "mb-4"}`}
+                                                >
+                                                    {storeCategories.map((category) => (
+                                                        <option key={category} value={category}>{category}</option>
+                                                    ))}
+                                                </select>
+                                                {formValidationErrors["category"] && <FormFieldErrorBox errorMsg={formValidationErrors["category"]} />}
+                                            </section>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>{storeDetails._id}</td>
