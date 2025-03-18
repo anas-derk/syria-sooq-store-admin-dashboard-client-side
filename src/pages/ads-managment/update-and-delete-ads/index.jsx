@@ -8,7 +8,6 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo } from "../../../../public/global_functions/popular";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function UpdateAndDeleteAds() {
@@ -44,6 +43,23 @@ export default function UpdateAndDeleteAds() {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const cites = [
+        "lattakia",
+        "tartus",
+        "homs",
+        "hama",
+        "idleb",
+        "daraa",
+        "suwayda",
+        "deer-alzoor",
+        "raqqa",
+        "hasakah",
+        "damascus",
+        "rif-damascus",
+        "aleppo",
+        "quneitra"
+    ];
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -174,23 +190,41 @@ export default function UpdateAndDeleteAds() {
     const updateAdInfo = async (adIndex) => {
         try {
             setFormValidationErrors({});
-            const errorsObject = inputValuesValidation([
-                {
-                    name: "adContent",
-                    value: allAds[adIndex].content,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
+            let validationInputs = [];
+            if (allAds[adIndex].type === "panner") {
+                validationInputs = [
+                    {
+                        name: "adCity",
+                        value: allAds[adIndex],
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
                         },
                     },
-                },
-            ]);
+                ];
+            } else {
+                validationInputs = [
+                    {
+                        name: "adContent",
+                        value: adContent,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                        },
+                    },
+                ];
+            }
+            const errorsObject = inputValuesValidation(validationInputs);
             setFormValidationErrors(errorsObject);
             setSelectedAdIndex(adIndex);
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Wait To Updating ...");
-                const result = (await axios.put(`${process.env.BASE_API_URL}/ads/update-ad-content/${allAds[adIndex]._id}?language=${process.env.defaultLanguage}`, {
+                const result = (await axios.put(`${process.env.BASE_API_URL}/ads/update-ad/${allAds[adIndex]._id}?language=${process.env.defaultLanguage}`, allAds[adIndex] === "elite" ? {
                     content: allAds[adIndex].content,
+                } : {
+                    city: allAds[adIndex].city
                 }, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -215,6 +249,7 @@ export default function UpdateAndDeleteAds() {
             }
         }
         catch (err) {
+            console.log(err)
             if (err?.response?.status === 401) {
                 localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
                 await router.replace("/login");
@@ -293,6 +328,7 @@ export default function UpdateAndDeleteAds() {
                                 <tr>
                                     <th>Type</th>
                                     <th>Content</th>
+                                    <th>City</th>
                                     <th>Image</th>
                                     <th>Process</th>
                                 </tr>
@@ -311,6 +347,19 @@ export default function UpdateAndDeleteAds() {
                                                 />
                                                 {formValidationErrors["adContent"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["adContent"]} />}
                                             </section> : <p>No Content</p>}
+                                        </td>
+                                        <td className="ad-city-cell">
+                                            {ad.type === "panner" ? <section className="ad-city mb-4">
+                                                <h6 className="fw-bold bg-danger p-2 text-white mb-4">Current City: {ad.city}</h6>
+                                                <select
+                                                    className={`select-advertisement-city form-select ${formValidationErrors["adCity"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => changeAdData(adIndex, "city", e.target.value)}
+                                                >
+                                                    <option value="" hidden>Pleae Select New Advertisement City</option>
+                                                    {cites.map((city) => <option key={city} value={city}>{city}</option>)}
+                                                </select>
+                                                {formValidationErrors["adCity"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["adCity"]} />}
+                                            </section> : <p>No City</p>}
                                         </td>
                                         <td className="ad-image-cell">
                                             <img
@@ -350,13 +399,11 @@ export default function UpdateAndDeleteAds() {
                                         </td>
                                         <td className="update-cell">
                                             {selectedAdIndex !== adIndex && <>
-                                                {ad.type === "elite" && <>
-                                                    <button
-                                                        className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                        onClick={() => updateAdInfo(adIndex)}
-                                                    >Update</button>
-                                                    <hr />
-                                                </>}
+                                                <button
+                                                    className="btn btn-success d-block mb-3 mx-auto global-button"
+                                                    onClick={() => updateAdInfo(adIndex)}
+                                                >Update</button>
+                                                <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteAd(adIndex)}

@@ -22,6 +22,8 @@ export default function AddNewAd() {
 
     const [adContent, setAdContent] = useState("");
 
+    const [adCity, setAdCity] = useState("");
+
     const [adImage, setAdImage] = useState(null);
 
     const adImageFileRef = useRef();
@@ -35,6 +37,23 @@ export default function AddNewAd() {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const cites = [
+        "lattakia",
+        "tartus",
+        "homs",
+        "hama",
+        "idleb",
+        "daraa",
+        "suwayda",
+        "deer-alzoor",
+        "raqqa",
+        "hasakah",
+        "damascus",
+        "rif-damascus",
+        "aleppo",
+        "quneitra"
+    ];
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -87,6 +106,15 @@ export default function AddNewAd() {
                             },
                         },
                     },
+                    {
+                        name: "adCity",
+                        value: adCity,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                        },
+                    },
                 ];
             } else {
                 validationInputs = [
@@ -118,6 +146,7 @@ export default function AddNewAd() {
             if (Object.keys(errorsObject).length == 0) {
                 let advertisementData = new FormData();
                 if (advertisementType === "elite") advertisementData.append("content", adContent);
+                else advertisementData.append("city", adCity);
                 advertisementData.append("adImage", adImage);
                 advertisementData.append("type", advertisementType);
                 setWaitMsg("Please Waiting To Add New Advertisement ...");
@@ -133,6 +162,7 @@ export default function AddNewAd() {
                         setSuccessMsg("");
                         setAdContent("");
                         setAdImage(null);
+                        setAdCity("");
                         adImageFileRef.current.value = "";
                         clearTimeout(successTimeout);
                     }, 1500);
@@ -216,6 +246,17 @@ export default function AddNewAd() {
                             />
                             {formValidationErrors["adImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["adImage"]} />}
                         </section>
+                        {advertisementType === "panner" && <section className="ad-image mb-4">
+                            <select
+                                className={`select-advertisement-city form-select ${formValidationErrors["adCity"] ? "border-danger mb-3" : "mb-4"}`}
+                                onChange={(e) => setAdCity(e.target.value)}
+                                value={adCity}
+                            >
+                                <option value="" hidden>Pleae Select Advertisement City</option>
+                                {cites.map((city) => <option key={city} value={city}>{city}</option>)}
+                            </select>
+                            {formValidationErrors["adCity"] && <FormFieldErrorBox errorMsg={formValidationErrors["adCity"]} />}
+                        </section>}
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
