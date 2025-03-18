@@ -73,6 +73,23 @@ export default function StoreDetails({ storeId }) {
         "السفر والرحلات والمستلزمات السياحية",
     ];
 
+    const cites = [
+        "lattakia",
+        "tartus",
+        "homs",
+        "hama",
+        "idleb",
+        "daraa",
+        "suwayda",
+        "deer-alzoor",
+        "raqqa",
+        "hasakah",
+        "damascus",
+        "rif-damascus",
+        "aleppo",
+        "quneitra"
+    ];
+
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
         if (adminToken) {
@@ -142,6 +159,15 @@ export default function StoreDetails({ storeId }) {
                     },
                 },
                 {
+                    name: "city",
+                    value: storeDetails.city,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
+                },
+                {
                     name: "ownerFullName",
                     value: storeDetails.ownerFullName,
                     rules: {
@@ -177,6 +203,7 @@ export default function StoreDetails({ storeId }) {
                 setWaitMsg("Please Wait To Updating Store Data ...");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/update-store-info/${storeId}?language=${process.env.defaultLanguage}`, {
                     name: storeDetails.name,
+                    city: storeDetails.city,
                     ownerFullName: storeDetails.ownerFullName,
                     phoneNumber: storeDetails.phoneNumber,
                     email: storeDetails.email,
@@ -314,6 +341,22 @@ export default function StoreDetails({ storeId }) {
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, name: e.target.value })}
                                                 />
                                                 {formValidationErrors["name"] && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
+                                            </section>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>City</th>
+                                        <td className="update-store-city-cell">
+                                            <section className="store-city">
+                                                <h6 className="fw-bold mb-3">{storeDetails.city}</h6>
+                                                <select
+                                                    className={`select-store-city form-select ${formValidationErrors["city"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    onChange={(e) => setStoreDetails({ ...storeDetails, city: e.target.value })}
+                                                >
+                                                    <option value="" hidden>Pleae Select New Store City</option>
+                                                    {cites.map((city) => <option key={city} value={city}>{city}</option>)}
+                                                </select>
+                                                {formValidationErrors["city"] && <FormFieldErrorBox errorMsg={formValidationErrors["city"]} />}
                                             </section>
                                         </td>
                                     </tr>
