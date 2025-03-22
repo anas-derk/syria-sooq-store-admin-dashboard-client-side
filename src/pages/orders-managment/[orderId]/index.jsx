@@ -199,7 +199,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     className="form-control quantity"
                                                     defaultValue={orderProduct.quantity}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "quantity", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
+                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
                                                 />
                                             </td>
                                             <td>
@@ -208,7 +208,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     className="form-control name"
                                                     defaultValue={orderProduct.name}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "name", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
+                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
                                                 />
                                             </td>
                                             <td>
@@ -217,7 +217,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                     className="form-control unit-price"
                                                     defaultValue={orderProduct.unitPrice}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "unitPrice", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull"}
+                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
                                                 />
                                             </td>
                                             <td>
@@ -238,7 +238,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                                                 />
                                             </td>
                                             <td>
-                                                {!orderDetails.isDeleted && orderDetails.checkoutStatus === "Checkout Successfull" ? <>
+                                                {!orderDetails.isDeleted && orderDetails.checkoutStatus === "Checkout Successfull" && orderDetails.status !== "cancelled" ? <>
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderProductData(orderProductIndex)}
