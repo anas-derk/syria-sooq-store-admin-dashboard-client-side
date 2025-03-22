@@ -388,9 +388,7 @@ export default function OrdersManagment({ ordersType }) {
                                     >
                                         <option value="" hidden>Pleae Enter Status</option>
                                         <option value="">All</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="shipping">Shipping</option>
-                                        <option value="completed">Completed</option>
+                                        {orderStatus.map((status) => <option value={status}>{status}</option>)}
                                     </select>
                                 </div>
                                 <div className="col-md-6 mt-4">
@@ -450,7 +448,7 @@ export default function OrdersManagment({ ordersType }) {
                                             </td>
                                             <td>
                                                 <h6 className="fw-bold">{order.status}</h6>
-                                                {order.checkoutStatus === "Checkout Successfull" && <>
+                                                {order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled" && <>
                                                     <hr />
                                                     <select
                                                         className="select-order-status form-select mb-5"
