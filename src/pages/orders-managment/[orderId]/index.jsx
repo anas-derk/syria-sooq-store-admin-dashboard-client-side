@@ -7,7 +7,7 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { getAdminInfo, getOrderDetails } from "../../../../public/global_functions/popular";
 
-export default function OrderDetails({ orderIdAsProperty }) {
+export default function OrderDetails({ orderIdAsProperty, ordersType }) {
 
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
@@ -28,6 +28,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
     const router = useRouter();
 
     useEffect(() => {
+        setIsLoadingPage(true);
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
         if (adminToken) {
             getAdminInfo()
@@ -42,7 +43,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                             await router.replace("/login");
                         } else {
                             setAdminInfo(adminDetails);
-                            result = await getOrderDetails(orderIdAsProperty);
+                            result = await getOrderDetails(orderIdAsProperty, ordersType);
                             if (!result.error) {
                                 setOrderDetails(result.data);
                             }
@@ -61,7 +62,7 @@ export default function OrderDetails({ orderIdAsProperty }) {
                     }
                 });
         } else router.replace("/login");
-    }, []);
+    }, [ordersType]);
 
     const changeOrderProductData = (productIndex, fieldName, newValue) => {
         let productsTemp = orderDetails.products;
@@ -335,8 +336,17 @@ export default function OrderDetails({ orderIdAsProperty }) {
     );
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }) {
     const { orderId } = params;
+    const { ordersType } = query;
+    if (ordersType !== "normal" && ordersType !== "returned") {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/",
+            },
+        }
+    }
     if (!orderId) {
         return {
             redirect: {
@@ -348,6 +358,7 @@ export async function getServerSideProps({ params }) {
         return {
             props: {
                 orderIdAsProperty: orderId,
+                ordersType,
             },
         }
     }

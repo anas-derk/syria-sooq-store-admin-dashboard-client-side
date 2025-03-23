@@ -62,6 +62,7 @@ export default function OrdersManagment({ ordersType }) {
     const returnedOrderStatus = ["awaiting products", "received products", "checking products", "returned products"];
 
     useEffect(() => {
+        setIsLoadingPage(true);
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
         if (adminToken) {
             getAdminInfo()
@@ -107,19 +108,6 @@ export default function OrdersManagment({ ordersType }) {
         else filteringString += `isDeleted=no&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
-    }
-
-    const getOrdersCount = async (filters) => {
-        try {
-            return (await axios.get(`${process.env.BASE_API_URL}/orders/orders-count?language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
-                headers: {
-                    Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage)
-                }
-            })).data;
-        }
-        catch (err) {
-            throw err;
-        }
     }
 
     const getAllOrdersInsideThePage = async (pageNumber, pageSize, filters) => {
@@ -304,17 +292,7 @@ export default function OrdersManagment({ ordersType }) {
                 let successTimeout = setTimeout(async () => {
                     setSuccessMsg("");
                     setSelectedOrderIndex(-1);
-                    const filteringString = getFilteringString(filters);
-                    const result = await getOrdersCount(filteringString);
-                    if (result.data > 0) {
-                        setAllOrdersInsideThePage((await getAllOrdersInsideThePage(currentPage, pageSize, filteringString)).data);
-                        setTotalPagesCount(Math.ceil(result.data / pageSize));
-                        setIsGetOrders(false);
-                    } else {
-                        setAllOrdersInsideThePage([]);
-                        setTotalPagesCount(0);
-                        setIsGetOrders(false);
-                    }
+                    setAllOrdersInsideThePage(allOrdersInsideThePage.filter((order, index) => index !== orderIndex));
                     clearTimeout(successTimeout);
                 }, 3000);
             } else {
@@ -388,7 +366,7 @@ export default function OrdersManagment({ ordersType }) {
                                     >
                                         <option value="" hidden>Pleae Enter Status</option>
                                         <option value="">All</option>
-                                        {orderStatus.map((status) => <option value={status}>{status}</option>)}
+                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{status}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
                                     </select>
                                 </div>
                                 <div className="col-md-6 mt-4">
@@ -455,9 +433,7 @@ export default function OrdersManagment({ ordersType }) {
                                                         onChange={(e) => changeOrderData(orderIndex, "status", e.target.value)}
                                                     >
                                                         <option value="" hidden>Pleae Enter Status</option>
-                                                        <option value="pending">Pending</option>
-                                                        <option value="shipping">Shipping</option>
-                                                        <option value="completed">Completed</option>
+                                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{status}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
                                                     </select>
                                                     <div className="form-check border border-2 border-dark p-3">
                                                         <input
@@ -518,7 +494,7 @@ export default function OrdersManagment({ ordersType }) {
                                                 </button>}
                                                 {selectedOrderIndex !== orderIndex && <>
                                                     <Link
-                                                        href={`/orders-managment/${order._id}`}
+                                                        href={`/orders-managment/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
                                                     >Show Details</Link>
                                                     {order.checkoutStatus === "Checkout Successfull" && <Link
