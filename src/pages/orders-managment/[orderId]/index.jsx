@@ -285,15 +285,15 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <div className="row">
                                     <div className="col-md-12 bg-white border border-2 border-dark">
                                         <div className="customer-info-box text-start p-3">
-                                            <p className="city fw-bold">City: {orderDetails.city}</p>
-                                            <p className="address fw-bold">Address: {orderDetails.address}</p>
-                                            <p className="address-details fw-bold">Address Details: {orderDetails.addressDetails}</p>
-                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.closestPoint ? orderDetails.closestPoint : "-------"}</p>
-                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.additionalAddressDetails ? orderDetails.additionalAddressDetails : "-------"}</p>
-                                            <p className="floor-number fw-bold">Floor Number: {orderDetails.floorNumber}</p>
-                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.additionalNotes ? orderDetails.additionalNotes : "-------"}</p>
-                                            <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.mobilePhone}</p>
-                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.backupMobilePhone ? orderDetails.backupMobilePhone : "-------"}</p>
+                                            <p className="city fw-bold">City: {orderDetails.originalOrder.city}</p>
+                                            <p className="address fw-bold">Address: {orderDetails.originalOrder.address}</p>
+                                            <p className="address-details fw-bold">Address Details: {orderDetails.originalOrder.addressDetails}</p>
+                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.originalOrder.closestPoint ? orderDetails.originalOrder.closestPoint : "-------"}</p>
+                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.originalOrder.additionalAddressDetails ? orderDetails.originalOrder.additionalAddressDetails : "-------"}</p>
+                                            <p className="floor-number fw-bold">Floor Number: {orderDetails.originalOrder.floorNumber}</p>
+                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.originalOrder.additionalNotes ? orderDetails.originalOrder.additionalNotes : "-------"}</p>
+                                            <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.originalOrder.mobilePhone}</p>
+                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.originalOrder.backupMobilePhone ? orderDetails.originalOrder.backupMobilePhone : "-------"}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +305,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <div className="shipping-cost-box text-start p-3">
                                             <h6 className="fw-bold">Shipping Cost</h6>
                                             <hr />
-                                            <p className="shipping-cost fw-bold">Shipping Cost: {orderDetails.shippingCost}</p>
+                                            <p className="shipping-cost fw-bold">Shipping Cost: {orderDetails.originalOrder.shippingCost}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -315,12 +315,12 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <div className="row">
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="creator-box text-start p-3">
-                                            <h6 className="fw-bold m-0">User Id: {orderDetails.userId}</h6>
+                                            <h6 className="fw-bold m-0">User Id: {orderDetails.originalOrder.userId}</h6>
                                         </div>
                                     </div>
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="payment-gateway-box text-start p-3">
-                                            <h6 className="fw-bold m-0">Payment Gateway: {orderDetails.paymentGateway}</h6>
+                                            <h6 className="fw-bold m-0">Payment Gateway: {orderDetails.originalOrder.paymentGateway}</h6>
                                         </div>
                                     </div>
                                 </div>
