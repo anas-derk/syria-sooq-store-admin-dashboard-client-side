@@ -407,7 +407,7 @@ export default function OrdersManagment({ ordersType }) {
                                     <tr>
                                         <th>Order Number</th>
                                         <th>Order Id</th>
-                                        <th>Checkout Status</th>
+                                        {ordersType === "normal" && <th>Checkout Status</th>}
                                         <th>Status</th>
                                         <th>Order Total Amount</th>
                                         <th>Added Date</th>
@@ -419,14 +419,14 @@ export default function OrdersManagment({ ordersType }) {
                                         <tr key={order._id}>
                                             <td>{order.orderNumber}</td>
                                             <td>{order._id}</td>
-                                            <td>
+                                            {ordersType === "normal" && <td>
                                                 <div className={`p-2 text-white ${order.checkoutStatus === "Checkout Successfull" ? "bg-success" : "bg-danger"}`}>
                                                     {order.checkoutStatus}
                                                 </div>
-                                            </td>
+                                            </td>}
                                             <td>
                                                 <h6 className="fw-bold">{order.status}</h6>
-                                                {order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled" && <>
+                                                {((ordersType === "normal" && order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled") || (ordersType === "returned")) && <>
                                                     <hr />
                                                     <select
                                                         className="select-order-status form-select mb-5"
@@ -444,7 +444,11 @@ export default function OrdersManagment({ ordersType }) {
                                                         />
                                                         <label className="form-check-label" htmlFor="sendEmailCheckout" onClick={(e) => changeOrderData(orderIndex, "isSendEmailToTheCustomer", e.target.checked)}>
                                                             Send Email To Customer
-                                                            <span className="d-block mt-3 fw-bold">( In Status: Shipping Or Completed)</span>
+                                                            <span className="d-block mt-3 fw-bold">( In Status: {ordersType === "normal" ? orderStatus.map((status, index) => {
+                                                                if (status !== "pending" && status !== "cancelled") return status + (index !== orderStatus.length - 2 ? " or " : "");
+                                                            }) : returnedOrderStatus.map((status, index) => {
+                                                                if (status !== "awaiting products") return status + (index !== returnedOrderStatus.length - 1 ? " or " : "");
+                                                            })} )</span>
                                                         </label>
                                                     </div>
                                                 </>}

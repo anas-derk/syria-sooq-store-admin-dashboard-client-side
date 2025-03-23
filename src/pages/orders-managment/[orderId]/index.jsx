@@ -200,7 +200,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     className="form-control quantity"
                                                     defaultValue={orderProduct.quantity}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "quantity", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
+                                                    disabled={true}
                                                 />
                                             </td>
                                             <td>
@@ -209,7 +209,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     className="form-control name"
                                                     defaultValue={orderProduct.name}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "name", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
+                                                    disabled={true}
                                                 />
                                             </td>
                                             <td>
@@ -218,7 +218,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     className="form-control unit-price"
                                                     defaultValue={orderProduct.unitPrice}
                                                     onChange={(e) => changeOrderProductData(orderProductIndex, "unitPrice", e.target.value.trim())}
-                                                    disabled={orderDetails.isDeleted || orderDetails.checkoutStatus !== "Checkout Successfull" || orderDetails.status === "cancelled"}
+                                                    disabled={true}
                                                 />
                                             </td>
                                             <td>
