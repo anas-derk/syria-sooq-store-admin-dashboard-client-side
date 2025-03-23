@@ -55,6 +55,8 @@ export default function OrdersManagment({ ordersType }) {
 
     const router = useRouter();
 
+    const ordersTypeByMakeFirstLetterCapital = ordersType.replace(ordersType[0], ordersType[0].toUpperCase());
+
     const pageSize = 10;
 
     const orderStatus = ["pending", "shipping", "completed", "cancelled"];
@@ -281,7 +283,7 @@ export default function OrdersManagment({ ordersType }) {
         try {
             setWaitMsg("Please Wait To Deleting ...");
             setSelectedOrderIndex(orderIndex);
-            const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/delete-order/${allOrdersInsideThePage[orderIndex]._id}?language=${process.env.defaultLanguage}`, {
+            const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/delete-order/${allOrdersInsideThePage[orderIndex]._id}?ordersType=${ordersType}&language=${process.env.defaultLanguage}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 }
@@ -324,7 +326,7 @@ export default function OrdersManagment({ ordersType }) {
     return (
         <div className="orders-managment admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Orders Managment</title>
+                <title>{process.env.storeName} Admin Dashboard - {ordersTypeByMakeFirstLetterCapital} Orders Managment</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 {/* Start Admin Dashboard Side Bar */}
@@ -333,7 +335,7 @@ export default function OrdersManagment({ ordersType }) {
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-5 pb-5">
                     <div className="container-fluid">
-                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">Hi, Mr {adminInfo.fullName} In Orders Managment</h1>
+                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">Hi, Mr {adminInfo.fullName} In {ordersTypeByMakeFirstLetterCapital} Orders Managment</h1>
                         <section className="filters mb-3 bg-white border-3 border-info p-3 text-start">
                             <h5 className="section-name fw-bold text-center">Filters: </h5>
                             <hr />
@@ -426,7 +428,7 @@ export default function OrdersManagment({ ordersType }) {
                                             </td>}
                                             <td>
                                                 <h6 className="fw-bold">{order.status}</h6>
-                                                {((ordersType === "normal" && order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled") || (ordersType === "returned")) && <>
+                                                {((ordersType === "normal" && order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled") || (ordersType === "return")) && <>
                                                     <hr />
                                                     <select
                                                         className="select-order-status form-select mb-5"
@@ -459,7 +461,7 @@ export default function OrdersManagment({ ordersType }) {
                                             <td>{getDateFormated(order.addedDate)}</td>
                                             <td>
                                                 {!order.isDeleted && orderIndex !== selectedOrderIndex && <>
-                                                    {order.checkoutStatus === "Checkout Successfull" && <button
+                                                    {((ordersType === "normal" && order.checkoutStatus === "Checkout Successfull") || (ordersType === "return")) && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderData(orderIndex)}
                                                     >
@@ -536,7 +538,7 @@ export default function OrdersManagment({ ordersType }) {
 
 export function getServerSideProps({ query }) {
     const { ordersType } = query;
-    if (ordersType !== "normal" && ordersType !== "returned") {
+    if (ordersType !== "normal" && ordersType !== "return") {
         return {
             redirect: {
                 permanent: false,

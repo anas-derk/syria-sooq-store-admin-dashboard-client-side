@@ -339,7 +339,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
 export async function getServerSideProps({ params, query }) {
     const { orderId } = params;
     const { ordersType } = query;
-    if (ordersType !== "normal" && ordersType !== "returned") {
+    if (ordersType !== "normal" && ordersType !== "return") {
         return {
             redirect: {
                 permanent: false,

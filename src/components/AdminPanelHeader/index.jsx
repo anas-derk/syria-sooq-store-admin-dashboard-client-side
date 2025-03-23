@@ -69,7 +69,7 @@ export default function AdminPanelHeader({ isWebsiteOwner = false, isMerchant = 
                             <NavDropdown title="Orders" id="orders-nav-dropdown">
                                 <NavDropdown.Item href="/orders-managment?ordersType=normal" as={Link}>Orders</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="/orders-managment?ordersType=returned" as={Link}>Returned Orders</NavDropdown.Item>
+                                <NavDropdown.Item href="/orders-managment?ordersType=return" as={Link}>Returned Orders</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title="Ads" id="ads-nav-dropdown">
                                 <NavDropdown.Item href="/ads-managment/add-new-ad" as={Link}>Add New</NavDropdown.Item>
