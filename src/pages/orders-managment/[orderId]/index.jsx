@@ -239,7 +239,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 />
                                             </td>
                                             <td>
-                                                {!orderDetails.isDeleted && orderDetails.checkoutStatus === "Checkout Successfull" && orderDetails.status !== "cancelled" ? <>
+                                                {ordersType === "return" ? <>
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderProductData(orderProductIndex)}
@@ -285,15 +285,15 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <div className="row">
                                     <div className="col-md-12 bg-white border border-2 border-dark">
                                         <div className="customer-info-box text-start p-3">
-                                            <p className="city fw-bold">City: {orderDetails.originalOrder.city}</p>
-                                            <p className="address fw-bold">Address: {orderDetails.originalOrder.address}</p>
-                                            <p className="address-details fw-bold">Address Details: {orderDetails.originalOrder.addressDetails}</p>
-                                            <p className="closest-point fw-bold">Closest Point: {orderDetails.originalOrder.closestPoint ? orderDetails.originalOrder.closestPoint : "-------"}</p>
-                                            <p className="additional-address-details fw-bold">Additional Address Details: {orderDetails.originalOrder.additionalAddressDetails ? orderDetails.originalOrder.additionalAddressDetails : "-------"}</p>
-                                            <p className="floor-number fw-bold">Floor Number: {orderDetails.originalOrder.floorNumber}</p>
-                                            <p className="additional-notes fw-bold">Additional Notes: {orderDetails.originalOrder.additionalNotes ? orderDetails.originalOrder.additionalNotes : "-------"}</p>
-                                            <p className="mobile-phone fw-bold">Mobile Phone: {orderDetails.originalOrder.mobilePhone}</p>
-                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {orderDetails.originalOrder.backupMobilePhone ? orderDetails.originalOrder.backupMobilePhone : "-------"}</p>
+                                            <p className="city fw-bold">City: {ordersType === "normal" ? orderDetails.city : orderDetails.originalOrder.city}</p>
+                                            <p className="address fw-bold">Address: {ordersType === "normal" ? orderDetails.address : orderDetails.originalOrder.address}</p>
+                                            <p className="address-details fw-bold">Address Details: {ordersType === "normal" ? orderDetails.addressDetails : orderDetails.originalOrder.addressDetails}</p>
+                                            <p className="closest-point fw-bold">Closest Point: {ordersType === "normal" ? (orderDetails.closestPoint ? orderDetails.closestPoint : "-------") : (orderDetails.originalOrder.closestPoint ? orderDetails.originalOrder.closestPoint : "-------")}</p>
+                                            <p className="additional-address-details fw-bold">Additional Address Details: {ordersType === "normal" ? (orderDetails.additionalAddressDetails ? orderDetails.additionalAddressDetails : "-------") : (orderDetails.originalOrder.additionalAddressDetails ? orderDetails.originalOrder.additionalAddressDetails : "-------")}</p>
+                                            <p className="floor-number fw-bold">Floor Number: {ordersType === "normal" ? orderDetails.floorNumber : orderDetails.originalOrder.floorNumber}</p>
+                                            <p className="additional-notes fw-bold">Additional Notes: {ordersType === "normal" ? (orderDetails.additionalNotes ? orderDetails.additionalNotes : "-------") : (orderDetails.originalOrder.additionalNotes ? orderDetails.originalOrder.additionalNotes : "-------")}</p>
+                                            <p className="mobile-phone fw-bold">Mobile Phone: {ordersType === "normal" ? orderDetails.mobilePhone : orderDetails.originalOrder.mobilePhone}</p>
+                                            <p className="backup-mobile-phone fw-bold">Backup Mobile Phone: {ordersType === "normal" ? (orderDetails.backupMobilePhone ? orderDetails.backupMobilePhone : "-------") : (orderDetails.originalOrder.backupMobilePhone ? orderDetails.originalOrder.backupMobilePhone : "-------")}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +305,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <div className="shipping-cost-box text-start p-3">
                                             <h6 className="fw-bold">Shipping Cost</h6>
                                             <hr />
-                                            <p className="shipping-cost fw-bold">Shipping Cost: {orderDetails.originalOrder.shippingCost}</p>
+                                            <p className="shipping-cost fw-bold">Shipping Cost: {ordersType === "normal" ? orderDetails.shippingCost : orderDetails.originalOrder.shippingCost}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -315,12 +315,12 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <div className="row">
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="creator-box text-start p-3">
-                                            <h6 className="fw-bold m-0">User Id: {orderDetails.originalOrder.userId}</h6>
+                                            <h6 className="fw-bold m-0">User Id: {ordersType === "normal" ? orderDetails.userId : orderDetails.originalOrder.userId}</h6>
                                         </div>
                                     </div>
                                     <div className="col-md-6 bg-white border border-2 border-dark">
                                         <div className="payment-gateway-box text-start p-3">
-                                            <h6 className="fw-bold m-0">Payment Gateway: {orderDetails.originalOrder.paymentGateway}</h6>
+                                            <h6 className="fw-bold m-0">Payment Gateway: {ordersType === "normal" ? orderDetails.paymentGateway : orderDetails.originalOrder.paymentGateway}</h6>
                                         </div>
                                     </div>
                                 </div>
