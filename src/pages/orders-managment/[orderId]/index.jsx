@@ -187,6 +187,11 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <th>Total Amount Before Discount</th>
                                         <th>Total</th>
                                         <th>Image</th>
+                                        {ordersType === "return" && <>
+                                            <th>Accepted Quantity</th>
+                                            <th>Accepted Total Amount</th>
+                                            <th>Notes</th>
+                                        </>}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -238,6 +243,11 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     height="100"
                                                 />
                                             </td>
+                                            {ordersType === "return" && <>
+                                                <td>{orderProduct.acceptedQuantity}</td>
+                                                <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.acceptedQuantity}</td>
+                                                <td>{orderProduct.notes ? orderProduct.notes : <span className="text-danger fw-bold">No Notes</span>}</td>
+                                            </>}
                                             <td>
                                                 {ordersType === "return" ? <>
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
