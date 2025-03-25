@@ -64,12 +64,6 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
         } else router.replace("/login");
     }, [ordersType]);
 
-    const changeOrderProductData = (productIndex, fieldName, newValue) => {
-        let productsTemp = orderDetails.products;
-        productsTemp[productIndex][fieldName] = newValue;
-        setOrderDetails({ ...orderDetails, products: productsTemp });
-    }
-
     const updateOrderProductData = async (orderProductIndex) => {
         try {
             setWaitMsg("Please Wait To Updating ...");
@@ -200,31 +194,13 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <tr key={orderProduct._id}>
                                             <td>{orderProduct._id}</td>
                                             <td>
-                                                <input
-                                                    type="text"
-                                                    className="form-control quantity"
-                                                    defaultValue={orderProduct.quantity}
-                                                    onChange={(e) => changeOrderProductData(orderProductIndex, "quantity", e.target.value.trim())}
-                                                    disabled={true}
-                                                />
+                                                {orderProduct.quantity}
                                             </td>
                                             <td>
-                                                <input
-                                                    type="text"
-                                                    className="form-control name"
-                                                    defaultValue={orderProduct.name}
-                                                    onChange={(e) => changeOrderProductData(orderProductIndex, "name", e.target.value.trim())}
-                                                    disabled={true}
-                                                />
+                                                {orderProduct.name}
                                             </td>
                                             <td>
-                                                <input
-                                                    type="text"
-                                                    className="form-control unit-price"
-                                                    defaultValue={orderProduct.unitPrice}
-                                                    onChange={(e) => changeOrderProductData(orderProductIndex, "unitPrice", e.target.value.trim())}
-                                                    disabled={true}
-                                                />
+                                                {orderProduct.unitPrice}
                                             </td>
                                             <td>
                                                 {orderProduct.unitDiscount}
