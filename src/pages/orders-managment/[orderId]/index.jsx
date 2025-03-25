@@ -182,8 +182,8 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <th>Total</th>
                                         <th>Image</th>
                                         {ordersType === "return" && <>
-                                            <th>Accepted Quantity</th>
-                                            <th>Accepted Total Amount</th>
+                                            <th>ِApproved Quantity</th>
+                                            <th>Approved Total Amount</th>
                                             <th>Notes</th>
                                         </>}
                                         <th>Action</th>
@@ -220,13 +220,13 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 />
                                             </td>
                                             {ordersType === "return" && <>
-                                                <td>{orderProduct.acceptedQuantity}</td>
-                                                <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.acceptedQuantity}</td>
+                                                <td>{orderProduct.approvedQuantity}</td>
+                                                <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.approvedQuantity}</td>
                                                 <td>{orderProduct.notes ? orderProduct.notes : <span className="text-danger fw-bold">No Notes</span>}</td>
                                             </>}
                                             <td>
                                                 {ordersType === "return" ? <>
-                                                    {selectedOrderProductIndex !== orderProductIndex && <button
+                                                    {/* {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderProductData(orderProductIndex)}
                                                     >
@@ -237,18 +237,30 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                         disabled
                                                     >
                                                         Updating ...
+                                                    </button>} */}
+                                                    {selectedOrderProductIndex !== orderProductIndex && <button
+                                                        className="btn btn-info d-block mx-auto mb-3 global-button"
+                                                        onClick={() => updateOrderProductData(orderProductIndex)}
+                                                    >
+                                                        Approve
                                                     </button>}
-                                                    {selectedOrderProductIndex !== orderProductIndex && orderDetails.products.length > 1 && <button
+                                                    {waitMsg === "Please Wait To Updating ..." && selectedOrderProductIndex === orderProductIndex && <button
+                                                        className="btn btn-info d-block mx-auto mb-3 global-button"
+                                                        disabled
+                                                    >
+                                                        Approving ...
+                                                    </button>}
+                                                    {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         onClick={() => deleteProductFromOrder(orderProductIndex)}
                                                     >
-                                                        Delete
+                                                        Reject
                                                     </button>}
                                                     {waitMsg === "Please Wait To Deleting ..." && selectedOrderProductIndex === orderProductIndex && <button
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
-                                                        Deleting ...
+                                                        Rejecting ...
                                                     </button>}
                                                     {successMsg && selectedOrderProductIndex === orderProductIndex && <button
                                                         className="btn btn-success d-block mx-auto global-button"

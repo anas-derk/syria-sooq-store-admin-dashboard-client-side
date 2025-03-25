@@ -412,7 +412,7 @@ export default function OrdersManagment({ ordersType }) {
                                         {ordersType === "normal" && <th>Checkout Status</th>}
                                         <th>Status</th>
                                         <th>Order Total Amount</th>
-                                        {ordersType === "return" && <th>Accepted Order Total Amount</th>}
+                                        {ordersType === "return" && <th>Approved Order Total Amount</th>}
                                         <th>Added Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -459,7 +459,7 @@ export default function OrdersManagment({ ordersType }) {
                                             <td>
                                                 {order.orderAmount}
                                             </td>
-                                            {ordersType === "return" && <td>{order.acceptedOrderAmount}</td>}
+                                            {ordersType === "return" && <td>{order.approvedOrderAmount}</td>}
                                             <td>{getDateFormated(order.addedDate)}</td>
                                             <td>
                                                 {!order.isDeleted && orderIndex !== selectedOrderIndex && <>
