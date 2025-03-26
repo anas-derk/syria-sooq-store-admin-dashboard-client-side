@@ -117,6 +117,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                             <th>ِApproved Total Amount Before Discount</th>
                                             <th>Approved Total Amount</th>
                                             <th>Notes</th>
+                                            <th>Status</th>
                                         </>}
                                         <th>Action</th>
                                     </tr>
@@ -157,9 +158,10 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 <td>{orderProduct.unitPrice * orderProduct.approvedQuantity}</td>
                                                 <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.approvedQuantity}</td>
                                                 <td>{orderProduct.notes ? orderProduct.notes : <span className="text-danger fw-bold">No Notes</span>}</td>
+                                                <td>{orderProduct.status}</td>
                                             </>}
                                             <td>
-                                                {ordersType === "return" ? <>
+                                                {ordersType === "return" && orderProduct.status === "checking" ? <>
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => handleChangeReturnOrderProductStatus(orderProductIndex, "approving")}

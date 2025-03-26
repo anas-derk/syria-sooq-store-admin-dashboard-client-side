@@ -61,7 +61,14 @@ export default function OrdersManagment({ ordersType }) {
 
     const orderStatus = ["pending", "shipping", "completed", "cancelled"];
 
-    const returnedOrderStatus = ["awaiting products", "received products", "checking products", "returned products"];
+    const returnedOrderStatus = [
+        "awaiting products",
+        "received products",
+        "checking products",
+        "partially return products",
+        "fully return products",
+        "return refused"
+    ];
 
     useEffect(() => {
         setIsLoadingPage(true);
@@ -438,7 +445,7 @@ export default function OrdersManagment({ ordersType }) {
                                                         <option value="" hidden>Pleae Enter Status</option>
                                                         {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{status}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
                                                     </select>
-                                                    <div className="form-check border border-2 border-dark p-3">
+                                                    {/* <div className="form-check border border-2 border-dark p-3">
                                                         <input
                                                             className="form-check-input m-0"
                                                             type="checkbox"
@@ -453,7 +460,21 @@ export default function OrdersManagment({ ordersType }) {
                                                                 if (status !== "awaiting products") return status + (index !== returnedOrderStatus.length - 1 ? " or " : "");
                                                             })} )</span>
                                                         </label>
-                                                    </div>
+                                                    </div> */}
+                                                    {ordersType === "normal" && <div className="form-check border border-2 border-dark p-3">
+                                                        <input
+                                                            className="form-check-input m-0"
+                                                            type="checkbox"
+                                                            id="sendEmailCheckout"
+                                                            onChange={(e) => changeOrderData(orderIndex, "isSendEmailToTheCustomer", e.target.checked)}
+                                                        />
+                                                        <label className="form-check-label" htmlFor="sendEmailCheckout" onClick={(e) => changeOrderData(orderIndex, "isSendEmailToTheCustomer", e.target.checked)}>
+                                                            Send Email To Customer
+                                                            <span className="d-block mt-3 fw-bold">( In Status: {ordersType === "normal" && orderStatus.map((status, index) => {
+                                                                if (status !== "pending" && status !== "cancelled") return status + (index !== orderStatus.length - 2 ? " or " : "");
+                                                            })}</span>
+                                                        </label>
+                                                    </div>}
                                                 </>}
                                             </td>
                                             <td>
