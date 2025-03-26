@@ -89,6 +89,8 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                     setIsDisplayOrderProductStatusChangeBox={setIsDisplayOrderProductStatusChangeBox}
                     selectedProduct={orderDetails.products[selectedOrderProductIndex]}
                     setSelectedOrderProductIndex={setSelectedOrderProductIndex}
+                    orderId={orderIdAsProperty}
+                    setOrderDetails={setOrderDetails}
                 />}
                 {/* End Change Order Product Status Box */}
                 {/* Start Content Section */}

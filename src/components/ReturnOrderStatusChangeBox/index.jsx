@@ -4,12 +4,15 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
 import FormFieldErrorBox from "../FormFieldErrorBox";
+import { getOrderDetails } from "../../../public/global_functions/popular";
 
 export default function ReturnOrderProductStatusChangeBox({
     orderProductAction,
     setIsDisplayOrderProductStatusChangeBox,
     selectedProduct,
     setSelectedOrderProductIndex,
+    orderId,
+    setOrderDetails
 }) {
 
     const [notes, setNotes] = useState("");
@@ -29,7 +32,7 @@ export default function ReturnOrderProductStatusChangeBox({
         setSelectedOrderProductIndex(-1);
     }
 
-    const approveOnReturn = async (orderId) => {
+    const approveOnReturn = async () => {
         try {
             setWaitMsg("Please Waiting ...");
             const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approve-on-return-product/${orderId}?password=${adminPassword}&language=${process.env.defaultLanguage}`, {
@@ -46,6 +49,7 @@ export default function ReturnOrderProductStatusChangeBox({
                 setSuccessMsg(result.msg);
                 let successTimeout = setTimeout(async () => {
                     setSuccessMsg("");
+                    setOrderDetails((await getOrderDetails(orderId, "return")).data);
                     handleClosePopupBox();
                     clearTimeout(successTimeout);
                 }, 3000);
@@ -74,7 +78,7 @@ export default function ReturnOrderProductStatusChangeBox({
         }
     }
 
-    const returnReject = async (orderId) => {
+    const returnReject = async () => {
         try {
             setFormValidationErrors({});
             const errorsObject = inputValuesValidation([
@@ -105,6 +109,7 @@ export default function ReturnOrderProductStatusChangeBox({
                     setSuccessMsg(result.msg);
                     let successTimeout = setTimeout(async () => {
                         setSuccessMsg("");
+                        setOrderDetails((await getOrderDetails(orderId, "return")).data);
                         handleClosePopupBox();
                         clearTimeout(successTimeout);
                     }, 3000);
@@ -162,7 +167,7 @@ export default function ReturnOrderProductStatusChangeBox({
                         orderProductAction === "approving" &&
                         <button
                             className="btn btn-success d-block mx-auto mb-4 global-button"
-                            onClick={() => approveOnReturn(selectedProduct._id)}
+                            onClick={approveOnReturn}
                         >
                             Approve
                         </button>
@@ -174,7 +179,7 @@ export default function ReturnOrderProductStatusChangeBox({
                         orderProductAction === "rejecting" &&
                         <button
                             className="btn btn-success d-block mx-auto mb-4 global-button"
-                            onClick={() => returnReject(selectedProduct._id)}
+                            onClick={returnReject}
                         >
                             Reject
                         </button>
