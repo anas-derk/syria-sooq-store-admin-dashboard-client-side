@@ -121,7 +121,7 @@ export default function ReturnOrderProductStatusChangeBox({
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Waiting ...");
-                const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/reject-on-return-product/${orderId}?language=${process.env.defaultLanguage}`, {
+                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/refusal-return-product/${orderId}/${selectedProduct._id}?language=${process.env.defaultLanguage}`, {
                     notes
                 },
                     {
