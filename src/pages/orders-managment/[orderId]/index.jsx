@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { getAdminInfo, getOrderDetails } from "../../../../public/global_functions/popular";
+import ReturnOrderProductStatusChangeBox from "@/components/ReturnOrderStatusChangeBox";
 
 export default function OrderDetails({ orderIdAsProperty, ordersType }) {
 
@@ -24,6 +24,10 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
     const [errorMsg, setErrorMsg] = useState("");
 
     const [successMsg, setSuccessMsg] = useState("");
+
+    const [isDisplayOrderProductStatusChangeBox, setIsDisplayOrderProductStatusChangeBox] = useState(false);
+
+    const [orderProductAction, setOrderProductAction] = useState("");
 
     const router = useRouter();
 
@@ -64,98 +68,6 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
         } else router.replace("/login");
     }, [ordersType]);
 
-    const updateOrderProductData = async (orderProductIndex) => {
-        try {
-            setWaitMsg("Please Wait To Updating ...");
-            setSelectedOrderProductIndex(orderProductIndex);
-            const result = (await axios.put(`${process.env.BASE_API_URL}/orders/products/update-product/${orderDetails._id}/${orderDetails.products[orderProductIndex].productId}?language=${process.env.defaultLanguage}`, {
-                quantity: orderDetails.products[orderProductIndex].quantity,
-                name: orderDetails.products[orderProductIndex].name,
-                unitPrice: orderDetails.products[orderProductIndex].unitPrice,
-            }, {
-                headers: {
-                    Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                }
-            })).data;
-            setWaitMsg("");
-            if (!result.error) {
-                setSuccessMsg("Updating Successfull !!");
-                let successTimeout = setTimeout(() => {
-                    setSuccessMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    clearTimeout(successTimeout);
-                }, 1500);
-            } else {
-                setErrorMsg(result.msg);
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
-        }
-        catch (err) {
-            console.log(err);
-            if (err?.response?.status === 401) {
-                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
-                await router.replace("/login");
-            }
-            else {
-                setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
-        }
-    }
-
-    const deleteProductFromOrder = async (orderProductIndex) => {
-        try {
-            setWaitMsg("Please Wait To Deleting ...");
-            setSelectedOrderProductIndex(orderProductIndex);
-            const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/products/delete-product/${orderDetails._id}/${orderDetails.products[orderProductIndex].productId}?language=${process.env.defaultLanguage}`, {
-                headers: {
-                    Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                }
-            })).data;
-            setWaitMsg("");
-            if (!result.error) {
-                setSuccessMsg("Deleting Successfull !!");
-                let successTimeout = setTimeout(() => {
-                    setSuccessMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    orderDetails.products = result.data.newOrderProducts;
-                    clearTimeout(successTimeout);
-                }, 1500);
-            } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
-        }
-        catch (err) {
-            if (err?.response?.status === 401) {
-                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
-                await router.replace("/login");
-            }
-            else {
-                setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    setSelectedOrderProductIndex(-1);
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
-        }
-    }
-
     return (
         <div className="order-details admin-dashboard">
             <Head>
@@ -165,6 +77,15 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                 {/* Start Admin Dashboard Side Bar */}
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 {/* Start Admin Dashboard Side Bar */}
+                {/* Start Change Order Product Status Box */}
+                {isDisplayOrderProductStatusChangeBox && <ReturnOrderProductStatusChangeBox
+                    orderProductAction={orderProductAction}
+                    setIsDisplayOrderProductStatusChangeBox={setIsDisplayOrderProductStatusChangeBox}
+                    // setOrderProductAction={setOrderProductAction}
+                    selectedProduct={orderDetails.products[selectedOrderProductIndex]}
+                    handleChangeOrderProductStatus={handleChangeOrderProductStatus}
+                />}
+                {/* End Change Order Product Status Box */}
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-4 pb-4 p-4">
                     <div className="container-fluid">
@@ -226,18 +147,6 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                             </>}
                                             <td>
                                                 {ordersType === "return" ? <>
-                                                    {/* {selectedOrderProductIndex !== orderProductIndex && <button
-                                                        className="btn btn-info d-block mx-auto mb-3 global-button"
-                                                        onClick={() => updateOrderProductData(orderProductIndex)}
-                                                    >
-                                                        Update
-                                                    </button>}
-                                                    {waitMsg === "Please Wait To Updating ..." && selectedOrderProductIndex === orderProductIndex && <button
-                                                        className="btn btn-info d-block mx-auto mb-3 global-button"
-                                                        disabled
-                                                    >
-                                                        Updating ...
-                                                    </button>} */}
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderProductData(orderProductIndex)}

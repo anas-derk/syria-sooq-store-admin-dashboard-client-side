@@ -363,7 +363,7 @@ export default function StoresManagment() {
                 {/* Start Admin Dashboard Side Bar */}
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 {/* Start Admin Dashboard Side Bar */}
-                {/* Start Share Options Box */}
+                {/* Start Change Store Status Box */}
                 {isDisplayChangeStoreStatusBox && <ChangeStoreStatusBox
                     setIsDisplayChangeStoreStatusBox={setIsDisplayChangeStoreStatusBox}
                     setStoreAction={setStoreAction}
@@ -371,7 +371,7 @@ export default function StoresManagment() {
                     storeAction={storeAction}
                     handleChangeStoreStatus={handleChangeStoreStatus}
                 />}
-                {/* End Share Options Box */}
+                {/* End Change Store Status Box */}
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-5 pb-5">
                     <div className="container-fluid">
