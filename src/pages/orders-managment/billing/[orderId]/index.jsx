@@ -110,9 +110,9 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                             <div className="row total pb-3 mb-5" key={productIndex}>
                                 <div className="col-md-3 fw-bold p-0">
                                     {i18n.language !== "ar" ? <span>
-                                        ( {product.name} ) x {product.quantity}
+                                        ( {product.name} ) x {ordersType === "normal" ? product.quantity : product.approvedQuantity}
                                     </span> : <span>
-                                        ( {product.name} ) {product.quantity} x
+                                        ( {product.name} ) {ordersType === "normal" ? product.quantity : product.approvedQuantity} x
                                     </span>}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
@@ -173,7 +173,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                             {t("Thanks For Purchase From Store")} {storeDetails.name}
                         </h4>
                     </section>}
-                    {Object.keys(orderDetails).length > 0 && orderDetails?.checkoutStatus !== "Checkout Successfull" && <NotFoundError errorMsg="Sorry, This Order Is Not Completed !!" />}
+                    {Object.keys(orderDetails).length > 0 && orderDetails?.checkoutStatus !== "Checkout Successfull" || (ordersType === "return" && displayBillingButtonStatusForReturnOrder.includes(orderDetails.status) && orderDetails.products.filter((product) => product.status !== "checking").length === orderDetails.products.length) && <NotFoundError errorMsg="Sorry, This Order Is Not Completed !!" />}
                     {Object.keys(orderDetails).length === 0 && <NotFoundError errorMsg="Sorry, This Order Is Not Found !!" />}
                 </div>
             </>}
