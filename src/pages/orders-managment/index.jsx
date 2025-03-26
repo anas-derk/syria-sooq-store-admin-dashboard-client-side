@@ -506,7 +506,7 @@ export default function OrdersManagment({ ordersType }) {
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
                                                     >Show Details</Link>
                                                     {order.checkoutStatus === "Checkout Successfull" && <Link
-                                                        href={`/orders-managment/billing/${order._id}`}
+                                                        href={`/orders-managment/billing/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
                                                     >Show Billing</Link>}
                                                 </>}
