@@ -31,6 +31,8 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
 
     const router = useRouter();
 
+    const ordersTypeByMakeFirstLetterCapital = ordersType.replace(ordersType[0], ordersType[0].toUpperCase());
+
     useEffect(() => {
         setIsLoadingPage(true);
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -77,7 +79,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
     return (
         <div className="order-details admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Order Details</title>
+                <title>{process.env.storeName} Admin Dashboard - {ordersTypeByMakeFirstLetterCapital} Order Details</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 {/* Start Admin Dashboard Side Bar */}
@@ -96,7 +98,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-4 pb-4 p-4">
                     <div className="container-fluid">
-                        <h1 className="welcome-msg fw-bold mx-auto mt-3 mb-3">Hello {adminInfo.fullName} In Orders Details Page</h1>
+                        <h1 className="welcome-msg fw-bold mx-auto mt-3 mb-3">Hello {adminInfo.fullName} In {ordersTypeByMakeFirstLetterCapital} Order Details Page</h1>
                         {Object.keys(orderDetails).length > 0 ? <div className="order-details-box p-3 data-box admin-dashbboard-data-box">
                             <table className="order-data-table managment-table admin-dashbboard-data-table">
                                 <thead>
