@@ -9,6 +9,7 @@ export default function ReturnOrderProductStatusChangeBox({
     orderProductAction,
     setIsDisplayOrderProductStatusChangeBox,
     selectedProduct,
+    setSelectedOrderProductIndex
 }) {
 
     const [notes, setNotes] = useState("");
@@ -25,7 +26,7 @@ export default function ReturnOrderProductStatusChangeBox({
 
     const handleClosePopupBox = () => {
         setIsDisplayOrderProductStatusChangeBox(false);
-        setOrderProductAction("");
+        setSelectedOrderProductIndex(-1);
     }
 
     const approveOnReturn = async (orderId) => {
@@ -76,32 +77,45 @@ export default function ReturnOrderProductStatusChangeBox({
     const returnReject = async (orderId) => {
         try {
             setFormValidationErrors({});
-
-            setWaitMsg("Please Waiting ...");
-            const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/reject-on-return-product/${orderId}?language=${process.env.defaultLanguage}`, {
-                notes
-            },
+            const errorsObject = inputValuesValidation([
                 {
-                    headers: {
-                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                    }
+                    name: "notes",
+                    value: notes,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
                 }
-            )).data;
-            setWaitMsg("");
-            if (!result.error) {
-                setSuccessMsg(result.msg);
-                let successTimeout = setTimeout(async () => {
-                    setSuccessMsg("");
-                    handleClosePopupBox();
-                    clearTimeout(successTimeout);
-                }, 3000);
-            }
-            else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    clearTimeout(errorTimeout);
-                }, 1500);
+            ]);
+            setFormValidationErrors(errorsObject);
+            if (Object.keys(errorsObject).length == 0) {
+                setWaitMsg("Please Waiting ...");
+                const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/reject-on-return-product/${orderId}?language=${process.env.defaultLanguage}`, {
+                    notes
+                },
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                        }
+                    }
+                )).data;
+                setWaitMsg("");
+                if (!result.error) {
+                    setSuccessMsg(result.msg);
+                    let successTimeout = setTimeout(async () => {
+                        setSuccessMsg("");
+                        handleClosePopupBox();
+                        clearTimeout(successTimeout);
+                    }, 3000);
+                }
+                else {
+                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    let errorTimeout = setTimeout(() => {
+                        setErrorMsg("");
+                        clearTimeout(errorTimeout);
+                    }, 1500);
+                }
             }
         }
         catch (err) {
@@ -124,7 +138,7 @@ export default function ReturnOrderProductStatusChangeBox({
         <div className="change-return-order-status-box popup-box">
             <div className="content-box d-flex align-items-center justify-content-center text-white flex-column p-4 text-center">
                 {!waitMsg && !errorMsg && !successMsg && <GrFormClose className="close-popup-box-icon" onClick={handleClosePopupBox} />}
-                <h4 className="mb-4">Are You Sure From: {orderProductAction} Order Product: ( {selectedProduct.name} ) ?</h4>
+                <h4 className="mb-4">Are You Sure From: {orderProductAction} Product: ( {selectedProduct.name} ) ?</h4>
                 <form className="change-store-status-form w-50" onSubmit={(e) => e.preventDefault()}>
                     {
                         !waitMsg &&

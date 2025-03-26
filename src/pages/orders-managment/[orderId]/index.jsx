@@ -68,6 +68,12 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
         } else router.replace("/login");
     }, [ordersType]);
 
+    const handleChangeReturnOrderProductStatus = (productIndex, action) => {
+        setSelectedOrderProductIndex(productIndex);
+        setOrderProductAction(action);
+        setIsDisplayOrderProductStatusChangeBox(true);
+    }
+
     return (
         <div className="order-details admin-dashboard">
             <Head>
@@ -82,6 +88,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                     orderProductAction={orderProductAction}
                     setIsDisplayOrderProductStatusChangeBox={setIsDisplayOrderProductStatusChangeBox}
                     selectedProduct={orderDetails.products[selectedOrderProductIndex]}
+                    setSelectedOrderProductIndex={setSelectedOrderProductIndex}
                 />}
                 {/* End Change Order Product Status Box */}
                 {/* Start Content Section */}
@@ -147,7 +154,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 {ordersType === "return" ? <>
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
-                                                        onClick={() => updateOrderProductData(orderProductIndex)}
+                                                        onClick={() => handleChangeReturnOrderProductStatus(orderProductIndex, "approving")}
                                                     >
                                                         Approve
                                                     </button>}
@@ -159,7 +166,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     </button>}
                                                     {selectedOrderProductIndex !== orderProductIndex && <button
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
-                                                        onClick={() => deleteProductFromOrder(orderProductIndex)}
+                                                        onClick={() => handleChangeReturnOrderProductStatus(orderProductIndex, "rejecting")}
                                                     >
                                                         Reject
                                                     </button>}
