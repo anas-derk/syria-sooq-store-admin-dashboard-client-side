@@ -8,9 +8,7 @@ import FormFieldErrorBox from "../FormFieldErrorBox";
 export default function ReturnOrderProductStatusChangeBox({
     orderProductAction,
     setIsDisplayOrderProductStatusChangeBox,
-    setOrderProductAction,
     selectedProduct,
-    handleChangeOrderProductStatus,
 }) {
 
     const [notes, setNotes] = useState("");
@@ -30,50 +28,33 @@ export default function ReturnOrderProductStatusChangeBox({
         setOrderProductAction("");
     }
 
-    const approveOnReturn = async (storeId) => {
+    const approveOnReturn = async (orderId) => {
         try {
-            setFormValidationErrors({});
-            const errorsObject = inputValuesValidation([
+            setWaitMsg("Please Waiting ...");
+            const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approve-on-return-product/${orderId}?password=${adminPassword}&language=${process.env.defaultLanguage}`, {
+                notes
+            },
                 {
-                    name: "adminPassword",
-                    value: adminPassword,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
-                        },
-                        isValidPassword: {
-                            msg: "Sorry, The Password Must Be At Least 8 Characters Long, With At Least One Number, At Least One Lowercase Letter, And At Least One Uppercase Letter."
-                        },
-                    },
-                },
-            ]);
-            setFormValidationErrors(errorsObject);
-            if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Waiting ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/stores/approve-store/${storeId}?password=${adminPassword}&language=${process.env.defaultLanguage}`, undefined,
-                    {
-                        headers: {
-                            Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                        }
+                    headers: {
+                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                     }
-                )).data;
-                setWaitMsg("");
-                if (!result.error) {
-                    setSuccessMsg(result.msg);
-                    let successTimeout = setTimeout(async () => {
-                        setSuccessMsg("");
-                        handleClosePopupBox();
-                        handleChangeOrderProductStatus("approving");
-                        clearTimeout(successTimeout);
-                    }, 3000);
                 }
-                else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                    let errorTimeout = setTimeout(() => {
-                        setErrorMsg("");
-                        clearTimeout(errorTimeout);
-                    }, 1500);
-                }
+            )).data;
+            setWaitMsg("");
+            if (!result.error) {
+                setSuccessMsg(result.msg);
+                let successTimeout = setTimeout(async () => {
+                    setSuccessMsg("");
+                    handleClosePopupBox();
+                    clearTimeout(successTimeout);
+                }, 3000);
+            }
+            else {
+                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
             }
         }
         catch (err) {
@@ -92,10 +73,14 @@ export default function ReturnOrderProductStatusChangeBox({
         }
     }
 
-    const returnReject = async (storeId) => {
+    const returnReject = async (orderId) => {
         try {
+            setFormValidationErrors({});
+
             setWaitMsg("Please Waiting ...");
-            const result = (await axios.delete(`${process.env.BASE_API_URL}/stores/reject-store/${storeId}?language=${process.env.defaultLanguage}`,
+            const result = (await axios.delete(`${process.env.BASE_API_URL}/orders/reject-on-return-product/${orderId}?language=${process.env.defaultLanguage}`, {
+                notes
+            },
                 {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -108,7 +93,6 @@ export default function ReturnOrderProductStatusChangeBox({
                 let successTimeout = setTimeout(async () => {
                     setSuccessMsg("");
                     handleClosePopupBox();
-                    handleChangeOrderProductStatus("rejecting");
                     clearTimeout(successTimeout);
                 }, 3000);
             }

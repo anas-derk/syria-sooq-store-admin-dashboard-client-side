@@ -81,9 +81,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                 {isDisplayOrderProductStatusChangeBox && <ReturnOrderProductStatusChangeBox
                     orderProductAction={orderProductAction}
                     setIsDisplayOrderProductStatusChangeBox={setIsDisplayOrderProductStatusChangeBox}
-                    // setOrderProductAction={setOrderProductAction}
                     selectedProduct={orderDetails.products[selectedOrderProductIndex]}
-                    handleChangeOrderProductStatus={handleChangeOrderProductStatus}
                 />}
                 {/* End Change Order Product Status Box */}
                 {/* Start Content Section */}
