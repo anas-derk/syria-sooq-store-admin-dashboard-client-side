@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import NotFoundError from "@/components/NotFoundError";
 
-export default function ShowBilling({ orderIdAsProperty }) {
+export default function ShowBilling({ orderIdAsProperty, ordersType }) {
 
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
@@ -48,7 +48,7 @@ export default function ShowBilling({ orderIdAsProperty }) {
                         } else {
                             setAdminInfo(adminDetails);
                             setStoreDetails((await getStoreDetails(adminDetails.storeId)).data);
-                            result = await getOrderDetails(orderIdAsProperty);
+                            result = await getOrderDetails(orderIdAsProperty, ordersType);
                             if (!result.error) {
                                 setOrderDetails(result.data);
                             }
@@ -67,7 +67,7 @@ export default function ShowBilling({ orderIdAsProperty }) {
                     }
                 });
         } else router.replace("/login");
-    }, []);
+    }, [ordersType]);
 
     useEffect(() => {
         if (!isGetOrderDetails) {
@@ -181,19 +181,30 @@ export default function ShowBilling({ orderIdAsProperty }) {
     );
 }
 
-export async function getServerSideProps({ params }) {
-    if (!params.orderId) {
+export async function getServerSideProps({ params, query }) {
+    const { orderId } = params;
+    const { ordersType } = query;
+    if (ordersType !== "normal" && ordersType !== "return") {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/",
+            },
+        }
+    }
+    if (!orderId) {
         return {
             redirect: {
                 permanent: false,
                 destination: "/orders-managment",
             },
-            props: {},
         }
-    }
-    return {
-        props: {
-            orderIdAsProperty: params.orderId,
-        },
+    } else {
+        return {
+            props: {
+                orderIdAsProperty: orderId,
+                ordersType,
+            },
+        }
     }
 }
