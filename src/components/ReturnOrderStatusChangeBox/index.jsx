@@ -15,6 +15,8 @@ export default function ReturnOrderProductStatusChangeBox({
     setOrderDetails
 }) {
 
+    const [approvedQuantity, setApprovedQuantity] = useState("");
+
     const [notes, setNotes] = useState("");
 
     const [waitMsg, setWaitMsg] = useState("");
@@ -34,32 +36,52 @@ export default function ReturnOrderProductStatusChangeBox({
 
     const approveOnReturn = async () => {
         try {
-            setWaitMsg("Please Waiting ...");
-            const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approve-on-return-product/${orderId}?password=${adminPassword}&language=${process.env.defaultLanguage}`, {
-                notes
-            },
+            setFormValidationErrors({});
+            const errorsObject = inputValuesValidation([
                 {
-                    headers: {
-                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                    }
+                    name: "approvedQuantity",
+                    value: approvedQuantity,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        minNumber: {
+                            value: 1,
+                            msg: "Sorry, The Minimum Value Is: 1"
+                        }
+                    },
                 }
-            )).data;
-            setWaitMsg("");
-            if (!result.error) {
-                setSuccessMsg(result.msg);
-                let successTimeout = setTimeout(async () => {
-                    setSuccessMsg("");
-                    setOrderDetails((await getOrderDetails(orderId, "return")).data);
-                    handleClosePopupBox();
-                    clearTimeout(successTimeout);
-                }, 3000);
-            }
-            else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    clearTimeout(errorTimeout);
-                }, 1500);
+            ]);
+            setFormValidationErrors(errorsObject);
+            if (Object.keys(errorsObject).length == 0) {
+                setWaitMsg("Please Waiting ...");
+                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approve-on-return-product/${orderId}/${selectedProduct._id}?language=${process.env.defaultLanguage}`, {
+                    approvedQuantity,
+                    notes
+                },
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                        }
+                    }
+                )).data;
+                setWaitMsg("");
+                if (!result.error) {
+                    setSuccessMsg(result.msg);
+                    let successTimeout = setTimeout(async () => {
+                        setSuccessMsg("");
+                        setOrderDetails((await getOrderDetails(orderId, "return")).data);
+                        handleClosePopupBox();
+                        clearTimeout(successTimeout);
+                    }, 3000);
+                }
+                else {
+                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    let errorTimeout = setTimeout(() => {
+                        setErrorMsg("");
+                        clearTimeout(errorTimeout);
+                    }, 1500);
+                }
             }
         }
         catch (err) {
@@ -150,7 +172,16 @@ export default function ReturnOrderProductStatusChangeBox({
                         !errorMsg &&
                         !successMsg &&
                         <section className="change-order-product-status mb-4">
-                            <div className="password-field-box">
+                            {orderProductAction === "approving" && <div className="approved-quantity-field-box">
+                                <input
+                                    type="number"
+                                    placeholder="Please Enter Approved Quantity"
+                                    className={`form-control p-3 border-2 ${formValidationErrors["approvedQuantity"] ? "border-danger mb-3" : "mb-4"}`}
+                                    onChange={(e) => setApprovedQuantity(e.target.value)}
+                                />
+                            </div>}
+                            {formValidationErrors["approvedQuantity"] && <FormFieldErrorBox errorMsg={formValidationErrors["approvedQuantity"]} />}
+                            <div className="notes-field-box">
                                 <textarea
                                     placeholder={orderProductAction === "approving" ? "Please Enter Notes" : "Please Enter Reason"}
                                     className={`form-control p-3 border-2 ${formValidationErrors["notes"] ? "border-danger mb-3" : "mb-5"}`}
