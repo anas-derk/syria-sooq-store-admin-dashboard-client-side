@@ -48,6 +48,10 @@ export default function ReturnOrderProductStatusChangeBox({
                         minNumber: {
                             value: 1,
                             msg: "Sorry, The Minimum Value Is: 1"
+                        },
+                        maxNumber: {
+                            value: selectedProduct.quantity,
+                            msg: `Sorry, The Minimum Value Is: ${selectedProduct.quantity}`
                         }
                     },
                 }
@@ -55,7 +59,7 @@ export default function ReturnOrderProductStatusChangeBox({
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
                 setWaitMsg("Please Waiting ...");
-                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approve-on-return-product/${orderId}/${selectedProduct._id}?language=${process.env.defaultLanguage}`, {
+                const result = (await axios.post(`${process.env.BASE_API_URL}/orders/approving-on-return-product/${orderId}/${selectedProduct._id}?language=${process.env.defaultLanguage}`, {
                     approvedQuantity,
                     notes
                 },

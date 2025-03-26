@@ -114,6 +114,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         {ordersType === "return" && <>
                                             <th>Return Reason</th>
                                             <th>ِApproved Quantity</th>
+                                            <th>ِApproved Total Amount Before Discount</th>
                                             <th>Approved Total Amount</th>
                                             <th>Notes</th>
                                         </>}
@@ -153,6 +154,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                             {ordersType === "return" && <>
                                                 <td>{<span className="text-danger fw-bold">{orderProduct.returnReason}</span>}</td>
                                                 <td>{orderProduct.approvedQuantity}</td>
+                                                <td>{orderProduct.unitPrice * orderProduct.approvedQuantity}</td>
                                                 <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.approvedQuantity}</td>
                                                 <td>{orderProduct.notes ? orderProduct.notes : <span className="text-danger fw-bold">No Notes</span>}</td>
                                             </>}
