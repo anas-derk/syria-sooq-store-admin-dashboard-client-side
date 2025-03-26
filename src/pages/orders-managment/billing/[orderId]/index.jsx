@@ -122,7 +122,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                                     {product.unitDiscount} {t("SY")}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
-                                    {((product.unitPrice - product.unitDiscount) * ordersType === "normal" ? product.quantity : product.approvedQuantity).toFixed(2)} {t("SY")}
+                                    {((product.unitPrice - product.unitDiscount) * (ordersType === "normal" ? product.quantity : product.approvedQuantity)).toFixed(2)} {t("SY")}
                                 </div>
                             </div>
                         ))}
