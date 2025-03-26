@@ -27,6 +27,8 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
 
     const { t, i18n } = useTranslation();
 
+    const displayBillingButtonStatusForReturnOrder = ["partially return products", "fully return products"];
+
     useEffect(() => {
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
         handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : "en", i18n.changeLanguage);
@@ -83,7 +85,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content p-4 bg-white">
-                    {Object.keys(orderDetails).length > 0 && orderDetails?.checkoutStatus === "Checkout Successfull" && <section className="order-total border border-3 border-dark p-4 ps-md-5 pe-md-5 text-center" id="order-total">
+                    {Object.keys(orderDetails).length > 0 && (orderDetails?.checkoutStatus === "Checkout Successfull" || (ordersType === "return" && displayBillingButtonStatusForReturnOrder.includes(orderDetails.status) && orderDetails.products.filter((product) => product.status !== "checking").length === orderDetails.products.length)) && <section className="order-total border border-3 border-dark p-4 ps-md-5 pe-md-5 text-center" id="order-total">
                         <h1 className="welcome-msg text-center mb-4 fw-bold border-bottom border-4 border-dark w-fit mx-auto pb-2">{t("Your Order Billing From Store")}: {storeDetails.name}</h1>
                         <h5 className="fw-bold mb-4 text-center">{t("Your Request")}</h5>
                         <div className="order-id-and-number border border-2 border-dark p-4 mb-5">
@@ -120,7 +122,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                                     {product.unitDiscount} {t("SY")}
                                 </div>
                                 <div className="col-md-3 fw-bold p-0">
-                                    {((product.unitPrice - product.unitDiscount) * product.quantity).toFixed(2)} {t("SY")}
+                                    {((product.unitPrice - product.unitDiscount) * ordersType === "normal" ? product.quantity : product.approvedQuantity).toFixed(2)} {t("SY")}
                                 </div>
                             </div>
                         ))}
@@ -129,7 +131,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                                 {t("Total Price Before Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {orderDetails.totalPriceBeforeDiscount.toFixed(2)} {t("SY")}
+                                {ordersType === "normal" ? orderDetails.totalPriceBeforeDiscount.toFixed(2) : orderDetails.approvedTotalPriceBeforeDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-price-discount total pb-3 mb-5">
@@ -137,7 +139,7 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                                 {t("Total Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {orderDetails.totalDiscount.toFixed(2)} {t("SY")}
+                                {ordersType === "normal" ? orderDetails.totalDiscount.toFixed(2) : orderDetails.approvedTotalDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="row total-price-after-discount total pb-3 mb-5">
@@ -145,23 +147,23 @@ export default function ShowBilling({ orderIdAsProperty, ordersType }) {
                                 {t("Total Price After Discount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {orderDetails.totalPriceAfterDiscount.toFixed(2)} {t("SY")}
+                                {ordersType === "normal" ? orderDetails.totalPriceAfterDiscount.toFixed(2) : orderDetails.approvedTotalPriceAfterDiscount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
-                        <div className="row total-shipping-cost total pb-3 mb-5">
+                        {ordersType === "normal" && <div className="row total-shipping-cost total pb-3 mb-5">
                             <div className="col-md-3 fw-bold p-0">
                                 {t("Total Shipping Cost")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
                                 {orderDetails.shippingCost.toFixed(2)} {t("SY")}
                             </div>
-                        </div>
+                        </div>}
                         <div className="row total-amount total pb-3 mb-5">
                             <div className="col-md-3 fw-bold p-0">
                                 {t("Total Amount")}
                             </div>
                             <div className={`col-md-9 fw-bold p-0 ${i18n.language !== "ar" ? "text-md-end" : "text-md-start"}`}>
-                                {orderDetails.orderAmount.toFixed(2)} {t("SY")}
+                                {ordersType === "normal" ? orderDetails.orderAmount.toFixed(2) : orderDetails.approvedOrderAmount.toFixed(2)} {t("SY")}
                             </div>
                         </div>
                         <div className="thanks-icon-box mb-4">

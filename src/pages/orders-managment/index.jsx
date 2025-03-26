@@ -70,6 +70,8 @@ export default function OrdersManagment({ ordersType }) {
         "return refused"
     ];
 
+    const displayBillingButtonStatusForReturnOrder = ["partially return products", "fully return products"];
+
     useEffect(() => {
         setIsLoadingPage(true);
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -526,7 +528,7 @@ export default function OrdersManagment({ ordersType }) {
                                                         href={`/orders-managment/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
                                                     >Show Details</Link>
-                                                    {order.checkoutStatus === "Checkout Successfull" && <Link
+                                                    {(order.checkoutStatus === "Checkout Successfull" || (ordersType === "return" && displayBillingButtonStatusForReturnOrder.includes(order.status)) && order.products.filter((product) => product.status !== "checking").length === order.products.length) && <Link
                                                         href={`/orders-managment/billing/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
                                                     >Show Billing</Link>}
