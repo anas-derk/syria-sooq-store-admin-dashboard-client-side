@@ -130,6 +130,15 @@ input, textarea, select{
 }
 
 .order-details{
+    @media (min-width: 991px) {
+        .order-details-box{
+            height: auto !important;
+        }
+        .order-data-table{
+            width: 150% !important;
+            overflow: scroll;
+        }
+    }
     .rest-info{
         p{
             font-size: 13px;

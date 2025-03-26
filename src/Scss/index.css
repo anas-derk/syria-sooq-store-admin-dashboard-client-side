@@ -190,6 +190,16 @@ input:focus, textarea:focus, select:focus {
   font-size: 13px;
 }
 
+@media (min-width: 991px) {
+  .order-details .order-details-box {
+    height: auto !important;
+  }
+  .order-details .order-data-table {
+    width: 150% !important;
+    overflow: scroll;
+  }
+}
+
 .order-details .rest-info p {
   font-size: 13px;
 }

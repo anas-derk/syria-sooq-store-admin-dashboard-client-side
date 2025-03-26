@@ -96,7 +96,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                     <div className="container-fluid">
                         <h1 className="welcome-msg fw-bold mx-auto mt-3 mb-3">Hello {adminInfo.fullName} In Orders Details Page</h1>
                         {Object.keys(orderDetails).length > 0 ? <div className="order-details-box p-3 data-box admin-dashbboard-data-box">
-                            <table className="order-data-table mb-5 managment-table admin-dashbboard-data-table">
+                            <table className="order-data-table managment-table admin-dashbboard-data-table">
                                 <thead>
                                     <tr>
                                         <th>Reference / Product Id</th>
@@ -108,6 +108,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <th>Total</th>
                                         <th>Image</th>
                                         {ordersType === "return" && <>
+                                            <th>Return Reason</th>
                                             <th>ِApproved Quantity</th>
                                             <th>Approved Total Amount</th>
                                             <th>Notes</th>
@@ -146,6 +147,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 />
                                             </td>
                                             {ordersType === "return" && <>
+                                                <td>{<span className="text-danger fw-bold">{orderProduct.returnReason}</span>}</td>
                                                 <td>{orderProduct.approvedQuantity}</td>
                                                 <td>{(orderProduct.unitPrice - orderProduct.unitDiscount) * orderProduct.approvedQuantity}</td>
                                                 <td>{orderProduct.notes ? orderProduct.notes : <span className="text-danger fw-bold">No Notes</span>}</td>
@@ -191,7 +193,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 </tbody>
                             </table>
                         </div> : <p className="alert alert-danger order-not-found-error">Sorry, This Order Is Not Found !!</p>}
-                        {Object.keys(orderDetails).length > 0 && <div className="rest-info">
+                        {Object.keys(orderDetails).length > 0 && <div className="rest-info mt-5">
                             <section className="customer-info mb-5">
                                 <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">Customer Info</h4>
                                 <div className="row">

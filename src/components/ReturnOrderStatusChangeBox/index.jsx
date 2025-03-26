@@ -9,7 +9,7 @@ export default function ReturnOrderProductStatusChangeBox({
     orderProductAction,
     setIsDisplayOrderProductStatusChangeBox,
     selectedProduct,
-    setSelectedOrderProductIndex
+    setSelectedOrderProductIndex,
 }) {
 
     const [notes, setNotes] = useState("");
