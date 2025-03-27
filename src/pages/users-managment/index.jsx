@@ -218,7 +218,7 @@ export default function UsersManagment() {
         try {
             setWaitMsg("Please Wait To Deleting ...");
             setSelectedUserIndex(userIndex);
-            const result = (await axios.delete(`${process.env.BASE_API_URL}/users/${allUsersInsideThePage[userIndex]._id}?language=${process.env.defaultLanguage}`, {
+            const result = (await axios.delete(`${process.env.BASE_API_URL}/users/delete-user?userType=admin&userId=${allUsersInsideThePage[userIndex]._id}&language=${process.env.defaultLanguage}`, {
                 headers: {
                     Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
                 }
