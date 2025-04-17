@@ -358,10 +358,10 @@ export default function UpdateAndDeleteProducts() {
                     price: allProductsInsideThePage[productIndex].price,
                     quantity: allProductsInsideThePage[productIndex].quantity,
                     description: allProductsInsideThePage[productIndex].description,
-                    discount: allProductsInsideThePage[productIndex].discount,
+                    discount: Number(allProductsInsideThePage[productIndex].discount),
                     startDiscountPeriod: allProductsInsideThePage[productIndex].startDiscountPeriod,
                     endDiscountPeriod: allProductsInsideThePage[productIndex].endDiscountPeriod,
-                    discountInOfferPeriod: allProductsInsideThePage[productIndex].discountInOfferPeriod,
+                    discountInOfferPeriod: Number(allProductsInsideThePage[productIndex].discountInOfferPeriod),
                     offerDescription: allProductsInsideThePage[productIndex].offerDescription,
                 }, {
                     headers: {
