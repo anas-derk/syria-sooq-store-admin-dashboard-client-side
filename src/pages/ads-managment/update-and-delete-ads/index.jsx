@@ -376,7 +376,7 @@ export default function UpdateAndDeleteAds() {
                                                     onChange={(e) => changeAdData(adIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
+                                                {formValidationErrors["image"] && adIndex === selectedAdImageIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
                                             </section>
                                             {(selectedAdImageIndex !== adIndex && selectedAdIndex !== adIndex) &&
                                                 <button
