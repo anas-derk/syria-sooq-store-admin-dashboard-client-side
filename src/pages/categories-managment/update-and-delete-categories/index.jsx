@@ -206,7 +206,7 @@ export default function UpdateAndDeleteCategories() {
                     let successTimeout = setTimeout(async () => {
                         setSuccessChangeCategoryImageMsg("");
                         setSelectedCategoryImageIndex(-1);
-                        setAllCategoriesInsideThePage((await getAllCategoriesInsideThePage(currentPage, pageSize)).data);
+                        setAllCategoriesInsideThePage((await getAllCategoriesInsideThePage(currentPage, pageSize)).data.categories);
                         clearTimeout(successTimeout);
                     }, 1500);
                 }
