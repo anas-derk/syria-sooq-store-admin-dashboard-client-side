@@ -1,12 +1,18 @@
-.add-new-product{
-    .add-new-product-form{
-        .add-icon{
+.add-new-product {
+    .icon {
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    .add-new-product-form {
+        .add-icon {
             font-size: 25px;
             cursor: pointer;
         }
-        .selected-countries{
-            .selected-country-box{
-                .country-name{
+
+        .selected-countries {
+            .selected-country-box {
+                .country-name {
                     font-size: 14px;
                 }
             }

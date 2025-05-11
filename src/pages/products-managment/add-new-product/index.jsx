@@ -12,6 +12,7 @@ import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { FaRegMinusSquare, FaRegPlusSquare } from "react-icons/fa";
 
 export default function AddNewProduct() {
 
@@ -32,8 +33,25 @@ export default function AddNewProduct() {
         discount: "",
         quantity: "",
         isAvailableForDelivery: false,
+        isCustomizable: false,
+        hasColors: false,
+        hasSizes: false,
         image: null,
         galleryImages: [],
+    });
+
+    const [customizes, setCustomizes] = useState({
+        colors: [],
+        sizes: {
+            sm: false,
+            md: false,
+            lg: false,
+            xl: false,
+        },
+        allowCustomText: false,
+        allowUploadImage: false,
+        additionalCost: 0,
+        additionalTime: 0,
     });
 
     const [waitMsg, setWaitMsg] = useState("");
@@ -89,6 +107,27 @@ export default function AddNewProduct() {
                 });
         } else router.replace("/login");
     }, []);
+
+    const handleSelectIsHasColors = (e) => {
+        if (customizes.colors.length === 0) {
+            setCustomizes({ ...customizes, colors: ["#000"] });
+        }
+        setProductData({ ...productData, hasColors: e.target.checked });
+    }
+
+    const handleSelectColor = (color, selectedColorIndex) => {
+        let selectedColors = customizes.colors;
+        selectedColors[selectedColorIndex] = color;
+        setCustomizes({ ...customizes, colors: selectedColors });
+    }
+
+    const addNewSelectColor = () => {
+        setCustomizes({ ...customizes, colors: [...customizes.colors, "#000"] });
+    }
+
+    const deleteSelectedColor = (selectedColorIndex) => {
+        setCustomizes({ ...customizes, colors: customizes.colors.filter((color, index) => index !== selectedColorIndex) });
+    }
 
     const addNewProduct = async (e, productData) => {
         try {
@@ -197,6 +236,7 @@ export default function AddNewProduct() {
                 for (let galleryImage of productData.galleryImages) {
                     formData.append("galleryImages", galleryImage);
                 }
+                formData.append("colors", productData.colors);
                 setWaitMsg("Please Wait To Add New Product ...");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/products/add-new-product?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
@@ -394,6 +434,104 @@ export default function AddNewProduct() {
                                 </label>
                             </div>
                         </div>
+                        <div className="is-available-for-delivery mb-4">
+                            <h6 className="fw-bold mb-3">Is It Customizable ?</h6>
+                            <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                <input
+                                    className="form-check-input m-0 me-2"
+                                    type="checkbox"
+                                    id="isCustomizable"
+                                    onChange={(e) => setProductData({ ...productData, isCustomizable: e.target.checked })}
+                                    checked={productData.isCustomizable}
+                                />
+                                <label className="form-check-label" htmlFor="isCustomizable" onClick={(e) => setProductData({ ...productData, isCustomizable: e.target.checked })}>
+                                    Is It Customizable ?
+                                </label>
+                            </div>
+                        </div>
+                        {productData.isCustomizable && <section className="customizes border border-2 border-dark p-3 mb-5">
+                            <div className="is-has-colors mb-4">
+                                <h6 className="fw-bold mb-3">Has Colors ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasColors"
+                                        onChange={handleSelectIsHasColors}
+                                        checked={productData.hasColors}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasColors" onClick={handleSelectIsHasColors}>
+                                        Has Colors ?
+                                    </label>
+                                </div>
+                            </div>
+                            {productData.hasColors && <section className="colors">
+                                <h6 className="fw-bold">Selected Colors:</h6>
+                                <ul className="colors-list mb-3">
+                                    {customizes.colors.map((color, colorIndex) => (
+                                        <li className="color-item me-3 d-inline-block" key={colorIndex}>{color}</li>
+                                    ))}
+                                </ul>
+                                <hr />
+                                <h6 className="fw-bold mb-3">Please Select Colors</h6>
+                                {customizes.colors.map((color, colorIndex) => (
+                                    <div className="row" key={colorIndex}>
+                                        <div className="col-md-10">
+                                            <div className="product-color mb-4">
+                                                <input
+                                                    type="color"
+                                                    className={`form-control p-2 border-2 product-color-field ${formValidationErrors["color"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    placeholder="Please Enter Color"
+                                                    onChange={(e) => handleSelectColor(e.target.value, colorIndex)}
+                                                    value={color}
+                                                />
+                                                {formValidationErrors["color"] && <FormFieldErrorBox errorMsg={formValidationErrors["color"]} />}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-2">
+                                            <FaRegPlusSquare className="plus-icon icon me-4" onClick={addNewSelectColor} />
+                                            {customizes.colors.length > 1 && <FaRegMinusSquare className="minus-icon icon" onClick={() => deleteSelectedColor(colorIndex)} />}
+                                        </div>
+                                    </div>
+                                ))}
+                            </section>}
+                            <div className="is-has-sizes mb-4">
+                                <h6 className="fw-bold mb-3">Has Sizes ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasSizes"
+                                        onChange={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}
+                                        checked={productData.hasSizes}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasSizes" onClick={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}>
+                                        Has Sizes ?
+                                    </label>
+                                </div>
+                            </div>
+                            {productData.hasSizes && <section className="sizes">
+                                <h6 className="fw-bold mb-3">Please Select Sizes</h6>
+                                <div className="row">
+                                    {Object.entries(customizes.sizes).map(([key, value]) =>
+                                        <div className="col-md-2" key={key}>
+                                            <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                                <input
+                                                    className="form-check-input m-0 me-2"
+                                                    type="checkbox"
+                                                    id="hasSizes"
+                                                    onChange={(e) => setCustomizes({ ...customizes, sizes: { ...customizes.sizes, [key]: e.target.checked } })}
+                                                    checked={value}
+                                                />
+                                                <label className="form-check-label" htmlFor="hasSizes" onClick={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}>
+                                                    {key}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>}
+                        </section>}
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
                         <section className="image mb-4">
                             <input
@@ -451,6 +589,6 @@ export default function AddNewProduct() {
             </>}
             {isLoadingPage && !errorMsgOnLoadingThePage && <LoaderPage />}
             {errorMsgOnLoadingThePage && <ErrorOnLoadingThePage errorMsg={errorMsgOnLoadingThePage} />}
-        </div>
+        </div >
     );
 }
