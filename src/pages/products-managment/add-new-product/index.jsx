@@ -34,23 +34,29 @@ export default function AddNewProduct() {
         quantity: "",
         isAvailableForDelivery: false,
         isCustomizable: false,
-        hasColors: false,
-        hasSizes: false,
         image: null,
         galleryImages: [],
     });
 
     const [customizes, setCustomizes] = useState({
+        hasColors: false,
         colors: [],
+        hasSizes: false,
         sizes: {
             sm: false,
             md: false,
             lg: false,
             xl: false,
+            xxl: false,
+            xxxl: false,
+            "4xl": false
         },
         allowCustomText: false,
+        allowAdditionalNotes: false,
         allowUploadImage: false,
+        hasAdditionalCost: false,
         additionalCost: 0,
+        hasAdditionalTime: false,
         additionalTime: 0,
     });
 
@@ -109,10 +115,7 @@ export default function AddNewProduct() {
     }, []);
 
     const handleSelectIsHasColors = (e) => {
-        if (customizes.colors.length === 0) {
-            setCustomizes({ ...customizes, colors: ["#000"] });
-        }
-        setProductData({ ...productData, hasColors: e.target.checked });
+        setCustomizes({ ...customizes, colors: e.target.checked ? ["#000"] : [], hasColors: e.target.checked });
     }
 
     const handleSelectColor = (color, selectedColorIndex) => {
@@ -127,6 +130,26 @@ export default function AddNewProduct() {
 
     const deleteSelectedColor = (selectedColorIndex) => {
         setCustomizes({ ...customizes, colors: customizes.colors.filter((color, index) => index !== selectedColorIndex) });
+    }
+
+    const handleSelectIsHasSizes = (e) => {
+        setCustomizes({ ...customizes, hasSizes: e.target.checked, sizes: { sm: false, md: false, lg: false, xl: false, xxl: false, xxxl: false, "4xl": false } });
+    }
+
+    const handleSelectIsHasAdditionalCost = (e) => {
+        setCustomizes({ ...customizes, hasAdditionalCost: e.target.checked, additionalCost: 0 });
+    }
+
+    const handleSelectAdditionalCost = (cost) => {
+        setCustomizes({ ...customizes, additionalCost: cost });
+    }
+
+    const handleSelectIsHasAdditionalTime = (e) => {
+        setCustomizes({ ...customizes, hasAdditionalTime: e.target.checked, additionalTime: 0 });
+    }
+
+    const handleSelectAdditionalTime = (time) => {
+        setCustomizes({ ...customizes, additionalTime: time });
     }
 
     const addNewProduct = async (e, productData) => {
@@ -236,7 +259,7 @@ export default function AddNewProduct() {
                 for (let galleryImage of productData.galleryImages) {
                     formData.append("galleryImages", galleryImage);
                 }
-                formData.append("colors", productData.colors);
+                formData.append("customizes", JSON.stringify(customizes));
                 setWaitMsg("Please Wait To Add New Product ...");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/products/add-new-product?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
@@ -450,7 +473,7 @@ export default function AddNewProduct() {
                             </div>
                         </div>
                         {productData.isCustomizable && <section className="customizes border border-2 border-dark p-3 mb-5">
-                            <div className="is-has-colors mb-4">
+                            <div className="has-colors mb-4">
                                 <h6 className="fw-bold mb-3">Has Colors ?</h6>
                                 <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
                                     <input
@@ -458,14 +481,14 @@ export default function AddNewProduct() {
                                         type="checkbox"
                                         id="hasColors"
                                         onChange={handleSelectIsHasColors}
-                                        checked={productData.hasColors}
+                                        checked={customizes.hasColors}
                                     />
                                     <label className="form-check-label" htmlFor="hasColors" onClick={handleSelectIsHasColors}>
                                         Has Colors ?
                                     </label>
                                 </div>
                             </div>
-                            {productData.hasColors && <section className="colors">
+                            {customizes.hasColors && <div className="colors">
                                 <h6 className="fw-bold">Selected Colors:</h6>
                                 <ul className="colors-list mb-3">
                                     {customizes.colors.map((color, colorIndex) => (
@@ -494,43 +517,144 @@ export default function AddNewProduct() {
                                         </div>
                                     </div>
                                 ))}
-                            </section>}
-                            <div className="is-has-sizes mb-4">
+                            </div>}
+                            <div className="has-sizes mb-4">
                                 <h6 className="fw-bold mb-3">Has Sizes ?</h6>
                                 <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
                                     <input
                                         className="form-check-input m-0 me-2"
                                         type="checkbox"
                                         id="hasSizes"
-                                        onChange={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}
-                                        checked={productData.hasSizes}
+                                        onChange={handleSelectIsHasSizes}
+                                        checked={customizes.hasSizes}
                                     />
-                                    <label className="form-check-label" htmlFor="hasSizes" onClick={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}>
+                                    <label className="form-check-label" htmlFor="hasSizes" onClick={handleSelectIsHasSizes}>
                                         Has Sizes ?
                                     </label>
                                 </div>
                             </div>
-                            {productData.hasSizes && <section className="sizes">
+                            {customizes.hasSizes && <div className="sizes">
                                 <h6 className="fw-bold mb-3">Please Select Sizes</h6>
                                 <div className="row">
                                     {Object.entries(customizes.sizes).map(([key, value]) =>
-                                        <div className="col-md-2" key={key}>
+                                        <div className="col-md-2 mb-3" key={key}>
                                             <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
                                                 <input
                                                     className="form-check-input m-0 me-2"
                                                     type="checkbox"
-                                                    id="hasSizes"
+                                                    id={key}
                                                     onChange={(e) => setCustomizes({ ...customizes, sizes: { ...customizes.sizes, [key]: e.target.checked } })}
                                                     checked={value}
                                                 />
-                                                <label className="form-check-label" htmlFor="hasSizes" onClick={(e) => setProductData({ ...productData, hasSizes: e.target.checked })}>
+                                                <label className="form-check-label" htmlFor={key} onClick={(e) => setCustomizes({ ...customizes, sizes: { ...customizes.sizes, [key]: e.target.checked } })}>
                                                     {key}
                                                 </label>
                                             </div>
                                         </div>
                                     )}
                                 </div>
-                            </section>}
+                            </div>}
+                            <div className="allow-custom-text  mb-4">
+                                <h6 className="fw-bold mb-3">Allow Custom Text ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="allowCustomText"
+                                        onChange={(e) => setCustomizes({ ...customizes, allowCustomText: e.target.checked })}
+                                        checked={customizes.allowCustomText}
+                                    />
+                                    <label className="form-check-label" htmlFor="allowCustomText" onClick={(e) => setCustomizes({ ...customizes, allowCustomText: e.target.checked })}>
+                                        Allow Custom Text ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="allow-additional-notes  mb-4">
+                                <h6 className="fw-bold mb-3">Allow Additional Notes ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="allowAdditionalNotes"
+                                        onChange={(e) => setCustomizes({ ...customizes, allowAdditionalNotes: e.target.checked })}
+                                        checked={customizes.allowAdditionalNotes}
+                                    />
+                                    <label className="form-check-label" htmlFor="allowAdditionalNotes" onClick={(e) => setCustomizes({ ...customizes, allowAdditionalNotes: e.target.checked })}>
+                                        Allow Additional Notes ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="allow-upload-image  mb-4">
+                                <h6 className="fw-bold mb-3">Allow Upload Image ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="allowUploadImage"
+                                        onChange={(e) => setCustomizes({ ...customizes, allowUploadImage: e.target.checked })}
+                                        checked={customizes.allowUploadImage}
+                                    />
+                                    <label className="form-check-label" htmlFor="allowUploadImage" onClick={(e) => setCustomizes({ ...customizes, allowUploadImage: e.target.checked })}>
+                                        Allow Upload Image ?
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="has-additional-cost  mb-4">
+                                <h6 className="fw-bold mb-3">Has Additional Cost ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasAdditionalCost"
+                                        onChange={handleSelectIsHasAdditionalCost}
+                                        checked={customizes.hasAdditionalCost}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasAdditionalCost" onClick={handleSelectIsHasAdditionalCost}>
+                                        Has Additional Cost ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasAdditionalCost && <div className="additional-cost">
+                                <h6 className="fw-bold mb-3">Please Select Cost</h6>
+                                <div className="cost mb-4">
+                                    <input
+                                        type="number"
+                                        className={`form-control p-2 border-2 product-additional-cost-field ${formValidationErrors["additionalCost"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Additional Cost"
+                                        onChange={(e) => handleSelectAdditionalCost(e.target.value)}
+                                        value={customizes.additionalCost}
+                                    />
+                                    {formValidationErrors["additionalCost"] && <FormFieldErrorBox errorMsg={formValidationErrors["additionalCost"]} />}
+                                </div>
+                            </div>}
+                            <div className="has-additional-time  mb-4">
+                                <h6 className="fw-bold mb-3">Has Additional Time ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasAdditionalTime"
+                                        onChange={handleSelectIsHasAdditionalTime}
+                                        checked={customizes.hasAdditionalTime}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasAdditionalTime" onClick={handleSelectIsHasAdditionalTime}>
+                                        Has Additional Time ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasAdditionalTime && <div className="additional-time">
+                                <h6 className="fw-bold mb-3">Please Select Time</h6>
+                                <div className="time mb-4">
+                                    <input
+                                        type="number"
+                                        className={`form-control p-2 border-2 product-additional-time-field ${formValidationErrors["additionalTime"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Additional Time"
+                                        onChange={(e) => handleSelectAdditionalTime(e.target.value)}
+                                        value={customizes.additionalTime}
+                                    />
+                                    {formValidationErrors["additionalTime"] && <FormFieldErrorBox errorMsg={formValidationErrors["additionalTime"]} />}
+                                </div>
+                            </div>}
                         </section>}
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
                         <section className="image mb-4">
