@@ -43,9 +43,9 @@ export default function AddNewProduct() {
         colors: [],
         hasSizes: false,
         sizes: {
-            sm: false,
-            md: false,
-            lg: false,
+            s: false,
+            m: false,
+            l: false,
             xl: false,
             xxl: false,
             xxxl: false,
@@ -133,7 +133,7 @@ export default function AddNewProduct() {
     }
 
     const handleSelectIsHasSizes = (e) => {
-        setCustomizes({ ...customizes, hasSizes: e.target.checked, sizes: { sm: false, md: false, lg: false, xl: false, xxl: false, xxxl: false, "4xl": false } });
+        setCustomizes({ ...customizes, hasSizes: e.target.checked, sizes: { s: false, m: false, l: false, xl: false, xxl: false, xxxl: false, "4xl": false } });
     }
 
     const handleSelectIsHasAdditionalCost = (e) => {
