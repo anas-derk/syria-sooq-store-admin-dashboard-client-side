@@ -419,14 +419,9 @@ export default function UpdateAndDeleteProducts() {
                     setSuccessMsg("");
                     setSelectedProductIndex(-1);
                     setIsGetProducts(true);
-                    const result = await getProductsCount(getFilteringString(filters));
-                    if (result.data > 0) {
-                        setAllProductsInsideThePage((await getAllProductsInsideThePage(currentPage, pageSize, getFilteringString(filters))).data);
-                        setTotalPagesCount(Math.ceil(result.data / pageSize));
-                    } else {
-                        setAllProductsInsideThePage([]);
-                        setTotalPagesCount(0);
-                    }
+                    const result = (await getAllProductsInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllProductsInsideThePage(result.products);
+                    setTotalPagesCount(Math.ceil(result.productsCount / pageSize));
                     setIsGetProducts(false);
                     clearTimeout(successTimeout);
                 }, 1500);
