@@ -33,7 +33,7 @@ export default function AddNewProduct() {
         discount: "",
         quantity: "",
         isAvailableForDelivery: false,
-        isCustomizable: false,
+        hasCustomizes: false,
         image: null,
         galleryImages: [],
     });
@@ -53,7 +53,7 @@ export default function AddNewProduct() {
         },
         allowCustomText: false,
         allowAdditionalNotes: false,
-        allowUploadImage: false,
+        allowUploadImages: false,
         hasAdditionalCost: false,
         additionalCost: 0,
         hasAdditionalTime: false,
@@ -286,6 +286,7 @@ export default function AddNewProduct() {
                 for (let galleryImage of productData.galleryImages) {
                     formData.append("galleryImages", galleryImage);
                 }
+                formData.append("hasCustomizes", productData.hasCustomizes);
                 formData.append("customizes", JSON.stringify(customizes));
                 if (customizes.colors.length > 0 && colorImages.length > 0) {
                     for (let colorImage of colorImages) {
@@ -496,16 +497,16 @@ export default function AddNewProduct() {
                                 <input
                                     className="form-check-input m-0 me-2"
                                     type="checkbox"
-                                    id="isCustomizable"
-                                    onChange={(e) => setProductData({ ...productData, isCustomizable: e.target.checked })}
-                                    checked={productData.isCustomizable}
+                                    id="hasCustomizes"
+                                    onChange={(e) => setProductData({ ...productData, hasCustomizes: e.target.checked })}
+                                    checked={productData.hasCustomizes}
                                 />
-                                <label className="form-check-label" htmlFor="isCustomizable" onClick={(e) => setProductData({ ...productData, isCustomizable: e.target.checked })}>
+                                <label className="form-check-label" htmlFor="hasCustomizes" onClick={(e) => setProductData({ ...productData, hasCustomizes: e.target.checked })}>
                                     Is It Customizable ?
                                 </label>
                             </div>
                         </div>
-                        {productData.isCustomizable && <section className="customizes border border-2 border-dark p-3 mb-5">
+                        {productData.hasCustomizes && <section className="customizes border border-2 border-dark p-3 mb-5">
                             <div className="has-colors mb-4">
                                 <h6 className="fw-bold mb-3">Has Colors ?</h6>
                                 <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
@@ -550,8 +551,6 @@ export default function AddNewProduct() {
                                                     className={`form-control p-2 border-2 product-image-with-color-field ${formValidationErrors["colorImage"] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder="Please Enter Color Image"
                                                     onChange={(e) => handleSelectColor(e.target.files[0], "file", colorIndex)}
-                                                //                     value={productGalleryImagesFilesElementRef.current?.value}
-                                                // ref={productGalleryImagesFilesElementRef}
                                                 />
                                                 {formValidationErrors["colorImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["colorImage"]} />}
                                             </div>
@@ -629,18 +628,18 @@ export default function AddNewProduct() {
                                     </label>
                                 </div>
                             </div>
-                            <div className="allow-upload-image  mb-4">
-                                <h6 className="fw-bold mb-3">Allow Upload Image ?</h6>
+                            <div className="allow-upload-images mb-4">
+                                <h6 className="fw-bold mb-3">Allow Upload Images ?</h6>
                                 <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
                                     <input
                                         className="form-check-input m-0 me-2"
                                         type="checkbox"
-                                        id="allowUploadImage"
-                                        onChange={(e) => setCustomizes({ ...customizes, allowUploadImage: e.target.checked })}
-                                        checked={customizes.allowUploadImage}
+                                        id="allowUploadImages"
+                                        onChange={(e) => setCustomizes({ ...customizes, allowUploadImages: e.target.checked })}
+                                        checked={customizes.allowUploadImages}
                                     />
-                                    <label className="form-check-label" htmlFor="allowUploadImage" onClick={(e) => setCustomizes({ ...customizes, allowUploadImage: e.target.checked })}>
-                                        Allow Upload Image ?
+                                    <label className="form-check-label" htmlFor="allowUploadImages" onClick={(e) => setCustomizes({ ...customizes, allowUploadImages: e.target.checked })}>
+                                        Allow Upload Images ?
                                     </label>
                                 </div>
                             </div>
