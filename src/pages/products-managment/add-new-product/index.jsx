@@ -60,6 +60,8 @@ export default function AddNewProduct() {
         additionalTime: 0,
     });
 
+    const [colorImages, setColorImages] = useState([]);
+
     const [waitMsg, setWaitMsg] = useState("");
 
     const [errorMsg, setErrorMsg] = useState("");
@@ -118,10 +120,17 @@ export default function AddNewProduct() {
         setCustomizes({ ...customizes, colors: e.target.checked ? ["#000"] : [], hasColors: e.target.checked });
     }
 
-    const handleSelectColor = (color, selectedColorIndex) => {
-        let selectedColors = customizes.colors;
-        selectedColors[selectedColorIndex] = color;
-        setCustomizes({ ...customizes, colors: selectedColors });
+    const handleSelectColor = (color, type, selectedColorIndex) => {
+        let selectedColors = [];
+        if (type === "hex") {
+            selectedColors = customizes.colors;
+            selectedColors[selectedColorIndex] = color;
+            setCustomizes({ ...customizes, colors: selectedColors });
+        } else {
+            selectedColors = colorImages;
+            selectedColors[selectedColorIndex] = color;
+            setColorImages(selectedColors);
+        }
     }
 
     const addNewSelectColor = () => {
@@ -243,8 +252,26 @@ export default function AddNewProduct() {
                         },
                     },
                 },
+                (customizes.colors.length > 0 &&
+                {
+                    name: "colorImages",
+                    value: colorImages,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        isImages: {
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
+                        },
+                        eqLength: {
+                            msg: "Sorry, This Length Not Match Colors Count !!",
+                            value: customizes.colors.length,
+                        }
+                    },
+                }),
             ]);
             setFormValidationErrors(errorsObject);
+            console.log(errorsObject)
             if (Object.keys(errorsObject).length == 0) {
                 let formData = new FormData();
                 formData.append("name", productData.name);
@@ -260,6 +287,11 @@ export default function AddNewProduct() {
                     formData.append("galleryImages", galleryImage);
                 }
                 formData.append("customizes", JSON.stringify(customizes));
+                if (customizes.colors.length > 0 && colorImages.length > 0) {
+                    for (let colorImage of colorImages) {
+                        formData.append("colorImages", colorImage);
+                    }
+                }
                 setWaitMsg("Please Wait To Add New Product ...");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/products/add-new-product?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
@@ -302,8 +334,9 @@ export default function AddNewProduct() {
                 await router.replace("/login");
             }
             else {
+                console.log(err);
                 setWaitMsg("");
-                if (err.response.data?.msg === "Sorry, Please Send Valid Discount Value !!") {
+                if (err?.response?.data?.msg === "Sorry, Please Send Valid Discount Value !!") {
                     setErrorMsg(err.response.data.msg);
                 }
                 else setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
@@ -499,16 +532,28 @@ export default function AddNewProduct() {
                                 <h6 className="fw-bold mb-3">Please Select Colors</h6>
                                 {customizes.colors.map((color, colorIndex) => (
                                     <div className="row" key={colorIndex}>
-                                        <div className="col-md-10">
+                                        <div className="col-md-5">
                                             <div className="product-color mb-4">
                                                 <input
                                                     type="color"
-                                                    className={`form-control p-2 border-2 product-color-field ${formValidationErrors["color"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    className={`form-control p-2 border-2 product-color-field ${formValidationErrors["colorHex"] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder="Please Enter Color"
-                                                    onChange={(e) => handleSelectColor(e.target.value, colorIndex)}
-                                                    value={color}
+                                                    onChange={(e) => handleSelectColor(e.target.value, "hex", colorIndex)}
                                                 />
-                                                {formValidationErrors["color"] && <FormFieldErrorBox errorMsg={formValidationErrors["color"]} />}
+                                                {formValidationErrors["colorHex"] && <FormFieldErrorBox errorMsg={formValidationErrors["colorHex"]} />}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-5">
+                                            <div className="product-image-with-color mb-4">
+                                                <input
+                                                    type="file"
+                                                    className={`form-control p-2 border-2 product-image-with-color-field ${formValidationErrors["colorImage"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    placeholder="Please Enter Color Image"
+                                                    onChange={(e) => handleSelectColor(e.target.files[0], "file", colorIndex)}
+                                                //                     value={productGalleryImagesFilesElementRef.current?.value}
+                                                // ref={productGalleryImagesFilesElementRef}
+                                                />
+                                                {formValidationErrors["colorImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["colorImage"]} />}
                                             </div>
                                         </div>
                                         <div className="col-md-2">
