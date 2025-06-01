@@ -58,6 +58,25 @@ export default function AddNewProduct() {
         additionalCost: 0,
         hasAdditionalTime: false,
         additionalTime: 0,
+        hasWeight: false,
+        weightDetails: {
+            unit: null,
+            weight: null
+        },
+        hasDimentions: false,
+        dimentions: {
+            length: null,
+            width: null,
+            height: null
+        },
+        hasProductionDate: false,
+        productionDate: null,
+        hasExpiryDate: false,
+        expiryDate: null,
+        possibilityOfSwitching: false,
+        possibilityOfReturn: false,
+        hasAdditionalDetails: false,
+        additionalDetails: [],
     });
 
     const [colorImages, setColorImages] = useState([]);
@@ -159,6 +178,64 @@ export default function AddNewProduct() {
 
     const handleSelectAdditionalTime = (time) => {
         setCustomizes({ ...customizes, additionalTime: time });
+    }
+
+    const handleSelectIsHasWeight = (e) => {
+        setCustomizes({ ...customizes, hasWeight: e.target.checked, weightDetails: { unit: null, weight: null } });
+    }
+
+    const handleSelectWeightDetails = (value, key) => {
+        setCustomizes({ ...customizes, weightDetails: { ...customizes.weightDetails, [key]: value } });
+    }
+
+    const handleSelectIsHasDimentions = (e) => {
+        setCustomizes({ ...customizes, hasDimentions: e.target.checked, dimentions: { length: null, width: null, height: null } });
+    }
+
+    const handleSelectDimentions = (value, key) => {
+        setCustomizes({ ...customizes, dimentions: { ...customizes.dimentions, [key]: value } });
+    }
+
+    const handleSelectIsHasExpiryDate = (e) => {
+        setCustomizes({ ...customizes, hasExpiryDate: e.target.checked, expiryDate: null });
+    }
+
+    const handleSelectExpiryDate = (date) => {
+        setCustomizes({ ...customizes, expiryDate: date });
+    }
+
+    const handleSelectIsHasProductionDate = (e) => {
+        setCustomizes({ ...customizes, hasProductionDate: e.target.checked, productionDate: null });
+    }
+
+    const handleSelectProductionDate = (date) => {
+        setCustomizes({ ...customizes, productionDate: date });
+    }
+
+    const handleSelectPossibilityOfSwitching = (e) => {
+        setCustomizes({ ...customizes, possibilityOfSwitching: e.target.checked });
+    }
+
+    const handleSelectPossibilityOfReturn = (e) => {
+        setCustomizes({ ...customizes, possibilityOfReturn: e.target.checked });
+    }
+
+    const handleSelectIsHasAdditionalDetails = (e) => {
+        setCustomizes({ ...customizes, additionalDetails: e.target.checked ? [""] : [], hasAdditionalDetails: e.target.checked });
+    }
+
+    const handleEnterCaption = (caption, selectedCaptionIndex) => {
+        let tempAdditionalDetails = customizes.additionalDetails.map(existCaption => existCaption);
+        tempAdditionalDetails[selectedCaptionIndex] = caption;
+        setCustomizes({ ...customizes, additionalDetails: tempAdditionalDetails });
+    }
+
+    const addNewCaption = () => {
+        setCustomizes({ ...customizes, additionalDetails: [...customizes.additionalDetails, ""] });
+    }
+
+    const deleteEnteredCaption = (selectedCaptionIndex) => {
+        setCustomizes({ ...customizes, additionalDetails: customizes.additionalDetails.filter((caption, index) => index !== selectedCaptionIndex) });
     }
 
     const addNewProduct = async (e, productData) => {
@@ -698,6 +775,226 @@ export default function AddNewProduct() {
                                     />
                                     {formValidationErrors["additionalTime"] && <FormFieldErrorBox errorMsg={formValidationErrors["additionalTime"]} />}
                                 </div>
+                            </div>}
+                            <div className="has-weight mb-4">
+                                <h6 className="fw-bold mb-3">Has Weight ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasWeight"
+                                        onChange={handleSelectIsHasWeight}
+                                        checked={customizes.hasWeight}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasWeight" onClick={handleSelectIsHasWeight}>
+                                        Has Weight ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasWeight && <div className="weight-details">
+                                <h6 className="fw-bold mb-3">Please Select Weight Details</h6>
+                                <div className="details mb-4">
+                                    <select
+                                        type="text"
+                                        className={`form-control p-2 border-2 product-weight-details-field ${formValidationErrors["unit"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Weight Unit"
+                                        onChange={(e) => handleSelectWeightDetails(e.target.value, "unit")}
+                                    >
+                                        <option value="" hidden>Please Select Unit</option>
+                                        <option value="gr">Gram</option>
+                                        <option value="kg">Kg</option>
+                                    </select>
+                                    {formValidationErrors["unit"] && <FormFieldErrorBox errorMsg={formValidationErrors["unit"]} />}
+                                </div>
+                                <div className="details mb-4">
+                                    <input
+                                        type="number"
+                                        className={`form-control p-2 border-2 product-weight-details-field ${formValidationErrors["weight"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Weight"
+                                        onChange={(e) => handleSelectWeightDetails(e.target.value, "weight")}
+                                        value={customizes.weightDetails.weight}
+                                    />
+                                    {formValidationErrors["weight"] && <FormFieldErrorBox errorMsg={formValidationErrors["weight"]} />}
+                                </div>
+                            </div>}
+                            <div className="has-dimentions mb-4">
+                                <h6 className="fw-bold mb-3">Has Dimentions ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasDimentions"
+                                        onChange={handleSelectIsHasDimentions}
+                                        checked={customizes.hasDimentions}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasDimentions" onClick={handleSelectIsHasDimentions}>
+                                        Has Dimentions ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasDimentions && <div className="dimentions-details">
+                                <h6 className="fw-bold mb-3">Please Select Dimentions</h6>
+                                <div className="dimentions-box row mb-4">
+                                    <div className="col-md-4">
+                                        <input
+                                            type="number"
+                                            className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["length"] ? "border-danger mb-3" : "mb-4"}`}
+                                            placeholder="Please Enter Length"
+                                            onChange={(e) => handleSelectDimentions(e.target.value, "length")}
+                                            value={customizes.dimentions.length}
+                                        />
+                                        {formValidationErrors["length"] && <FormFieldErrorBox errorMsg={formValidationErrors["length"]} />}
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input
+                                            type="number"
+                                            className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["width"] ? "border-danger mb-3" : "mb-4"}`}
+                                            placeholder="Please Enter Width"
+                                            onChange={(e) => handleSelectDimentions(e.target.value, "width")}
+                                            value={customizes.dimentions.width}
+                                        />
+                                        {formValidationErrors["width"] && <FormFieldErrorBox errorMsg={formValidationErrors["width"]} />}
+                                    </div>
+                                    <div className="col-md-4">
+                                        <input
+                                            type="number"
+                                            className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["height"] ? "border-danger mb-3" : "mb-4"}`}
+                                            placeholder="Please Enter Height"
+                                            onChange={(e) => handleSelectDimentions(e.target.value, "height")}
+                                            value={customizes.dimentions.height}
+                                        />
+                                        {formValidationErrors["height"] && <FormFieldErrorBox errorMsg={formValidationErrors["height"]} />}
+                                    </div>
+                                </div>
+                            </div>}
+                            <div className="has-production-date mb-4">
+                                <h6 className="fw-bold mb-3">Has Production Date ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasProductionDate"
+                                        onChange={handleSelectIsHasProductionDate}
+                                        checked={customizes.hasProductionDate}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasProductionDate" onClick={handleSelectIsHasProductionDate}>
+                                        Has Production Date ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasProductionDate && <div className="production-date-box">
+                                <h6 className="fw-bold mb-3">Please Select Production Date</h6>
+                                <div className="production-date mb-4">
+                                    <input
+                                        type="date"
+                                        className={`form-control p-2 border-2 product-production-date-field ${formValidationErrors["productionDate"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Production Date"
+                                        onChange={(e) => handleSelectProductionDate(e.target.value)}
+                                        value={customizes.productionDate}
+                                    />
+                                    {formValidationErrors["productionDate"] && <FormFieldErrorBox errorMsg={formValidationErrors["productionDate"]} />}
+                                </div>
+                            </div>}
+                            <div className="has-expiry-date mb-4">
+                                <h6 className="fw-bold mb-3">Has Expiry Date ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasExpiryDate"
+                                        onChange={handleSelectIsHasExpiryDate}
+                                        checked={customizes.hasExpiryDate}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasExpiryDate" onClick={handleSelectIsHasExpiryDate}>
+                                        Has Expiry Date ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasExpiryDate && <div className="expiry-date-box">
+                                <h6 className="fw-bold mb-3">Please Select Expiry Date</h6>
+                                <div className="expiry-date mb-4">
+                                    <input
+                                        type="date"
+                                        className={`form-control p-2 border-2 product-expiry-date-field ${formValidationErrors["expiryDate"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Expiry Date"
+                                        onChange={(e) => handleSelectExpiryDate(e.target.value)}
+                                        value={customizes.expiryDate}
+                                    />
+                                    {formValidationErrors["expiryDate"] && <FormFieldErrorBox errorMsg={formValidationErrors["expiryDate"]} />}
+                                </div>
+                            </div>}
+                            <div className="possibility-of-switching mb-4">
+                                <h6 className="fw-bold mb-3">Possibility Of Switching</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="possibilityOfSwitching"
+                                        onChange={handleSelectPossibilityOfSwitching}
+                                        checked={customizes.possibilityOfSwitching}
+                                    />
+                                    <label className="form-check-label" htmlFor="possibilityOfSwitching" onClick={handleSelectPossibilityOfSwitching}>
+                                        Possibility Of Switching
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="possibility-of-return mb-4">
+                                <h6 className="fw-bold mb-3">Possibility Of Return</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="possibilityOfReturn"
+                                        onChange={handleSelectPossibilityOfReturn}
+                                        checked={customizes.possibilityOfReturn}
+                                    />
+                                    <label className="form-check-label" htmlFor="possibilityOfReturn" onClick={handleSelectPossibilityOfReturn}>
+                                        Possibility Of Return
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="has-additional-details mb-4">
+                                <h6 className="fw-bold mb-3">Has Additional Details ?</h6>
+                                <div className="form-check border border-2 border-dark p-3 d-flex align-items-center">
+                                    <input
+                                        className="form-check-input m-0 me-2"
+                                        type="checkbox"
+                                        id="hasAdditionalDetails"
+                                        onChange={handleSelectIsHasAdditionalDetails}
+                                        checked={customizes.hasAdditionalDetails}
+                                    />
+                                    <label className="form-check-label" htmlFor="hasAdditionalDetails" onClick={handleSelectIsHasAdditionalDetails}>
+                                        Has Additional Details ?
+                                    </label>
+                                </div>
+                            </div>
+                            {customizes.hasAdditionalDetails && <div className="additionalDetails">
+                                <ul className="additional-details-list mb-3">
+                                    {customizes.additionalDetails.map((caption, captionIndex) => (
+                                        <li className="caption-item me-3 d-inline-block" key={captionIndex}>{caption}</li>
+                                    ))}
+                                </ul>
+                                <hr />
+                                <h6 className="fw-bold mb-3">Please Enter Details</h6>
+                                {customizes.additionalDetails.map((caption, captionIndex) => (
+                                    <div className="row" key={captionIndex}>
+                                        <div className="col-md-10">
+                                            <div className="product-caption mb-4">
+                                                <input
+                                                    type="text"
+                                                    className={`form-control p-2 border-2 product-caption-field ${formValidationErrors["caption"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    placeholder="Please Enter Caption"
+                                                    onChange={(e) => handleEnterCaption(e.target.value, captionIndex)}
+                                                />
+                                                {formValidationErrors["caption"] && <FormFieldErrorBox errorMsg={formValidationErrors["caption"]} />}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-2">
+                                            <FaRegPlusSquare className="plus-icon icon me-4" onClick={addNewCaption} />
+                                            {customizes.additionalDetails.length > 1 && <FaRegMinusSquare className="minus-icon icon" onClick={() => deleteEnteredCaption(captionIndex)} />}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>}
                         </section>}
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
