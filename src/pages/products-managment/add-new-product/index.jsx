@@ -64,7 +64,8 @@ export default function AddNewProduct() {
             weight: null
         },
         hasDimentions: false,
-        dimentions: {
+        dimentionsDetails: {
+            unit: "",
             length: null,
             width: null,
             height: null
@@ -189,11 +190,11 @@ export default function AddNewProduct() {
     }
 
     const handleSelectIsHasDimentions = (e) => {
-        setCustomizes({ ...customizes, hasDimentions: e.target.checked, dimentions: { length: null, width: null, height: null } });
+        setCustomizes({ ...customizes, hasDimentions: e.target.checked, dimentionsDetails: { type: "", length: null, width: null, height: null } });
     }
 
     const handleSelectDimentions = (value, key) => {
-        setCustomizes({ ...customizes, dimentions: { ...customizes.dimentions, [key]: value } });
+        setCustomizes({ ...customizes, dimentionsDetails: { ...customizes.dimentionsDetails, [key]: value } });
     }
 
     const handleSelectIsHasExpiryDate = (e) => {
@@ -834,6 +835,21 @@ export default function AddNewProduct() {
                             </div>
                             {customizes.hasDimentions && <div className="dimentions-details">
                                 <h6 className="fw-bold mb-3">Please Select Dimentions</h6>
+                                <div className="dimentions-box mb-4">
+                                    <select
+                                        type="text"
+                                        className={`form-control p-2 border-2 product-dimentions-unit-field ${formValidationErrors["dimentionsUnit"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder="Please Enter Dimentions Unit"
+                                        onChange={(e) => handleSelectDimentions(e.target.value, "unit")}
+                                    >
+                                        <option value="" hidden>Please Select Unit</option>
+                                        <option value="cm">Cm</option>
+                                        <option value="m">M</option>
+                                        <option value="cm2">Cm2</option>
+                                        <option value="m2">M2</option>
+                                    </select>
+                                    {formValidationErrors["dimentionsUnit"] && <FormFieldErrorBox errorMsg={formValidationErrors["dimentionsUnit"]} />}
+                                </div>
                                 <div className="dimentions-box row mb-4">
                                     <div className="col-md-4">
                                         <input
@@ -841,7 +857,7 @@ export default function AddNewProduct() {
                                             className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["length"] ? "border-danger mb-3" : "mb-4"}`}
                                             placeholder="Please Enter Length"
                                             onChange={(e) => handleSelectDimentions(e.target.value, "length")}
-                                            value={customizes.dimentions.length}
+                                            value={customizes.dimentionsDetails.length}
                                         />
                                         {formValidationErrors["length"] && <FormFieldErrorBox errorMsg={formValidationErrors["length"]} />}
                                     </div>
@@ -851,7 +867,7 @@ export default function AddNewProduct() {
                                             className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["width"] ? "border-danger mb-3" : "mb-4"}`}
                                             placeholder="Please Enter Width"
                                             onChange={(e) => handleSelectDimentions(e.target.value, "width")}
-                                            value={customizes.dimentions.width}
+                                            value={customizes.dimentionsDetails.width}
                                         />
                                         {formValidationErrors["width"] && <FormFieldErrorBox errorMsg={formValidationErrors["width"]} />}
                                     </div>
@@ -861,7 +877,7 @@ export default function AddNewProduct() {
                                             className={`form-control p-2 border-2 product-dimention-field ${formValidationErrors["height"] ? "border-danger mb-3" : "mb-4"}`}
                                             placeholder="Please Enter Height"
                                             onChange={(e) => handleSelectDimentions(e.target.value, "height")}
-                                            value={customizes.dimentions.height}
+                                            value={customizes.dimentionsDetails.height}
                                         />
                                         {formValidationErrors["height"] && <FormFieldErrorBox errorMsg={formValidationErrors["height"]} />}
                                     </div>
