@@ -60,7 +60,7 @@ export default function AddNewProduct() {
         additionalTime: 0,
         hasWeight: false,
         weightDetails: {
-            unit: null,
+            unit: "",
             weight: null
         },
         hasDimentions: false,
