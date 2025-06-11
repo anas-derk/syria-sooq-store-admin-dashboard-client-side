@@ -591,7 +591,7 @@ export default function StoresManagment() {
                                 </tbody>
                             </table>
                         </section>}
-                        {allStoresInsideThePage.length === 0 && !isGetStores && <NotFoundError errorMsg={t("Sorry, Can't Find Any Stores !!")} />}
+                        {allStoresInsideThePage.length === 0 && !isGetStores && <NotFoundError errorMsg={t("Sorry, Can't Find Any Stores") + " !!"} />}
                         {isGetStores && <TableLoader />}
                         {errorMsgOnGetStoresData && <NotFoundError errorMsg={errorMsgOnGetStoresData} />}
                         {totalPagesCount > 1 && !isGetStores &&
