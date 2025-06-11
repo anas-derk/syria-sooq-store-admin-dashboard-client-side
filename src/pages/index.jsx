@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
-import { getAdminInfo } from "../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../public/global_functions/popular";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
 
@@ -16,6 +17,13 @@ export default function Home() {
     const [adminInfo, setAdminInfo] = useState({});
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : "ar", i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -46,14 +54,14 @@ export default function Home() {
     return (
         <div className="main admin-dashboard">
             <Head>
-                <title>{process.env.storeName} - Admin Dashboard</title>
+                <title>{process.env.storeName} - {t("Admin Dashboard")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center">
                     <h1 className="fw-bold w-fit pb-2 text-center">
                         <PiHandWavingThin className="me-2" />
-                        Welcome {`${adminInfo.fullName}`} In Your Admin Dashboard Page
+                        {t("Welcome")} {`${adminInfo.fullName}`} {t("In Your Admin Dashboard Main Page")}
                     </h1>
                 </div>
             </>}
