@@ -8,7 +8,7 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getLanguagesInfoList, handleDisplayConfirmDeleteBox } from "../../../../public/global_functions/popular";
+import { getAdminInfo } from "../../../../public/global_functions/popular";
 import TableLoader from "@/components/TableLoader";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
