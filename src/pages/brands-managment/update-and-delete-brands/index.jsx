@@ -431,7 +431,7 @@ export default function UpdateAndDeleteBrands() {
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
-                                                    onClick={() => deleteBrand(selectedBrandIndex)}
+                                                    onClick={() => deleteBrand(brandIndex)}
                                                 >Delete</button>
                                             </>}
                                             {waitMsg && selectedBrandIndex === brandIndex && <button
