@@ -7,9 +7,10 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
-import { getAdminInfo, getDateFormated } from "../../../public/global_functions/popular";
+import { getAdminInfo, getDateFormated, handleSelectUserLanguage } from "../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
+import { useTranslation } from "react-i18next";
 
 export default function UsersManagment() {
 
@@ -46,7 +47,14 @@ export default function UsersManagment() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 10;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -261,7 +269,7 @@ export default function UsersManagment() {
     return (
         <div className="users-managment admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Users Managment</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Users Managment")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
@@ -269,36 +277,36 @@ export default function UsersManagment() {
                     <div className="container-fluid">
                         <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">
                             <PiHandWavingThin className="me-2" />
-                            Hi, Mr {adminInfo.fullName} In Your Users Managment Page
+                            {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Users Managment Page")}
                         </h1>
                         <section className="filters mb-5 bg-white border-3 border-info p-3 text-start">
-                            <h5 className="section-name fw-bold text-center">Filters: </h5>
+                            <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                             <hr />
                             <div className="row mb-4">
                                 <div className="col-md-6">
-                                    <h6 className="me-2 fw-bold text-center">User Id</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("User Id")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter User Id"
+                                        placeholder={t("Pleae Enter User Id")}
                                         onChange={(e) => setFilters({ ...filters, _id: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <h6 className="me-2 fw-bold text-center">Email</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Email")}</h6>
                                     <input
                                         type="email"
                                         className="form-control"
-                                        placeholder="Pleae Enter Email"
+                                        placeholder={t("Pleae Enter Email")}
                                         onChange={(e) => setFilters({ ...filters, email: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">Full Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Full Name")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Full Name"
+                                        placeholder={t("Pleae Enter Full Name")}
                                         onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
@@ -307,24 +315,24 @@ export default function UsersManagment() {
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 onClick={() => filterUsers(filters)}
                             >
-                                Filter
+                                {t("Filter")}
                             </button>}
                             {isGetUsers && <button
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 disabled
                             >
-                                Filtering ...
+                                {t("Filtering")} ...
                             </button>}
                         </section>
                         {allUsersInsideThePage.length > 0 && !isGetUsers && <section className="users-box w-100">
                             <table className="users-table mb-4 managment-table bg-white w-100">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Email</th>
-                                        <th>Full Name</th>
-                                        <th>Date Of Creation</th>
-                                        <th>Process</th>
+                                        <th>{t("Id")}</th>
+                                        <th>{t("Email")}</th>
+                                        <th>{t("Full Name")}</th>
+                                        <th>{t("Date Of Creation")}</th>
+                                        <th>{t("Processes")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -347,7 +355,7 @@ export default function UsersManagment() {
                                                     <button
                                                         className="btn btn-danger global-button"
                                                         onClick={() => deleteUser(userIndex)}
-                                                    >Delete</button>
+                                                    >{t("Delete")}</button>
                                                 </>}
                                                 {waitMsg && selectedUserIndex === userIndex && <button
                                                     className="btn btn-info d-block mb-3 mx-auto global-button"
@@ -367,7 +375,7 @@ export default function UsersManagment() {
                                 </tbody>
                             </table>
                         </section>}
-                        {allUsersInsideThePage.length === 0 && !isGetUsers && <NotFoundError errorMsg="Sorry, Can't Find Any Users !!" />}
+                        {allUsersInsideThePage.length === 0 && !isGetUsers && <NotFoundError errorMsg={t("Sorry, Can't Find Any Users") + " !!"} />}
                         {isGetUsers && <TableLoader />}
                         {errorMsgOnGetUsersData && <NotFoundError errorMsg={errorMsgOnGetUsersData} />}
                         {totalPagesCount > 1 && !isGetUsers &&

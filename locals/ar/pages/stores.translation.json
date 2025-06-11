@@ -1,0 +1,19 @@
+{
+    "Stores Managment": "إدارة المتاجر",
+    "In Your Stores Managment Page": "في صفحة إدارة المتاجر الخاصة بك",
+    "Store Id": "معرّف المتجر",
+    "Please Enter Store Id": "الرجاء إدخال معرّف المتجر",
+    "Store Name": "اسم المتجر",
+    "Owner Full Name": "اسم المالك الكامل",
+    "Status": "الحالة",
+    "Please Enter Store Name": "الرجاء إدخال اسم المتجر",
+    "pending": "الانتظار",
+    "approving": "القبول",
+    "blocking": "الحظر",
+    "Please Enter Status": "الرجاء إدخال الحالة",
+    "Please Enter Owner Full Name": "الرجاء إدخال اسم المالك بالكامل",
+    "Owner Email": "البريد الالكتروني للمالك",
+    "Please Enter Owner Email": "الرجاء إدخال البريد الالكتروني للمالك",
+    "Date Of Creation": "تاريخ الإنشاء",
+    "Sorry, Can't Find Any Users": "عذراً ، لا يوجد أي مستخدمين"
+}

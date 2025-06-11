@@ -1,3 +1,18 @@
 {
-    "Welcome": "مرحباً"
+    "Hi, Mr": "مرحباً ، سيّد",
+    "Admin Dashboard": "لوحة تحكم المسؤول",
+    "Filters": "التصفيات",
+    "Filter": "التصفية",
+    "Filtering": "جاري التصفية",
+    "Processes": "العملية",
+    "Id": "المعرّف",
+    "Email": "البريد الالكتروني",
+    "Full Name": "الاسم الكامل",
+    "Delete": "حذف",
+    "Update": "تحديث",
+    "Pleae Enter User Id": "الرجاء إدخال معرّف المستخدم",
+    "Pleae Enter Email": "الرجاء إدخال البريد الالكتروني",
+    "Pleae Enter Full Name": "الرجاء إدخال الاسم الكامل",
+    "All": "الكل",
+    "Show Full Details": "إظهار كامل التفاصيل"
 }

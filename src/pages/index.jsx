@@ -22,7 +22,7 @@ export default function Home() {
 
     useEffect(() => {
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
-        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : "ar", i18n.changeLanguage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
     }, []);
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export default function Home() {
                 <div className="page-content d-flex justify-content-center align-items-center">
                     <h1 className="fw-bold w-fit pb-2 text-center">
                         <PiHandWavingThin className="me-2" />
-                        {t("Welcome")} {`${adminInfo.fullName}`} {t("In Your Admin Dashboard Main Page")}
+                        {t("Hi, Mr")} {`${adminInfo.fullName}`} {t("In Your Admin Dashboard Main Page")}
                     </h1>
                 </div>
             </>}

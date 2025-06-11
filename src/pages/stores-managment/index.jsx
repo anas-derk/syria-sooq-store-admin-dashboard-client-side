@@ -9,9 +9,10 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
 import ChangeStoreStatusBox from "@/components/ChangeStoreStatusBox";
-import { getAdminInfo, getAllStoresInsideThePage } from "../../../public/global_functions/popular";
+import { getAdminInfo, getAllStoresInsideThePage, handleSelectUserLanguage } from "../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
+import { useTranslation } from "react-i18next";
 
 export default function StoresManagment() {
 
@@ -57,9 +58,16 @@ export default function StoresManagment() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 3;
 
     const storeStatusList = ["pending", "approving", "blocking"];
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -357,7 +365,7 @@ export default function StoresManagment() {
     return (
         <div className="stores-managment admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Stores Managment</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Stores Managment")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 {/* Start Admin Dashboard Side Bar */}
@@ -375,57 +383,57 @@ export default function StoresManagment() {
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-5 pb-5">
                     <div className="container-fluid">
-                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">Hi, Mr {adminInfo.fullName} In Stores Managment</h1>
+                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">{t("Hi, Mr")} {adminInfo.fullName} {t("In Your Stores Managment Page")}</h1>
                         <section className="filters mb-3 bg-white border-3 border-info p-3 text-start">
-                            <h5 className="section-name fw-bold text-center">Filters: </h5>
+                            <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                             <hr />
                             <div className="row mb-4">
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Store Id</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Store Id")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Store Id"
+                                        placeholder={t("Please Enter Store Id")}
                                         onChange={(e) => setFilters({ ...filters, storeId: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Store Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Store Name")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Store Name"
+                                        placeholder={t("Please Enter Store Name")}
                                         onChange={(e) => setFilters({ ...filters, name: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Status</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Status")}</h6>
                                     <select
                                         className="select-store-status form-select"
                                         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                                     >
-                                        <option value="" hidden>Pleae Enter Status</option>
-                                        <option value="">All</option>
+                                        <option value="" hidden>{t("Please Enter Status")}</option>
+                                        <option value="">{t("All")}</option>
                                         {storeStatusList.map((status, index) => (
-                                            <option value={status} key={index}>{status}</option>
+                                            <option value={status} key={index}>{t(status)}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div className="col-md-4 mt-5">
-                                    <h6 className="me-2 fw-bold text-center">Owner Full Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Owner Full Name")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Owner Full Name"
+                                        placeholder={t("Please Enter Owner Full Name")}
                                         onChange={(e) => setFilters({ ...filters, ownerFullName: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-4 mt-5">
-                                    <h6 className="me-2 fw-bold text-center">Owner Email</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Owner Email")}</h6>
                                     <input
                                         type="email"
                                         className="form-control"
-                                        placeholder="Pleae Enter Owner Email"
+                                        placeholder={t("Please Enter Owner Email")}
                                         onChange={(e) => setFilters({ ...filters, ownerEmail: e.target.value.trim() })}
                                     />
                                 </div>
@@ -434,25 +442,25 @@ export default function StoresManagment() {
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 onClick={() => filterStores(filters)}
                             >
-                                Filter
+                                {t("Filter")}
                             </button>}
                             {isGetStores && <button
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 disabled
                             >
-                                Filtering ...
+                                {t("Filtering")} ...
                             </button>}
                         </section>
                         {allStoresInsideThePage.length > 0 && !isGetStores && <section className="stores-data-box p-3 data-box admin-dashbboard-data-box">
                             <table className="stores-data-table mb-4 managment-table bg-white admin-dashbboard-data-table">
                                 <thead>
                                     <tr>
-                                        <th width="50">Store Id</th>
-                                        <th width="250">Name</th>
-                                        <th>Owner Full Name</th>
-                                        <th width="300">Email</th>
-                                        <th width="250">Status</th>
-                                        <th>Action</th>
+                                        <th width="50">{t("Store Id")}</th>
+                                        <th width="250">{t("Store Name")}</th>
+                                        <th>{t("Owner Full Name")}</th>
+                                        <th width="300">{t("Email")}</th>
+                                        <th width="250">{t("Status")}</th>
+                                        <th>{t("Processes")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -465,7 +473,7 @@ export default function StoresManagment() {
                                                         type="text"
                                                         defaultValue={store.name}
                                                         className={`form-control d-block mx-auto p-2 border-2 store-name-field ${formValidationErrors["name"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter Store Name"
+                                                        placeholder={t("Please Enter Store Name")}
                                                         onChange={(e) => changeStoreData(storeIndex, "name", e.target.value)}
                                                     />
                                                     {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
@@ -478,21 +486,21 @@ export default function StoresManagment() {
                                                         type="text"
                                                         defaultValue={store.email}
                                                         className={`form-control d-block mx-auto p-2 border-2 store-email-field ${formValidationErrors["email"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter Email"
+                                                        placeholder={t("Please Enter Email")}
                                                         onChange={(e) => changeStoreData(storeIndex, "email", e.target.value)}
                                                     />
                                                     {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
                                                 </section>
                                             </td>
                                             <td>
-                                                {store.status}
+                                                {t(store.status)}
                                             </td>
                                             <td>
                                                 {storeIndex !== selectedStoreIndex && <button
                                                     className="btn btn-info d-block mx-auto mb-3 global-button"
                                                     onClick={() => updateStoreData(storeIndex)}
                                                 >
-                                                    Update
+                                                    {t("Update")}
                                                 </button>}
                                                 {!store.isMainStore && <>
                                                     {
@@ -501,7 +509,7 @@ export default function StoresManagment() {
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => deleteStore(storeIndex)}
                                                         >
-                                                            Delete
+                                                            {t("Delete")}
                                                         </button>
                                                     }
                                                     {waitMsg && storeIndex === selectedStoreIndex && <button
@@ -525,7 +533,7 @@ export default function StoresManagment() {
                                                             className="btn btn-success d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "approving")}
                                                         >
-                                                            Approve
+                                                            {t("Approve")}
                                                         </button>
                                                     }
                                                     {
@@ -537,7 +545,7 @@ export default function StoresManagment() {
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "rejecting")}
                                                         >
-                                                            Reject
+                                                            {t("Reject")}
                                                         </button>
                                                     }
                                                     {
@@ -549,7 +557,7 @@ export default function StoresManagment() {
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "blocking")}
                                                         >
-                                                            Blocking
+                                                            {t("Blocking")}
                                                         </button>
                                                     }
                                                     {
@@ -561,7 +569,7 @@ export default function StoresManagment() {
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "cancel-blocking")}
                                                         >
-                                                            Cancel Blocking
+                                                            {t("Cancel Blocking")}
                                                         </button>
                                                     }
                                                     {errorMsg && storeIndex === selectedStoreIndex && <button
@@ -575,7 +583,7 @@ export default function StoresManagment() {
                                                     <Link
                                                         href={`/stores-managment/${store._id}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
-                                                    >Show Full Details</Link>
+                                                    >{t("Show Full Details")}</Link>
                                                 </>}
                                             </td>
                                         </tr>
@@ -583,7 +591,7 @@ export default function StoresManagment() {
                                 </tbody>
                             </table>
                         </section>}
-                        {allStoresInsideThePage.length === 0 && !isGetStores && <NotFoundError errorMsg="Sorry, Can't Find Any Stores !!" />}
+                        {allStoresInsideThePage.length === 0 && !isGetStores && <NotFoundError errorMsg={t("Sorry, Can't Find Any Stores !!")} />}
                         {isGetStores && <TableLoader />}
                         {errorMsgOnGetStoresData && <NotFoundError errorMsg={errorMsgOnGetStoresData} />}
                         {totalPagesCount > 1 && !isGetStores &&
