@@ -6,7 +6,7 @@ import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getAllCategoriesInsideThePage, getCategoriesCount } from "../../../../public/global_functions/popular";
+import { getAdminInfo, getAllBrandsInsideThePage, getAllCategoriesInsideThePage, getCategoriesCount } from "../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
@@ -93,6 +93,12 @@ export default function AddNewProduct() {
     const [searchedCategories, setSearchedCategories] = useState([]);
 
     const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const [searchedBrandName, setSearchedBrandName] = useState("");
+
+    const [searchedBrands, setSearchedBrands] = useState([]);
+
+    const [selectedRelatedBrand, setSelectedRelatedBrand] = useState(null);
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
@@ -366,6 +372,9 @@ export default function AddNewProduct() {
                 }
                 formData.append("hasCustomizes", productData.hasCustomizes);
                 formData.append("customizes", JSON.stringify(customizes));
+                if (selectedRelatedBrand?._id) {
+                    formData.append("brand", selectedRelatedBrand._id);
+                }
                 if (customizes.colors.length > 0 && colorImages.length > 0) {
                     for (let colorImage of colorImages) {
                         formData.append("colorImages", colorImage);
@@ -459,6 +468,32 @@ export default function AddNewProduct() {
     const handleRemoveCategoryFromSelectedCategoriesList = (category) => {
         setSelectedCategories(selectedCategories.filter((selectedCategory) => category._id !== selectedCategory._id));
         if (searchedCategoryName) setSearchedCategories([...searchedCategories, category]);
+    }
+
+    const handleGetBrandsByName = async (e) => {
+        try {
+            setWaitMsg("Please Waiting To Get Products ...");
+            const searchedBrandName = e.target.value;
+            setSearchedBrandName(searchedBrandName);
+            if (searchedBrandName) {
+                setSearchedBrands((await getAllBrandsInsideThePage(1, 1000, `name=${searchedBrandName}`)).data.brands);
+            } else {
+                setSearchedBrands([]);
+            }
+            setWaitMsg("");
+        }
+        catch (err) {
+            setWaitMsg("");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Someting Went Wrong, Please Repeate The Search !!");
+            let errorTimeout = setTimeout(() => {
+                setErrorMsg("");
+                clearTimeout(errorTimeout);
+            }, 1500);
+        }
+    }
+
+    const handleSelectRelatedBrand = (brand) => {
+        setSelectedRelatedBrand(brand);
     }
 
     return (
@@ -1013,6 +1048,33 @@ export default function AddNewProduct() {
                                 ))}
                             </div>}
                         </section>}
+                        <section className="related-brand mb-4 overflow-auto">
+                            <h6 className="mb-3 fw-bold">Please Select Related Brand</h6>
+                            <div className="select-related-brand-box select-box mb-4">
+                                <input
+                                    type="text"
+                                    className="search-box form-control p-2 border-2 mb-4"
+                                    placeholder="Please Enter Brand Name Or Part Of This"
+                                    onChange={handleGetBrandsByName}
+                                />
+                                <ul className={`brands-list options-list bg-white border ${formValidationErrors["relatedBrand"] ? "border-danger mb-4" : "border-dark"}`}>
+                                    <li className="text-center fw-bold border-bottom border-2 border-dark">Seached Brands List</li>
+                                    {searchedBrands.length > 0 && searchedBrands.map((brand) => (
+                                        <li key={brand._id} onClick={() => handleSelectRelatedBrand(brand)}>{brand.title}</li>
+                                    ))}
+                                </ul>
+                                {searchedBrands.length === 0 && searchedBrandName && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Related Products Match This Name !!</p>}
+                                {formValidationErrors["relatedBrand"] && <FormFieldErrorBox errorMsg={formValidationErrors["relatedBrand"]} />}
+                            </div>
+                            {selectedRelatedBrand && <div className="selected-related-brand row mb-4">
+                                <h6 className="fw-bold text-center mb-3">Selected Related Brand Is :</h6>
+                                <div className="col-md-12 mb-3">
+                                    <div className="selected-related-brand-box bg-white p-2 border border-2 border-dark text-center">
+                                        <span className="me-2 selected-brand-title">{selectedRelatedBrand.title}</span>
+                                    </div>
+                                </div>
+                            </div>}
+                        </section>
                         <h6 className="mb-3 fw-bold">Please Select Product Image</h6>
                         <section className="image mb-4">
                             <input

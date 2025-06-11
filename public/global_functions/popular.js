@@ -212,6 +212,19 @@ const getProductInfo = async (productId) => {
     }
 }
 
+const getAllBrandsInsideThePage = async (pageNumber, pageSize, filters) => {
+    try {
+        return (await axios.get(`${process.env.BASE_API_URL}/brands/all-brands-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`, {
+            headers: {
+                Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+            },
+        })).data;
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
 export {
     getProductsCount,
     getAllProductsInsideThePage,
@@ -230,5 +243,6 @@ export {
     getAdminInfo,
     getOrderDetails,
     handleSelectUserLanguage,
-    getProductInfo
+    getProductInfo,
+    getAllBrandsInsideThePage
 }
