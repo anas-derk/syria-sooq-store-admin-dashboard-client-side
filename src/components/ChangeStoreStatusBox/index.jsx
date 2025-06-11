@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
+import { useTranslation } from "react-i18next";
+import { handleSelectUserLanguage } from "../../../public/global_functions/popular";
+import FormFieldErrorBox from "../FormFieldErrorBox";
 
 export default function ChangeStoreStatusBox({
     setIsDisplayChangeStoreStatusBox,
@@ -29,6 +32,13 @@ export default function ChangeStoreStatusBox({
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { i18n, t } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     const handleClosePopupBox = () => {
         setIsDisplayChangeStoreStatusBox(false);
@@ -248,21 +258,18 @@ export default function ChangeStoreStatusBox({
         <div className="change-store-status-box popup-box">
             <div className="content-box d-flex align-items-center justify-content-center text-white flex-column p-4 text-center">
                 {!waitMsg && !errorMsg && !successMsg && <GrFormClose className="close-popup-box-icon" onClick={handleClosePopupBox} />}
-                <h2 className="mb-5 pb-3 border-bottom border-white">Change Store Status</h2>
-                <h4 className="mb-4">Are You Sure From: {storeAction} Store: ( {selectedStore.name} ) ?</h4>
+                <h2 className="mb-5 pb-3 border-bottom border-white">{t("Change Store Status")}</h2>
+                <h4 className="mb-4">{t("Are You Sure From")}: {t(`${storeAction} Store`)}: ( {selectedStore.name} ) ?</h4>
                 <form className="change-store-status-form w-50" onSubmit={(e) => e.preventDefault()}>
                     {storeAction === "blocking" && <section className="change-store-status mb-4">
                         <input
                             type="text"
                             className={`form-control p-3 border-2 change-status-reason-field ${formValidationErrors["changeStatusReason"] ? "border-danger mb-3" : "mb-4"}`}
-                            placeholder={`Please Enter ${storeAction} Reason`}
+                            placeholder={t(`Please Enter ${storeAction} Reason`)}
                             onChange={(e) => setChangeStatusReason(e.target.value)}
                             value={changeStatusReason}
                         />
-                        {formValidationErrors["changeStatusReason"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                            <span>{formValidationErrors["changeStatusReason"]}</span>
-                        </p>}
+                        {formValidationErrors["changeStatusReason"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["changeStatusReason"])} />}
                     </section>}
                     {
                         !waitMsg &&
@@ -272,7 +279,7 @@ export default function ChangeStoreStatusBox({
                             <div className="password-field-box">
                                 <input
                                     type={isVisiblePassword ? "text" : "password"}
-                                    placeholder="Please Enter Merchant Account Password"
+                                    placeholder={t("Please Enter Merchant Account Password")}
                                     className={`form-control p-3 border-2 ${formValidationErrors["isVisiblePassword"] ? "border-danger mb-3" : "mb-5"}`}
                                     onChange={(e) => setAdminPassword(e.target.value.trim())}
                                 />
@@ -281,10 +288,7 @@ export default function ChangeStoreStatusBox({
                                     {isVisiblePassword && <AiOutlineEyeInvisible className='invisible-eye-icon icon' onClick={() => setIsVisiblePassword(value => value = !value)} />}
                                 </div>
                             </div>
-                            {formValidationErrors["adminPassword"] && <p className="bg-danger p-2 form-field-error-box m-0 text-white">
-                                <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                                <span>{formValidationErrors["adminPassword"]}</span>
-                            </p>}
+                            {formValidationErrors["adminPassword"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["adminPassword"])} />}
                         </section>
                     }
                     {
@@ -296,7 +300,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={() => approveStoreCreate(selectedStore._id)}
                         >
-                            Approve
+                            {t("Approve")}
                         </button>
                     }
                     {
@@ -308,7 +312,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={() => rejectStoreCreate(selectedStore._id)}
                         >
-                            Reject
+                            {t("Reject")}
                         </button>
                     }
                     {
@@ -320,7 +324,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={() => blockingStore(selectedStore._id, changeStatusReason)}
                         >
-                            Block
+                            {t("Block")}
                         </button>
                     }
                     {
@@ -332,7 +336,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={() => cancelBlockingStore(selectedStore._id)}
                         >
-                            Cancel Blocking
+                            {t("Cancel Blocking")}
                         </button>
                     }
                     {waitMsg &&
@@ -340,7 +344,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-info d-block mx-auto mb-3 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>
                     }
                     {errorMsg &&
@@ -348,7 +352,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>
                     }
                     {successMsg &&
@@ -356,7 +360,7 @@ export default function ChangeStoreStatusBox({
                             className="btn btn-success d-block mx-auto mb-3 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>
                     }
                     <button
@@ -364,7 +368,7 @@ export default function ChangeStoreStatusBox({
                         disabled={waitMsg || errorMsg || successMsg}
                         onClick={handleClosePopupBox}
                     >
-                        Close
+                        {t("Close")}
                     </button>
                 </form>
             </div>

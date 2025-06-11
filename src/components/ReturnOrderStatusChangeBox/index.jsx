@@ -4,7 +4,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
 import FormFieldErrorBox from "../FormFieldErrorBox";
-import { getOrderDetails } from "../../../public/global_functions/popular";
+import { getOrderDetails, handleSelectUserLanguage } from "../../../public/global_functions/popular";
+import { useTranslation } from "react-i18next";
 
 export default function ReturnOrderProductStatusChangeBox({
     orderProductAction,
@@ -28,6 +29,13 @@ export default function ReturnOrderProductStatusChangeBox({
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { i18n, t } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     const handleClosePopupBox = () => {
         setIsDisplayOrderProductStatusChangeBox(false);
@@ -169,7 +177,7 @@ export default function ReturnOrderProductStatusChangeBox({
         <div className="change-return-order-status-box popup-box">
             <div className="content-box d-flex align-items-center justify-content-center text-white flex-column p-4 text-center">
                 {!waitMsg && !errorMsg && !successMsg && <GrFormClose className="close-popup-box-icon" onClick={handleClosePopupBox} />}
-                <h4 className="mb-4">Are You Sure From: {orderProductAction} Product: ( {selectedProduct.name} ) ?</h4>
+                <h4 className="mb-4">{t("Are You Sure From")}: {t(`${storeAction} Product`)}: ( {selectedProduct.name} ) ?</h4>
                 <form className="change-store-status-form w-50" onSubmit={(e) => e.preventDefault()}>
                     {
                         !waitMsg &&
@@ -184,7 +192,7 @@ export default function ReturnOrderProductStatusChangeBox({
                                     onChange={(e) => setApprovedQuantity(e.target.value)}
                                 />
                             </div>}
-                            {formValidationErrors["approvedQuantity"] && <FormFieldErrorBox errorMsg={formValidationErrors["approvedQuantity"]} />}
+                            {formValidationErrors["approvedQuantity"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["approvedQuantity"])} />}
                             <div className="notes-field-box">
                                 <textarea
                                     placeholder={orderProductAction === "approving" ? "Please Enter Notes" : "Please Enter Reason"}
@@ -192,7 +200,7 @@ export default function ReturnOrderProductStatusChangeBox({
                                     onChange={(e) => setNotes(e.target.value.trim())}
                                 ></textarea>
                             </div>
-                            {formValidationErrors["notes"] && <FormFieldErrorBox errorMsg={formValidationErrors["notes"]} />}
+                            {formValidationErrors["notes"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["notes"])} />}
                         </section>
                     }
                     {
@@ -204,7 +212,7 @@ export default function ReturnOrderProductStatusChangeBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={approveOnReturn}
                         >
-                            Approve
+                            {t("Approve")}
                         </button>
                     }
                     {
@@ -216,7 +224,7 @@ export default function ReturnOrderProductStatusChangeBox({
                             className="btn btn-success d-block mx-auto mb-4 global-button"
                             onClick={returnReject}
                         >
-                            Reject
+                            {t('Reject')}
                         </button>
                     }
                     {waitMsg &&
@@ -248,7 +256,7 @@ export default function ReturnOrderProductStatusChangeBox({
                         disabled={waitMsg || errorMsg || successMsg}
                         onClick={handleClosePopupBox}
                     >
-                        Close
+                        {t("Close")}
                     </button>
                 </form>
             </div>

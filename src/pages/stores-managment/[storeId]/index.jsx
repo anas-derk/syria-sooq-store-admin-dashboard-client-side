@@ -8,7 +8,6 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import { getDateFormated, getStoreDetails } from "../../../../public/global_functions/popular";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 import { useTranslation } from "react-i18next";
@@ -18,8 +17,6 @@ export default function StoreDetails({ storeId }) {
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
     const [errorMsgOnLoadingThePage, setErrorMsgOnLoadingThePage] = useState("");
-
-    const [windowInnerWidth, setWindowInnerWidth] = useState(0);
 
     const [adminInfo, setAdminInfo] = useState({});
 
@@ -115,10 +112,6 @@ export default function StoreDetails({ storeId }) {
                                 setStoreDetails(result.data);
                                 setIsLoadingPage(false);
                             }
-                            setWindowInnerWidth(window.innerWidth);
-                            window.addEventListener("resize", () => {
-                                setWindowInnerWidth(window.innerWidth);
-                            });
                         } else {
                             await router.replace("/");
                         }
@@ -348,7 +341,7 @@ export default function StoreDetails({ storeId }) {
                                                     placeholder="Pleae Enter New Store Name"
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, name: e.target.value })}
                                                 />
-                                                {formValidationErrors["name"] && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
+                                                {formValidationErrors["name"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
                                             </section>
                                         </td>
                                     </tr>
@@ -364,7 +357,7 @@ export default function StoreDetails({ storeId }) {
                                                     <option value="" hidden>{t("Please Select New Store City")}</option>
                                                     {cites.map((city) => <option key={city} value={city}>{t(city)}</option>)}
                                                 </select>
-                                                {formValidationErrors["city"] && <FormFieldErrorBox errorMsg={formValidationErrors["city"]} />}
+                                                {formValidationErrors["city"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["city"])} />}
                                             </section>
                                         </td>
                                     </tr>
@@ -380,7 +373,7 @@ export default function StoreDetails({ storeId }) {
                                                         <option key={category} value={category}>{category}</option>
                                                     ))}
                                                 </select>
-                                                {formValidationErrors["category"] && <FormFieldErrorBox errorMsg={formValidationErrors["category"]} />}
+                                                {formValidationErrors["category"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["category"])} />}
                                             </section>
                                         </td>
                                     </tr>
@@ -462,7 +455,7 @@ export default function StoreDetails({ storeId }) {
                                                     placeholder={t("Pleae Enter New Owner Full Name")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, ownerFullName: e.target.value })}
                                                 />
-                                                {formValidationErrors["ownerFullName"] && <FormFieldErrorBox errorMsg={formValidationErrors["ownerFullName"]} />}
+                                                {formValidationErrors["ownerFullName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["ownerFullName"])} />}
                                             </section>
                                         </td>
                                     </tr>
@@ -477,7 +470,7 @@ export default function StoreDetails({ storeId }) {
                                                     placeholder={t("Pleae Enter New Phone Number")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, phoneNumber: e.target.value })}
                                                 />
-                                                {formValidationErrors["phoneNumber"] && <FormFieldErrorBox errorMsg={formValidationErrors["phoneNumber"]} />}
+                                                {formValidationErrors["phoneNumber"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["phoneNumber"])} />}
                                             </section>
                                         </td>
                                     </tr>
@@ -492,7 +485,7 @@ export default function StoreDetails({ storeId }) {
                                                     placeholder={t("Pleae Enter New Store Email")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, email: e.target.value })}
                                                 />
-                                                {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                                                {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}
                                             </section>
                                         </td>
                                     </tr>

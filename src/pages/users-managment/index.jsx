@@ -146,7 +146,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
             }
         }
     }
@@ -166,7 +166,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
             }
         }
     }
@@ -185,7 +185,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
             }
         }
     }
@@ -213,7 +213,7 @@ export default function UsersManagment() {
             }
             else {
                 setIsGetUsers(false);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -224,7 +224,7 @@ export default function UsersManagment() {
 
     const deleteUser = async (userIndex) => {
         try {
-            setWaitMsg("Please Wait To Deleting ...");
+            setWaitMsg("Please Wait To Deleting");
             setSelectedUserIndex(userIndex);
             const result = (await axios.delete(`${process.env.BASE_API_URL}/users/delete-user?userType=admin&userId=${allUsersInsideThePage[userIndex]._id}&language=${process.env.defaultLanguage}`, {
                 headers: {
@@ -233,7 +233,7 @@ export default function UsersManagment() {
             })).data;
             setWaitMsg("");
             if (!result.error) {
-                setSuccessMsg("Deleting Successfull !!");
+                setSuccessMsg("Deleting Successfull");
                 let successTimeout = setTimeout(async () => {
                     setSuccessMsg("");
                     setSelectedUserIndex(-1);
@@ -241,7 +241,7 @@ export default function UsersManagment() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedUserIndex(-1);
@@ -256,7 +256,7 @@ export default function UsersManagment() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedUserIndex(-1);
@@ -360,15 +360,15 @@ export default function UsersManagment() {
                                                 {waitMsg && selectedUserIndex === userIndex && <button
                                                     className="btn btn-info d-block mb-3 mx-auto global-button"
                                                     disabled
-                                                >{waitMsg}</button>}
+                                                >{t(waitMsg)}</button>}
                                                 {successMsg && selectedUserIndex === userIndex && <button
                                                     className="btn btn-success d-block mx-auto global-button"
                                                     disabled
-                                                >{successMsg}</button>}
+                                                >{t(successMsg)}</button>}
                                                 {errorMsg && selectedUserIndex === userIndex && <button
                                                     className="btn btn-danger d-block mx-auto global-button"
                                                     disabled
-                                                >{errorMsg}</button>}
+                                                >{t(errorMsg)}</button>}
                                             </td>
                                         </tr>
                                     ))}

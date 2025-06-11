@@ -1,0 +1,14 @@
+{
+    "Change Store Status": "تغيير حالة المتجر",
+    "Are You Sure From": "هل أنت متأكد من",
+    "approving Store": "الموافقة على المتجر",
+    "rejecting Store": "رفض المتجر",
+    "blocking Store": "حظر المتجر",
+    "cancel-blocking Store": "إلغاء حظر المتجر",
+    "Approve": "موافقة",
+    "Reject": "رفض",
+    "Block": "حظر",
+    "Cancel Blocking": "إلغاء الحظر",
+    "Please Enter blocking Reason": "الرجاء إدخال سبب الحظر",
+    "Please Enter Merchant Account Password": "الرجاء إدخال كلمة سر حساب التاجر"
+}

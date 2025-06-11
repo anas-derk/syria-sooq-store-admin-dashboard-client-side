@@ -13,6 +13,7 @@ import { getAdminInfo, getAllStoresInsideThePage, handleSelectUserLanguage } fro
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 import { useTranslation } from "react-i18next";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
 
 export default function StoresManagment() {
 
@@ -476,7 +477,7 @@ export default function StoresManagment() {
                                                         placeholder={t("Please Enter Store Name")}
                                                         onChange={(e) => changeStoreData(storeIndex, "name", e.target.value)}
                                                     />
-                                                    {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
+                                                    {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
                                                 </section>
                                             </td>
                                             <td>{store.ownerFullName}</td>
@@ -489,7 +490,7 @@ export default function StoresManagment() {
                                                         placeholder={t("Please Enter Email")}
                                                         onChange={(e) => changeStoreData(storeIndex, "email", e.target.value)}
                                                     />
-                                                    {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                                                    {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}
                                                 </section>
                                             </td>
                                             <td>

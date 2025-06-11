@@ -16,5 +16,10 @@
     "All": "الكل",
     "Show Full Details": "إظهار كامل التفاصيل",
     "Category": "التصنيف",
-    "Download": "تنزيل"
+    "Download": "تنزيل",
+    "Network Error": "خطأ شبكة",
+    "Sorry, Something Went Wrong, Please Repeate The Process !!": "عذراً ، حدث خطأ ما ، يرجى تكرار العملية !!",
+    "Please Wait To Deleting": "الرجاء الانتظار للحذف",
+    "Deleting Successfull": "نجاح الحذف",
+    "Close": "إغلاق"
 }
