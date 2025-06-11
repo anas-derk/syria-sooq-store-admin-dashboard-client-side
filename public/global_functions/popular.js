@@ -195,7 +195,6 @@ const getOrderDetails = async (orderId, ordersType) => {
 }
 
 const handleSelectUserLanguage = (userLanguage, changeLanguageFunc) => {
-    console.log(userLanguage);
     changeLanguageFunc(userLanguage);
     document.body.lang = userLanguage;
 }
