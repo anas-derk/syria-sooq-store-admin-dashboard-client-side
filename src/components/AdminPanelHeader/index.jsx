@@ -32,13 +32,6 @@ export default function AdminPanelHeader({ isWebsiteOwner = false, isMerchant = 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav>
-                            {router.pathname === "/orders-managment/billing/[orderId]" && <>
-                                <NavDropdown title={t("Languages")} id="languages-nav-dropdown">
-                                    <NavDropdown.Item onClick={() => handleChangeLanguage("ar")}>Arabic</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item onClick={() => handleChangeLanguage("en")}>English</NavDropdown.Item>
-                                </NavDropdown>
-                            </>}
                             {isWebsiteOwner && <>
                                 <Nav.Link href="/users-managment" as={Link}>Users</Nav.Link>
                                 <NavDropdown title="Stores" id="stores-nav-dropdown">
@@ -77,6 +70,18 @@ export default function AdminPanelHeader({ isWebsiteOwner = false, isMerchant = 
                                 <NavDropdown.Item href="/ads-managment/update-and-delete-ads" as={Link}>
                                     Update / Delete
                                 </NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Brands" id="brands-nav-dropdown">
+                                <NavDropdown.Item href="/brands-managment/add-new-brand" as={Link}>Add New</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="/brands-managment/update-and-delete-brands" as={Link}>
+                                    Update / Delete
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title={t("Languages")} id="languages-nav-dropdown">
+                                <NavDropdown.Item onClick={() => handleChangeLanguage("ar")}>Arabic</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={() => handleChangeLanguage("en")}>English</NavDropdown.Item>
                             </NavDropdown>
                             <button className="btn btn-danger logout-btn" onClick={adminLogout}>
                                 <MdOutlineLogout className="me-2" />
