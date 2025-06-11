@@ -53,8 +53,6 @@ export default function UpdateAndDeleteBrands() {
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
-    const [isDisplayConfirmDeleteBox, setIsDisplayConfirmDeleteBox] = useState(false);
-
     const router = useRouter();
 
     const pageSize = 10;
@@ -359,15 +357,6 @@ export default function UpdateAndDeleteBrands() {
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
-                {isDisplayConfirmDeleteBox && <ConfirmDelete
-                    name="Brand"
-                    setIsDisplayConfirmDeleteBox={setIsDisplayConfirmDeleteBox}
-                    handleDeleteFunc={() => deleteBrand(selectedBrandIndex)}
-                    setSelectedElementIndex={setSelectedBrandIndex}
-                    waitMsg={waitMsg}
-                    errorMsg={errorMsg}
-                    successMsg={successMsg}
-                />}
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
@@ -442,7 +431,7 @@ export default function UpdateAndDeleteBrands() {
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
-                                                    onClick={() => handleDisplayConfirmDeleteBox(brandIndex, setSelectedBrandIndex, setIsDisplayConfirmDeleteBox)}
+                                                    onClick={() => deleteBrand(selectedBrandIndex)}
                                                 >Delete</button>
                                             </>}
                                             {waitMsg && selectedBrandIndex === brandIndex && <button
