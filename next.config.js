@@ -11,7 +11,7 @@ const nextConfig = {
         adminTokenNameInLocalStorage: "s-s-a-t",
         storeName: "Syria Sooq Store",
         adminDashboardlanguageFieldNameInLocalStorage: "syria-sooq-store-admin-dashboard-language",
-        defaultLanguage: "en"
+        defaultLanguage: "ar"
     },
     async headers() {
         return [
