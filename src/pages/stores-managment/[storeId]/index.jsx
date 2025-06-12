@@ -221,7 +221,7 @@ export default function StoreDetails({ storeId }) {
                         clearTimeout(successTimeout);
                     }, 3000);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         clearTimeout(errorTimeout);
@@ -236,7 +236,7 @@ export default function StoreDetails({ storeId }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -284,7 +284,7 @@ export default function StoreDetails({ storeId }) {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorChangeStoreImageMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeStoreImageMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeStoreImageMsg("");
                         clearTimeout(errorTimeout);
@@ -299,7 +299,7 @@ export default function StoreDetails({ storeId }) {
             }
             else {
                 setWaitChangeStoreImageMsg("");
-                setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeStoreImageMsg("");
                     clearTimeout(errorTimeout);

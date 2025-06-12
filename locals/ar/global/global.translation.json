@@ -19,7 +19,8 @@
     "Download": "تنزيل",
     "Network Error": "خطأ شبكة",
     "Sorry, Something Went Wrong, Please Repeate The Process !!": "عذراً ، حدث خطأ ما ، يرجى تكرار العملية !!",
-    "Please Wait To Deleting": "الرجاء الانتظار للحذف",
     "Deleting Successfull": "نجاح الحذف",
-    "Close": "إغلاق"
+    "Close": "إغلاق",
+    "Please Wait": "الرجاء الانتظار",
+    "Updating Successfull": "نجاح التحديث"
 }

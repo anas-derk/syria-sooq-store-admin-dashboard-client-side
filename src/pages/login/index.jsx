@@ -9,7 +9,9 @@ import { inputValuesValidation } from "../../../public/global_functions/validati
 import axios from "axios";
 import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
-import { getAdminInfo, getDateFormated } from "../../../public/global_functions/popular";
+import { getAdminInfo, getDateFormated, handleSelectUserLanguage } from "../../../public/global_functions/popular";
+import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function AdminLogin() {
 
@@ -32,6 +34,17 @@ export default function AdminLogin() {
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    const loginSpan = <span className="me-2">{t("Login")}</span>;
+
+    const loginIcon = <FiLogIn />;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -88,7 +101,7 @@ export default function AdminLogin() {
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Wait To Logining ...");
+                setWaitMsg("Please Wait");
                 const result = (await axios.get(`${process.env.BASE_API_URL}/admins/login?email=${email}&password=${password}&language=${process.env.defaultLanguage}`)).data;
                 if (result.error) {
                     setWaitMsg("");
@@ -106,7 +119,7 @@ export default function AdminLogin() {
             }
         } catch (err) {
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Try Again !");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
             setTimeout(() => {
                 setErrorMsg("");
             }, 3000);
@@ -116,7 +129,7 @@ export default function AdminLogin() {
     return (
         <div className="admin-login d-flex flex-column justify-content-center">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Login</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Login")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <div className="page-content text-center p-4">
                 <div className="container p-4">
@@ -129,11 +142,11 @@ export default function AdminLogin() {
                                 className={`form-control p-3 border-2 ${formValidationErrors["email"] ? "border-danger mb-2" : "mb-4"}`}
                                 onChange={(e) => setEmail(e.target.value.trim())}
                             />
-                            <div className='icon-box other-languages-mode'>
+                            <div className={`icon-box ${i18n.language !== "ar" ? "other-languages-mode" : "ar-language-mode"}`}>
                                 <BiSolidUser className="icon" />
                             </div>
                         </div>
-                        {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                        {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}
                         <div className="password-field-box">
                             <input
                                 type={isVisiblePassword ? "text" : "password"}
@@ -141,29 +154,34 @@ export default function AdminLogin() {
                                 className={`form-control p-3 border-2 ${formValidationErrors["password"] ? "border-danger mb-2" : "mb-4"}`}
                                 onChange={(e) => setPassword(e.target.value.trim())}
                             />
-                            <div className='icon-box other-languages-mode'>
+                            <div className={`icon-box ${i18n.language !== "ar" ? "other-languages-mode" : "ar-language-mode"}`}>
                                 {!isVisiblePassword && <AiOutlineEye className="eye-icon icon" onClick={() => setIsVisiblePassword(value => value = !value)} />}
                                 {isVisiblePassword && <AiOutlineEyeInvisible className="invisible-eye-icon icon" onClick={() => setIsVisiblePassword(value => value = !value)} />}
                             </div>
                         </div>
-                        {formValidationErrors["password"] && <FormFieldErrorBox errorMsg={formValidationErrors["password"]} />}
+                        {formValidationErrors["password"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["password"])} />}
                         {!waitMsg && !errMsg && <button type="submit" className="btn btn-success mx-auto d-block mb-4 p-3">
-                            <span className="me-2">Login</span>
-                            <FiLogIn />
+                            {i18n.language !== "ar" ? <>
+                                {loginSpan}
+                                {loginIcon}
+                            </> : <>
+                                {loginIcon}
+                                {loginSpan}
+                            </>}
                         </button>}
                         {waitMsg && <button disabled className="btn btn-primary mx-auto d-block mb-4">
-                            <span className="me-2">{waitMsg}</span>
+                            <span className="me-2">{t(waitMsg)}</span>
                         </button>}
                         {errMsg && <button disabled className="btn btn-danger mx-auto d-block mb-4">
-                            <span className="me-2">{errMsg}</span>
+                            <span className="me-2">{t(errMsg)}</span>
                             <FiLogIn />
                         </button>}
                         <a href={`${process.env.WEBSITE_URL}/forget-password?userType=admin`} className="btn btn-danger mx-auto mb-4">
-                            <span className="me-2">Forget Password</span>
+                            <span className="me-2">{t("Forget Password")}</span>
                         </a>
                         {errMsg && Object.keys(blockingDateAndReason).length > 0 && <div className="blocking-date-and-reason-box bg-white border border-danger p-3">
-                            <h6 className="blocking-date fw-bold">Blocking Date: {getDateFormated(blockingDateAndReason.blockingDate)}</h6>
-                            <h6 className="blocking-reason m-0 fw-bold">Blocking Reason: {blockingDateAndReason.blockingReason}</h6>
+                            <h6 className="blocking-date fw-bold">{t("Blocking Date")}: {getDateFormated(blockingDateAndReason.blockingDate)}</h6>
+                            <h6 className="blocking-reason m-0 fw-bold">{t("Blocking Reason")}: {blockingDateAndReason.blockingReason}</h6>
                         </div>}
                     </form>
                 </div>

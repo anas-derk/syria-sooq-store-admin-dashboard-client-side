@@ -64,7 +64,7 @@ export default function ChangeStoreStatusBox({
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Waiting ...");
+                setWaitMsg("Please Wait");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/stores/approve-store/${storeId}?password=${adminPassword}&language=${process.env.defaultLanguage}`, undefined,
                     {
                         headers: {
@@ -83,7 +83,7 @@ export default function ChangeStoreStatusBox({
                     }, 3000);
                 }
                 else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         clearTimeout(errorTimeout);
@@ -98,7 +98,7 @@ export default function ChangeStoreStatusBox({
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -109,7 +109,7 @@ export default function ChangeStoreStatusBox({
 
     const rejectStoreCreate = async (storeId) => {
         try {
-            setWaitMsg("Please Waiting ...");
+            setWaitMsg("Please Wait");
             const result = (await axios.delete(`${process.env.BASE_API_URL}/stores/reject-store/${storeId}?language=${process.env.defaultLanguage}`,
                 {
                     headers: {
@@ -128,7 +128,7 @@ export default function ChangeStoreStatusBox({
                 }, 3000);
             }
             else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -142,7 +142,7 @@ export default function ChangeStoreStatusBox({
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -167,7 +167,7 @@ export default function ChangeStoreStatusBox({
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Waiting ...");
+                setWaitMsg("Please Wait");
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/blocking-store/${storeId}?blockingReason=${changeStatusReason}&language=${process.env.defaultLanguage}`, undefined,
                     {
                         headers: {
@@ -186,7 +186,7 @@ export default function ChangeStoreStatusBox({
                     }, 3000);
                 }
                 else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         clearTimeout(errorTimeout);
@@ -201,7 +201,7 @@ export default function ChangeStoreStatusBox({
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -212,7 +212,7 @@ export default function ChangeStoreStatusBox({
 
     const cancelBlockingStore = async (storeId) => {
         try {
-            setWaitMsg("Please Waiting ...");
+            setWaitMsg("Please Wait");
             const result = (await axios.put(`${process.env.BASE_API_URL}/stores/cancel-blocking/${storeId}?language=${process.env.defaultLanguage}`, undefined,
                 {
                     headers: {
@@ -231,7 +231,7 @@ export default function ChangeStoreStatusBox({
                 }, 3000);
             }
             else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -245,7 +245,7 @@ export default function ChangeStoreStatusBox({
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
