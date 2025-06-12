@@ -377,7 +377,7 @@ export default function UsersManagment() {
                         </section>}
                         {allUsersInsideThePage.length === 0 && !isGetUsers && <NotFoundError errorMsg={t("Sorry, Can't Find Any Users") + " !!"} />}
                         {isGetUsers && <TableLoader />}
-                        {errorMsgOnGetUsersData && <NotFoundError errorMsg={errorMsgOnGetUsersData} />}
+                        {errorMsgOnGetUsersData && <NotFoundError errorMsg={t(errorMsgOnGetUsersData)} />}
                         {totalPagesCount > 1 && !isGetUsers &&
                             <PaginationBar
                                 totalPagesCount={totalPagesCount}

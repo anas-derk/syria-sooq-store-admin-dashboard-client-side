@@ -7,10 +7,11 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteAdmins() {
 
@@ -48,7 +49,14 @@ export default function UpdateAndDeleteAdmins() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 10;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -324,7 +332,7 @@ export default function UpdateAndDeleteAdmins() {
     return (
         <div className="admins-managment admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Admins Managment</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Admins Managment")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 {/* Start Admin Dashboard Side Bar */}
@@ -333,35 +341,35 @@ export default function UpdateAndDeleteAdmins() {
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-5 pb-5">
                     <div className="container-fluid">
-                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">Hi, Mr {adminInfo.fullName} In Admins Managment</h1>
+                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">{t("Hi, Mr")} {adminInfo.fullName} {t("In Your Admins Managment Page")}</h1>
                         <section className="filters mb-3 bg-white border-3 border-info p-3 text-start">
-                            <h5 className="section-name fw-bold text-center">Filters: </h5>
+                            <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                             <hr />
                             <div className="row mb-4">
                                 <div className="col-md-6">
-                                    <h6 className="me-2 fw-bold text-center">Admin Id</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Admin Id")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Admin Id"
+                                        placeholder={t("Please Enter Admin Id")}
                                         onChange={(e) => setFilters({ ...filters, adminId: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-6">
-                                    <h6 className="me-2 fw-bold text-center">Email</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Email")}</h6>
                                     <input
                                         type="email"
                                         className="form-control"
-                                        placeholder="Pleae Enter Email"
+                                        placeholder={t("Please Enter Email")}
                                         onChange={(e) => setFilters({ ...filters, email: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-6 mt-3">
-                                    <h6 className="me-2 fw-bold text-center">Full Name</h6>
+                                    <h6 className="me-2 fw-bold text-center">{t("Full Name")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Full Name"
+                                        placeholder={t("Please Enter Full Name")}
                                         onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
@@ -370,23 +378,23 @@ export default function UpdateAndDeleteAdmins() {
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 onClick={() => filterAdmins(filters)}
                             >
-                                Filter
+                                {t("Filter")}
                             </button>}
                             {isGetAdmins && <button
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 disabled
                             >
-                                Filtering ...
+                                {t("Filtering")} ...
                             </button>}
                         </section>
                         {allAdminsInsideThePage.length > 0 && !isGetAdmins && !errorMsgOnGetAdminsData && <section className="admins-data-box p-3 data-box admin-dashbboard-data-box">
                             <table className="admins-data-table mb-4 managment-table bg-white admin-dashbboard-data-table">
                                 <thead>
                                     <tr>
-                                        <th>Admin Id</th>
-                                        <th>Full Name</th>
-                                        <th>Email</th>
-                                        <th>Action</th>
+                                        <th>{t("Admin Id")}</th>
+                                        <th>{t("Full Name")}</th>
+                                        <th>{t("Email")}</th>
+                                        <th>{t("Processes")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -399,10 +407,10 @@ export default function UpdateAndDeleteAdmins() {
                                                         type="text"
                                                         defaultValue={admin.fullName}
                                                         className={`form-control d-block mx-auto p-2 border-2 full-name-field ${formValidationErrors["fullName"] && adminIndex === selectedAdminIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter New Full Name"
+                                                        placeholder={t("Please Enter New Full Name")}
                                                         onChange={(e) => changeAdminData(adminIndex, "fullName", e.target.value)}
                                                     />
-                                                    {formValidationErrors["fullName"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                                                    {formValidationErrors["fullName"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["fullName"])} />}
                                                 </section>
                                             </td>
                                             <td>
@@ -411,10 +419,10 @@ export default function UpdateAndDeleteAdmins() {
                                                         type="text"
                                                         defaultValue={admin.email}
                                                         className={`form-control d-block mx-auto p-2 border-2 email-field ${formValidationErrors["email"] && adminIndex === selectedAdminIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder="Pleae Enter New Email"
+                                                        placeholder={t("Please Enter New Email")}
                                                         onChange={(e) => changeAdminData(adminIndex, "email", e.target.value)}
                                                     />
-                                                    {formValidationErrors["email"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                                                    {formValidationErrors["email"] && adminIndex === selectedAdminIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}
                                                 </section>
                                             </td>
                                             <td>
@@ -423,7 +431,7 @@ export default function UpdateAndDeleteAdmins() {
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateAdminData(adminIndex)}
                                                     >
-                                                        Update
+                                                        {t("Update")}
                                                     </button>
                                                 }
                                                 {
@@ -433,26 +441,26 @@ export default function UpdateAndDeleteAdmins() {
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         onClick={() => deleteAdmin(adminIndex)}
                                                     >
-                                                        Delete
+                                                        {t("Delete")}
                                                     </button>
                                                 }
                                                 {waitMsg && adminIndex === selectedAdminIndex && <button
                                                     className="btn btn-info d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {waitMsg}
+                                                    {t(waitMsg)}
                                                 </button>}
                                                 {successMsg && adminIndex === selectedAdminIndex && <button
                                                     className="btn btn-success d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {successMsg}
+                                                    {t(successMsg)}
                                                 </button>}
                                                 {errorMsg && adminIndex === selectedAdminIndex && <button
                                                     className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {errorMsg}
+                                                    {t(errorMsg)}
                                                 </button>}
                                             </td>
                                         </tr>
@@ -460,9 +468,9 @@ export default function UpdateAndDeleteAdmins() {
                                 </tbody>
                             </table>
                         </section>}
-                        {allAdminsInsideThePage.length === 0 && !isGetAdmins && <NotFoundError errorMsg="Sorry, Can't Find Any Admins !!" />}
+                        {allAdminsInsideThePage.length === 0 && !isGetAdmins && <NotFoundError errorMsg={t("Sorry, Can't Find Any Admins") + " !!"} />}
                         {isGetAdmins && <TableLoader />}
-                        {errorMsgOnGetAdminsData && <NotFoundError errorMsg={errorMsgOnGetAdminsData} />}
+                        {errorMsgOnGetAdminsData && <NotFoundError errorMsg={t(errorMsgOnGetAdminsData)} />}
                         {totalPagesCount > 1 && !isGetAdmins &&
                             <PaginationBar
                                 totalPagesCount={totalPagesCount}

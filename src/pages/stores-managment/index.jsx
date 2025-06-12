@@ -517,13 +517,13 @@ export default function StoresManagment() {
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
-                                                        {waitMsg}
+                                                        {t(waitMsg)}
                                                     </button>}
                                                     {successMsg && storeIndex === selectedStoreIndex && <button
                                                         className="btn btn-success d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
-                                                        {successMsg}
+                                                        {t(successMsg)}
                                                     </button>}
                                                     {
                                                         !waitMsg &&
@@ -577,7 +577,7 @@ export default function StoresManagment() {
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         disabled
                                                     >
-                                                        {errorMsg}
+                                                        {t(errorMsg)}
                                                     </button>}
                                                 </>}
                                                 {!waitMsg && !errorMsg && !successMsg && <>
@@ -594,7 +594,7 @@ export default function StoresManagment() {
                         </section>}
                         {allStoresInsideThePage.length === 0 && !isGetStores && <NotFoundError errorMsg={t("Sorry, Can't Find Any Stores") + " !!"} />}
                         {isGetStores && <TableLoader />}
-                        {errorMsgOnGetStoresData && <NotFoundError errorMsg={errorMsgOnGetStoresData} />}
+                        {errorMsgOnGetStoresData && <NotFoundError errorMsg={t(errorMsgOnGetStoresData)} />}
                         {totalPagesCount > 1 && !isGetStores &&
                             <PaginationBar
                                 totalPagesCount={totalPagesCount}
