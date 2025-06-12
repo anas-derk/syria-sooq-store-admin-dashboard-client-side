@@ -6,6 +6,7 @@ import usersTranslation from "../ar/pages/users.translation.json";
 import storesTranslation from "../ar/pages/stores.translation.json";
 import changeStoreStatusBoxTranslation from "../ar/components/change_store_status_box.translate.json";
 import loginTranslation from "../ar/pages/login.translation.json";
+import addNewAdminTranslation from "../ar/pages/add_new_admin.translation.json";
 
 export default {
     ...headerTranslation,
@@ -15,5 +16,6 @@ export default {
     ...usersTranslation,
     ...storesTranslation,
     ...changeStoreStatusBoxTranslation,
-    ...loginTranslation
+    ...loginTranslation,
+    ...addNewAdminTranslation
 }

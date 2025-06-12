@@ -5,11 +5,12 @@ import axios from "axios";
 import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
-import { getAdminInfo } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { useRouter } from "next/router";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function AddNewAdmin() {
 
@@ -36,6 +37,13 @@ export default function AddNewAdmin() {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -113,7 +121,7 @@ export default function AddNewAdmin() {
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
-                setWaitMsg("Please Waiting To Add New Admin ...");
+                setWaitMsg("Please Wait");
                 const result = (await axios.post(`${process.env.BASE_API_URL}/admins/add-new-admin?language=${process.env.defaultLanguage}`, newAdminData, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -147,7 +155,7 @@ export default function AddNewAdmin() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -159,78 +167,78 @@ export default function AddNewAdmin() {
     return (
         <div className="add-new-admin admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Add New Admin</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Add New Admin")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column pt-5 pb-5 p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName}In Your Add New Admin Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Add New Admin Page")}
                     </h1>
                     <form className="add-new-admin-form admin-dashbboard-form" onSubmit={(e) => addNewAdmin(e, newAdminData)}>
                         <section className="first-name mb-4">
                             <input
                                 type="text"
                                 className={`form-control p-2 border-2 admin-name-field ${formValidationErrors["fullName"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Enter First Name"
+                                placeholder={t("Please Enter Full Name")}
                                 onChange={(e) => setNewAdminData({ ...newAdminData, fullName: e.target.value })}
                                 value={newAdminData.fullName}
                             />
-                            {formValidationErrors["fullName"] && <FormFieldErrorBox errorMsg={formValidationErrors["fullName"]} />}
+                            {formValidationErrors["fullName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["fullName"])} />}
                         </section>
                         <section className="email mb-4">
                             <input
                                 type="text"
                                 className={`form-control p-2 border-2 admin-email-field ${formValidationErrors["email"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Enter Email"
+                                placeholder={t("Please Enter Email")}
                                 onChange={(e) => setNewAdminData({ ...newAdminData, email: e.target.value })}
                                 value={newAdminData.email}
                             />
-                            {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={formValidationErrors["email"]} />}
+                            {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}
                         </section>
                         <section className="password mb-4">
-                            <div className={`current-password-field-box ${formValidationErrors["password"] ? "error-in-field" : ""}`}>
+                            <div className={`password-field-box ${formValidationErrors["password"] ? "error-in-field" : ""}`}>
                                 <input
                                     type={isVisiblePassword ? "text" : "password"}
                                     className={`p-2 form-control ${formValidationErrors["password"] ? "border-3 border-danger mb-3" : ""}`}
-                                    placeholder="Please Enter Password"
+                                    placeholder={t("Please Enter Password")}
                                     onChange={(e) => setNewAdminData({ ...newAdminData, password: e.target.value.trim() })}
                                     value={newAdminData.password}
                                 />
-                                <div className="icon-box other-languages-mode">
+                                <div className={`icon-box ${i18n.language !== "ar" ? "other-languages-mode" : "ar-language-mode"}`}>
                                     {!isVisiblePassword && <AiOutlineEye className="eye-icon icon" onClick={() => setIsVisiblePassword(value => value = !value)} />}
                                     {isVisiblePassword && <AiOutlineEyeInvisible className="invisible-eye-icon icon" onClick={() => setIsVisiblePassword(value => value = !value)} />}
                                 </div>
                             </div>
-                            {formValidationErrors["password"] && <FormFieldErrorBox errorMsg={formValidationErrors["password"]} />}
+                            {formValidationErrors["password"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["password"])} />}
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Add Now
+                            {t("Add Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
                     </form>
                 </div>
