@@ -349,7 +349,7 @@ export default function StoreDetails({ storeId }) {
                                         <th>{t("City")}</th>
                                         <td className="update-store-city-cell">
                                             <section className="store-city">
-                                                <h6 className="fw-bold mb-3">{storeDetails.city}</h6>
+                                                <h6 className="fw-bold mb-3">{t(storeDetails.city)}</h6>
                                                 <select
                                                     className={`select-store-city form-select ${formValidationErrors["city"] ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, city: e.target.value })}
