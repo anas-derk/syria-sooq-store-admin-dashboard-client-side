@@ -3,7 +3,7 @@ const nextConfig = {
     reactStrictMode: false,
     swcMinify: true,
     compiler: {
-        removeConsole: process.env.NODE_ENV === "production",
+        removeConsole: false,
     },
     env: {
         BASE_API_URL: process.env.NODE_ENV === "development" ? "http://localhost:5200" : "https://api.syriasooq.com",
