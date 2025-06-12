@@ -66,10 +66,9 @@ export default function StoresManagment() {
     const storeStatusList = ["pending", "approving", "blocking"];
 
     useEffect(() => {
-        console.log("aaa")
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
         handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
-        console.log("bbb")
+        console.log(userLanguage)
     }, []);
 
     useEffect(() => {
@@ -94,7 +93,6 @@ export default function StoresManagment() {
                     }
                 })
                 .catch(async (err) => {
-                    console.log(err);
                     if (err?.response?.status === 401) {
                         localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
                         await router.replace("/login");
