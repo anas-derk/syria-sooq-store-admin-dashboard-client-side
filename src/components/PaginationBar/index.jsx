@@ -21,10 +21,10 @@ export default function PaginationBar({
     const [pageNumber, setPageNumber] = useState(0);
 
     const { i18n, t } = useTranslation();
-    
+
     useEffect(() => {
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
-        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : "en", i18n.changeLanguage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
     }, []);
 
     const getPaginationButtons = () => {
