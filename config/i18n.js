@@ -6,8 +6,8 @@ i18next.use(initReactI18next).init({
     resources: {
         ar: { translation: arTranslation },
     },
-    lng: "en",
-    fallbackLng: 'en',
+    lng: process.env.defaultLanguage,
+    fallbackLng: "en",
 });
 
 export default i18next;

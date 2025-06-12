@@ -68,7 +68,6 @@ export default function StoresManagment() {
     useEffect(() => {
         const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
         handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
-        console.log(userLanguage)
     }, []);
 
     useEffect(() => {
