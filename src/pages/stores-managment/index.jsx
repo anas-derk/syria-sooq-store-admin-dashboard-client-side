@@ -558,7 +558,7 @@ export default function StoresManagment() {
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "blocking")}
                                                         >
-                                                            {t("Blocking")}
+                                                            {t("Block")}
                                                         </button>
                                                     }
                                                     {
