@@ -138,7 +138,7 @@ export default function AdminLogin() {
                         <div className="email-field-box">
                             <input
                                 type="text"
-                                placeholder="Please Enter Your Email"
+                                placeholder={t("Please Enter Email")}
                                 className={`form-control p-3 border-2 ${formValidationErrors["email"] ? "border-danger mb-2" : "mb-4"}`}
                                 onChange={(e) => setEmail(e.target.value.trim())}
                             />
@@ -150,7 +150,7 @@ export default function AdminLogin() {
                         <div className="password-field-box">
                             <input
                                 type={isVisiblePassword ? "text" : "password"}
-                                placeholder="Please Enter Your Password"
+                                placeholder={t("Please Enter Password")}
                                 className={`form-control p-3 border-2 ${formValidationErrors["password"] ? "border-danger mb-2" : "mb-4"}`}
                                 onChange={(e) => setPassword(e.target.value.trim())}
                             />

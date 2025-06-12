@@ -288,7 +288,7 @@ export default function UsersManagment() {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder={t("Pleae Enter User Id")}
+                                        placeholder={t("Please Enter User Id")}
                                         onChange={(e) => setFilters({ ...filters, _id: e.target.value.trim() })}
                                     />
                                 </div>
@@ -297,7 +297,7 @@ export default function UsersManagment() {
                                     <input
                                         type="email"
                                         className="form-control"
-                                        placeholder={t("Pleae Enter Email")}
+                                        placeholder={t("Please Enter Email")}
                                         onChange={(e) => setFilters({ ...filters, email: e.target.value.trim() })}
                                     />
                                 </div>
@@ -306,7 +306,7 @@ export default function UsersManagment() {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder={t("Pleae Enter Full Name")}
+                                        placeholder={t("Please Enter Full Name")}
                                         onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
