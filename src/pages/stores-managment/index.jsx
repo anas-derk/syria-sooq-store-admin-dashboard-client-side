@@ -474,7 +474,7 @@ export default function StoresManagment() {
                                                         type="text"
                                                         defaultValue={store.name}
                                                         className={`form-control d-block mx-auto p-2 border-2 store-name-field ${formValidationErrors["name"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder={t("Please Enter Store Name")}
+                                                        placeholder={t("Please Enter New Store Name")}
                                                         onChange={(e) => changeStoreData(storeIndex, "name", e.target.value)}
                                                     />
                                                     {formValidationErrors["name"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
@@ -487,7 +487,7 @@ export default function StoresManagment() {
                                                         type="text"
                                                         defaultValue={store.email}
                                                         className={`form-control d-block mx-auto p-2 border-2 store-email-field ${formValidationErrors["email"] && storeIndex === selectedStoreIndex ? "border-danger mb-3" : "mb-4"}`}
-                                                        placeholder={t("Please Enter Email")}
+                                                        placeholder={t("Please Enter New Owner Email")}
                                                         onChange={(e) => changeStoreData(storeIndex, "email", e.target.value)}
                                                     />
                                                     {formValidationErrors["email"] && storeIndex === selectedStoreIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}

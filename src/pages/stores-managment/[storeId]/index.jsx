@@ -338,7 +338,7 @@ export default function StoreDetails({ storeId }) {
                                                     type="text"
                                                     defaultValue={storeDetails.name}
                                                     className={`form-control d-block mx-auto p-2 border-2 store-name-field ${formValidationErrors["name"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    placeholder="Pleae Enter New Store Name"
+                                                    placeholder={t("Pleae Enter New Store Name")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, name: e.target.value })}
                                                 />
                                                 {formValidationErrors["name"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
