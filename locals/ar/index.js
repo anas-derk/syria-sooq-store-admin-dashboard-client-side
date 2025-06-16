@@ -8,6 +8,7 @@ import changeStoreStatusBoxTranslations from "../ar/components/change_store_stat
 import loginTranslations from "../ar/pages/login.translation.json";
 import addNewAdminTranslations from "../ar/pages/add_new_admin.translation.json";
 import adminsTranslations from "../ar/pages/admins.translations.json";
+import addNewProductTranslations from "../ar/pages/add_new_product.json";
 
 export default {
     ...headerTranslations,
@@ -19,5 +20,6 @@ export default {
     ...changeStoreStatusBoxTranslations,
     ...loginTranslations,
     ...addNewAdminTranslations,
-    ...adminsTranslations
+    ...adminsTranslations,
+    ...addNewProductTranslations
 }
