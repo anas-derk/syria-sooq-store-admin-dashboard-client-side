@@ -7,8 +7,9 @@ import LoaderPage from "@/components/LoaderPage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getAllProductsInsideThePage } from "../../../../public/global_functions/popular";
+import { getAdminInfo, getAllProductsInsideThePage, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function AddNewAd() {
 
@@ -44,6 +45,8 @@ export default function AddNewAd() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const cites = [
         "lattakia",
         "tartus",
@@ -60,6 +63,11 @@ export default function AddNewAd() {
         "aleppo",
         "quneitra"
     ];
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -247,29 +255,29 @@ export default function AddNewAd() {
     return (
         <div className="add-new-ad admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Add New Advertisement</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Add New Advertisement")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Add New Advertisement Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Add New Advertisement Page")}
                     </h1>
                     <section className="filters mb-3 bg-white border-3 border-info p-3 text-start w-100">
-                        <h5 className="section-name fw-bold text-center">Select Advertisement Type:</h5>
+                        <h5 className="section-name fw-bold text-center">{t("Please Select Advertisement Type")}:</h5>
                         <hr />
                         <div className="row mb-4">
                             <div className="col-md-12">
-                                <h6 className="me-2 fw-bold text-center">Advertisement Type</h6>
+                                <h6 className="me-2 fw-bold text-center">{t("Advertisement Type")}</h6>
                                 <select
                                     className="select-advertisement-type form-select"
                                     onChange={(e) => setAdvertisementType(e.target.value)}
                                     defaultValue="text"
                                 >
-                                    <option value="" hidden>Pleae Select Advertisement Type</option>
-                                    <option value="panner">Panner</option>
-                                    <option value="elite">Elite</option>
+                                    <option value="" hidden>{t("Please Select Advertisement Type")}</option>
+                                    <option value="panner">{t("Panner")}</option>
+                                    <option value="elite">{t("Elite")}</option>
                                 </select>
                             </div>
                         </div>
@@ -280,22 +288,23 @@ export default function AddNewAd() {
                                 <input
                                     type="text"
                                     className={`form-control p-2 border-2 ad-name-field ${formValidationErrors["adContent"] ? "border-danger mb-3" : "mb-4"}`}
-                                    placeholder="Please Enter Ad Content"
+                                    placeholder={t("Please Enter Ad Content")}
                                     onChange={(e) => setAdContent(e.target.value)}
                                     value={adContent}
                                 />
-                                {formValidationErrors["adContent"] && <FormFieldErrorBox errorMsg={formValidationErrors["adContent"]} />}
+                                {formValidationErrors["adContent"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["adContent"])} />}
                             </section>}
                         <section className="ad-image mb-4">
+                            <h6 className="mb-3 fw-bold">{t("Please Select Ad Image")}</h6>
                             <input
                                 type="file"
                                 className={`form-control p-2 border-2 ad-image-field ${formValidationErrors["adImage"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Select Advertisement Image"
+                                placeholder={t("Please Select Ad Image")}
                                 onChange={(e) => setAdImage(e.target.files[0])}
                                 ref={adImageFileRef}
                                 value={adImageFileRef.current?.value}
                             />
-                            {formValidationErrors["adImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["adImage"]} />}
+                            {formValidationErrors["adImage"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["adImage"])} />}
                         </section>
                         {advertisementType === "panner" && <section className="ad-image mb-4">
                             <select
@@ -303,31 +312,31 @@ export default function AddNewAd() {
                                 onChange={(e) => setAdCity(e.target.value)}
                                 value={adCity}
                             >
-                                <option value="" hidden>Pleae Select Advertisement City</option>
+                                <option value="" hidden>{t("Please Select Advertisement City")}</option>
                                 {cites.map((city) => <option key={city} value={city}>{city}</option>)}
                             </select>
-                            {formValidationErrors["adCity"] && <FormFieldErrorBox errorMsg={formValidationErrors["adCity"]} />}
+                            {formValidationErrors["adCity"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["adCity"])} />}
                         </section>}
                         <section className="related-product mb-4 overflow-auto">
-                            <h6 className="mb-3 fw-bold">Please Select Related Product</h6>
+                            <h6 className="mb-3 fw-bold">{t("Please Select Related Product")}</h6>
                             <div className="select-related-product-box select-box mb-4">
                                 <input
                                     type="text"
                                     className="search-box form-control p-2 border-2 mb-4"
-                                    placeholder="Please Enter Product Name Or Part Of This"
+                                    placeholder={t("Please Enter Product Name Or Part Of This")}
                                     onChange={handleGetProductsByName}
                                 />
                                 <ul className={`products-list options-list bg-white border ${formValidationErrors["relatedProduct"] ? "border-danger mb-4" : "border-dark"}`}>
-                                    <li className="text-center fw-bold border-bottom border-2 border-dark">Seached Products List</li>
+                                    <li className="text-center fw-bold border-bottom border-2 border-dark">{t("Existed Products List")}</li>
                                     {searchedProducts.length > 0 && searchedProducts.map((product) => (
                                         <li key={product._id} onClick={() => handleSelectRelatedProduct(product)}>{product.name}</li>
                                     ))}
                                 </ul>
-                                {searchedProducts.length === 0 && searchedProductName && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Related Products Match This Name !!</p>}
-                                {formValidationErrors["relatedProduct"] && <FormFieldErrorBox errorMsg={formValidationErrors["relatedProduct"]} />}
+                                {searchedProducts.length === 0 && searchedProductName && <p className="alert alert-danger mt-4">{t("Sorry, Can't Find Any Related Products Match This Name")}</p>}
+                                {formValidationErrors["relatedProduct"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["relatedProduct"])} />}
                             </div>
                             {selectedRelatedProduct && <div className="selected-related-product row mb-4">
-                                <h6 className="fw-bold text-center mb-3">Selected Related Product Is :</h6>
+                                <h6 className="fw-bold text-center mb-3">{t("Selected Related Product Is")} :</h6>
                                 <div className="col-md-12 mb-3">
                                     <div className="selected-related-product-box bg-white p-2 border border-2 border-dark text-center">
                                         <span className="me-2 selected-product-name">{selectedRelatedProduct.name}</span>
@@ -339,28 +348,28 @@ export default function AddNewAd() {
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Add Now
+                            {t("Add Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
                     </form>
                 </div>

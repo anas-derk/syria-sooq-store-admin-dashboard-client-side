@@ -8,10 +8,10 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../public/global_functions/validations";
-import { HiOutlineBellAlert } from "react-icons/hi2";
-import { getAdminInfo, getDateFormated } from "../../../public/global_functions/popular";
+import { getAdminInfo, getDateFormated, handleSelectUserLanguage } from "../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
+import { useTranslation } from "react-i18next";
 
 export default function OrdersManagment({ ordersType }) {
 
@@ -55,6 +55,8 @@ export default function OrdersManagment({ ordersType }) {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const ordersTypeByMakeFirstLetterCapital = ordersType.replace(ordersType[0], ordersType[0].toUpperCase());
 
     const pageSize = 10;
@@ -71,6 +73,11 @@ export default function OrdersManagment({ ordersType }) {
     ];
 
     const displayBillingButtonStatusForReturnOrder = ["partially return products", "fully return products"];
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         setIsLoadingPage(true);
@@ -335,7 +342,7 @@ export default function OrdersManagment({ ordersType }) {
     return (
         <div className="orders-managment admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - {ordersTypeByMakeFirstLetterCapital} Orders Managment</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t(ordersTypeByMakeFirstLetterCapital)} {t("Orders Managment")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 {/* Start Admin Dashboard Side Bar */}
@@ -344,57 +351,57 @@ export default function OrdersManagment({ ordersType }) {
                 {/* Start Content Section */}
                 <section className="page-content d-flex justify-content-center align-items-center flex-column text-center pt-5 pb-5">
                     <div className="container-fluid">
-                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">Hi, Mr {adminInfo.fullName} In {ordersTypeByMakeFirstLetterCapital} Orders Managment</h1>
+                        <h1 className="welcome-msg mb-4 fw-bold pb-3 mx-auto">{t("Hi, Mr")} {adminInfo.fullName} {t(`In Your ${ordersTypeByMakeFirstLetterCapital} Orders Managment Page`)}</h1>
                         <section className="filters mb-3 bg-white border-3 border-info p-3 text-start">
-                            <h5 className="section-name fw-bold text-center">Filters: </h5>
+                            <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                             <hr />
                             <div className="row mb-4">
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Order Number</h6>
+                                    <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Order Number")}</h6>
                                     <input
                                         type="number"
                                         className="form-control"
-                                        placeholder="Pleae Enter Order Number"
+                                        placeholder={t("Please Enter Order Number")}
                                         min="1"
                                         max={allOrdersInsideThePage.length}
                                         onChange={(e) => setFilters({ ...filters, orderNumber: e.target.valueAsNumber ? e.target.valueAsNumber : -1 })}
                                     />
                                 </div>
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Order Id</h6>
+                                    <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Order Id")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Order Id"
+                                        placeholder={t("Please Enter Order Id")}
                                         onChange={(e) => setFilters({ ...filters, orderId: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-4">
-                                    <h6 className="me-2 fw-bold text-center">Status</h6>
+                                    <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Status")}</h6>
                                     <select
                                         className="select-order-status form-select"
                                         onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                                     >
-                                        <option value="" hidden>Pleae Enter Status</option>
-                                        <option value="">All</option>
-                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{status}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
+                                        <option value="" hidden>{t("Please Enter Status")}</option>
+                                        <option value="">{t("All")}</option>
+                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{t(status)}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
                                     </select>
                                 </div>
                                 <div className="col-md-6 mt-4">
-                                    <h6 className="me-2 fw-bold text-center">Customer Name</h6>
+                                    <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Customer Name")}</h6>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Pleae Enter Customer Name"
+                                        placeholder={t("Please Enter Customer Name")}
                                         onChange={(e) => setFilters({ ...filters, customerName: e.target.value.trim() })}
                                     />
                                 </div>
                                 <div className="col-md-6 mt-4">
-                                    <h6 className="me-2 fw-bold text-center">Customer Email</h6>
+                                    <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Customer Email")}</h6>
                                     <input
                                         type="email"
                                         className="form-control"
-                                        placeholder="Pleae Enter Customer Email"
+                                        placeholder={t("Please Enter Customer Email")}
                                         onChange={(e) => setFilters({ ...filters, email: e.target.value.trim() })}
                                     />
                                 </div>
@@ -403,27 +410,27 @@ export default function OrdersManagment({ ordersType }) {
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 onClick={() => filterOrders(filters)}
                             >
-                                Filter
+                                {t("Filter")}
                             </button>}
                             {isGetOrders && <button
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                                 disabled
                             >
-                                Filtering ...
+                                {t("Filtering")} ...
                             </button>}
                         </section>
                         {allOrdersInsideThePage.length > 0 && !isGetOrders && <section className="orders-data-box p-3 data-box admin-dashbboard-data-box">
                             <table className="orders-data-table mb-4 managment-table bg-white admin-dashbboard-data-table">
                                 <thead>
                                     <tr>
-                                        <th>Order Number</th>
-                                        <th>Order Id</th>
-                                        {ordersType === "normal" && <th>Checkout Status</th>}
-                                        <th>Status</th>
-                                        <th>Order Total Amount</th>
-                                        {ordersType === "return" && <th>Approved Order Total Amount</th>}
-                                        <th>Added Date</th>
-                                        <th>Action</th>
+                                        <th>{t("Order Number")}</th>
+                                        <th>{t("Order Id")}</th>
+                                        {ordersType === "normal" && <th>{t("Checkout Status")}</th>}
+                                        <th>{t("Status")}</th>
+                                        <th>{t("Total Amount")}</th>
+                                        {ordersType === "return" && <th>{t("Approved Total Amount")}</th>}
+                                        <th>{t("Added Date")}</th>
+                                        <th>{t("Processes")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -433,19 +440,19 @@ export default function OrdersManagment({ ordersType }) {
                                             <td>{order._id}</td>
                                             {ordersType === "normal" && <td>
                                                 <div className={`p-2 text-white ${order.checkoutStatus === "Checkout Successfull" ? "bg-success" : "bg-danger"}`}>
-                                                    {order.checkoutStatus}
+                                                    {t(order.checkoutStatus)}
                                                 </div>
                                             </td>}
                                             <td>
-                                                <h6 className="fw-bold">{order.status}</h6>
+                                                <h6 className="fw-bold">{t(order.status)}</h6>
                                                 {((ordersType === "normal" && order.checkoutStatus === "Checkout Successfull" && order.status !== "cancelled") || (ordersType === "return")) && <>
                                                     <hr />
                                                     <select
                                                         className="select-order-status form-select mb-5"
                                                         onChange={(e) => changeOrderData(orderIndex, "status", e.target.value)}
                                                     >
-                                                        <option value="" hidden>Pleae Enter Status</option>
-                                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{status}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
+                                                        <option value="" hidden>{t("Please Enter Status")}</option>
+                                                        {ordersType === "normal" ? orderStatus.map((status) => <option value={status}>{t(status)}</option>) : returnedOrderStatus.map((status) => <option value={status}>{status}</option>)}
                                                     </select>
                                                     {/* <div className="form-check border border-2 border-dark p-3">
                                                         <input
@@ -471,9 +478,9 @@ export default function OrdersManagment({ ordersType }) {
                                                             onChange={(e) => changeOrderData(orderIndex, "isSendEmailToTheCustomer", e.target.checked)}
                                                         />
                                                         <label className="form-check-label" htmlFor="sendEmailCheckout" onClick={(e) => changeOrderData(orderIndex, "isSendEmailToTheCustomer", e.target.checked)}>
-                                                            Send Email To Customer
-                                                            <span className="d-block mt-3 fw-bold">( In Status: {ordersType === "normal" && orderStatus.map((status, index) => {
-                                                                if (status !== "pending" && status !== "cancelled") return status + (index !== orderStatus.length - 2 ? " or " : "");
+                                                            {t("Send Email To Customer")}
+                                                            <span className="d-block mt-3 fw-bold">( {t("In Status")}: {ordersType === "normal" && orderStatus.map((status, index) => {
+                                                                if (status !== "pending" && status !== "cancelled") return t(status) + (index !== orderStatus.length - 2 ? ` ${t("or")} ` : "");
                                                             })}</span>
                                                         </label>
                                                     </div>}
@@ -490,48 +497,48 @@ export default function OrdersManagment({ ordersType }) {
                                                         className="btn btn-info d-block mx-auto mb-3 global-button"
                                                         onClick={() => updateOrderData(orderIndex)}
                                                     >
-                                                        Update
+                                                        {t("Update")}
                                                     </button>}
                                                     <button
                                                         className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                         onClick={() => deleteOrder(orderIndex)}
                                                     >
-                                                        Delete
+                                                        {t("Delete")}
                                                     </button>
                                                 </>}
                                                 {waitMsg && orderIndex === selectedOrderIndex && <button
                                                     className="btn btn-info d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {waitMsg}
+                                                    {t(waitMsg)}
                                                 </button>}
                                                 {successMsg && orderIndex === selectedOrderIndex && <button
                                                     className="btn btn-success d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {successMsg}
+                                                    {t(successMsg)}
                                                 </button>}
                                                 {errorMsg && orderIndex === selectedOrderIndex && <button
                                                     className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    {errorMsg}
+                                                    {t(erroMsg)}
                                                 </button>}
                                                 {order.isDeleted && <button
                                                     className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                     disabled
                                                 >
-                                                    Deleted
+                                                    {t("Deleted")}
                                                 </button>}
                                                 {selectedOrderIndex !== orderIndex && <>
                                                     <Link
                                                         href={`/orders-managment/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
-                                                    >Show Details</Link>
+                                                    >{t("Show Full Details")}</Link>
                                                     {(order.checkoutStatus === "Checkout Successfull" || (ordersType === "return" && displayBillingButtonStatusForReturnOrder.includes(order.status)) && order.products.filter((product) => product.status !== "checking").length === order.products.length) && <Link
                                                         href={`/orders-managment/billing/${order._id}?ordersType=${ordersType}`}
                                                         className="btn btn-success d-block mx-auto mb-4 global-button"
-                                                    >Show Billing</Link>}
+                                                    >{t("Show Billing")}</Link>}
                                                 </>}
                                             </td>
                                         </tr>
@@ -539,7 +546,7 @@ export default function OrdersManagment({ ordersType }) {
                                 </tbody>
                             </table>
                         </section>}
-                        {allOrdersInsideThePage.length === 0 && !isGetOrders && <NotFoundError errorMsg="Sorry, Can't Find Any Orders !!" />}
+                        {allOrdersInsideThePage.length === 0 && !isGetOrders && <NotFoundError errorMsg={t("Sorry, Can't Find Any Orders")} />}
                         {isGetOrders && <TableLoader />}
                         {errorMsgOnGetOrdersData && <NotFoundError errorMsg={errorMsgOnGetOrdersData} />}
                         {totalPagesCount > 1 && !isGetOrders &&

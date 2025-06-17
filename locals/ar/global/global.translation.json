@@ -27,5 +27,8 @@
     "Change": "نغيير",
     "Change Image Successfull": "تم تغيير الصورة بنجاح",
     "Update Now": "تحديث الآن",
-    "No Parent": "بدون أب"
+    "No Parent": "بدون أب",
+    "Status": "الحالة",
+    "Please Enter Status": "الرجاء إدخال الحالة",
+    "pending": "الانتظار"
 }

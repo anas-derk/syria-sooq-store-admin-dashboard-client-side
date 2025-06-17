@@ -338,7 +338,7 @@ export default function StoreDetails({ storeId }) {
                                                     type="text"
                                                     defaultValue={storeDetails.name}
                                                     className={`form-control d-block mx-auto p-2 border-2 store-name-field ${formValidationErrors["name"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    placeholder={t("Pleae Enter New Store Name")}
+                                                    placeholder={t("Please Enter New Store Name")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, name: e.target.value })}
                                                 />
                                                 {formValidationErrors["name"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
@@ -452,7 +452,7 @@ export default function StoreDetails({ storeId }) {
                                                     type="text"
                                                     defaultValue={storeDetails.ownerFullName}
                                                     className={`form-control d-block mx-auto p-2 border-2 store-owner-full-name-field ${formValidationErrors["ownerFullName"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    placeholder={t("Pleae Enter New Owner Full Name")}
+                                                    placeholder={t("Please Enter New Owner Full Name")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, ownerFullName: e.target.value })}
                                                 />
                                                 {formValidationErrors["ownerFullName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["ownerFullName"])} />}
@@ -467,7 +467,7 @@ export default function StoreDetails({ storeId }) {
                                                     type="text"
                                                     defaultValue={storeDetails.phoneNumber}
                                                     className={`form-control d-block mx-auto p-2 border-2 store-phone-number-field ${formValidationErrors["phoneNumber"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    placeholder={t("Pleae Enter New Phone Number")}
+                                                    placeholder={t("Please Enter New Phone Number")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, phoneNumber: e.target.value })}
                                                 />
                                                 {formValidationErrors["phoneNumber"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["phoneNumber"])} />}
@@ -482,7 +482,7 @@ export default function StoreDetails({ storeId }) {
                                                     type="text"
                                                     defaultValue={storeDetails.email}
                                                     className={`form-control d-block mx-auto p-2 border-2 store-email-field ${formValidationErrors["email"] ? "border-danger mb-3" : "mb-4"}`}
-                                                    placeholder={t("Pleae Enter New Store Email")}
+                                                    placeholder={t("Please Enter New Store Email")}
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, email: e.target.value })}
                                                 />
                                                 {formValidationErrors["email"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["email"])} />}

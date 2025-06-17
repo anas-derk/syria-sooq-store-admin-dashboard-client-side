@@ -7,8 +7,9 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteAds() {
 
@@ -44,6 +45,8 @@ export default function UpdateAndDeleteAds() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const cites = [
         "lattakia",
         "tartus",
@@ -60,6 +63,11 @@ export default function UpdateAndDeleteAds() {
         "aleppo",
         "quneitra"
     ];
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -313,53 +321,54 @@ export default function UpdateAndDeleteAds() {
     return (
         <div className="update-and-delete-ads admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update / Delete Ads</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - Update / Delete Ads</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Ads Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update / Delete Ads Page")}
                     </h1>
                     {allAds.length > 0 && <section className="ads-box w-100">
                         <table className="ads-table mb-4 managment-table bg-white w-100">
                             <thead>
                                 <tr>
-                                    <th>Type</th>
-                                    <th>Content</th>
-                                    <th>City</th>
-                                    <th>Image</th>
-                                    <th>Process</th>
+                                    <th>{t("Type")}</th>
+                                    <th>{t("Content")}</th>
+                                    <th>{t("City")}</th>
+                                    <th>{t("Image")}</th>
+                                    <th>{t("Processes")}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {allAds.map((ad, adIndex) => (
                                     <tr key={ad._id}>
-                                        <td className="ad-type">{ad.type}</td>
+                                        <td className="ad-type">{t(ad.type)}</td>
                                         <td className="ad-content-cell">
                                             {ad.type === "elite" ? <section className="ad-content mb-4">
                                                 <input
                                                     type="text"
                                                     className={`form-control d-block mx-auto p-2 border-2 ad-content-field ${formValidationErrors["adContent"] && adIndex === selectedAdIndex ? "border-danger mb-3" : "mb-4"}`}
+                                                    placeholder={t("Please Enter New Content")}
                                                     defaultValue={ad.content}
                                                     onChange={(e) => changeAdData(adIndex, "content", e.target.value.trim())}
                                                 />
-                                                {formValidationErrors["adContent"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["adContent"]} />}
-                                            </section> : <p>No Content</p>}
+                                                {formValidationErrors["adContent"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["adContent"])} />}
+                                            </section> : <p className="fw-bold bg-danger p-2 text-white mb-4">{t("No Content")}</p>}
                                         </td>
                                         <td className="ad-city-cell">
                                             {ad.type === "panner" ? <section className="ad-city mb-4">
-                                                <h6 className="fw-bold bg-danger p-2 text-white mb-4">Current City: {ad.city}</h6>
+                                                <h6 className="fw-bold bg-danger p-2 text-white mb-4">{t("Current City")}: {t(ad.city)}</h6>
                                                 <select
                                                     className={`select-advertisement-city form-select ${formValidationErrors["adCity"] ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeAdData(adIndex, "city", e.target.value)}
                                                 >
-                                                    <option value="" hidden>Pleae Select New Advertisement City</option>
-                                                    {cites.map((city) => <option key={city} value={city}>{city}</option>)}
+                                                    <option value="" hidden>{t("Please Select New Advertisement City")}</option>
+                                                    {cites.map((city) => <option key={city} value={city}>{t(city)}</option>)}
                                                 </select>
-                                                {formValidationErrors["adCity"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={formValidationErrors["adCity"]} />}
-                                            </section> : <p>No City</p>}
+                                                {formValidationErrors["adCity"] && adIndex === selectedAdIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["adCity"])} />}
+                                            </section> : <p>{t("No City")}</p>}
                                         </td>
                                         <td className="ad-image-cell">
                                             <img
@@ -376,58 +385,58 @@ export default function UpdateAndDeleteAds() {
                                                     onChange={(e) => changeAdData(adIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && adIndex === selectedAdImageIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
+                                                {formValidationErrors["image"] && adIndex === selectedAdImageIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["image"])} />}
                                             </section>
                                             {(selectedAdImageIndex !== adIndex && selectedAdIndex !== adIndex) &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeAdImage(adIndex)}
-                                                >Change</button>
+                                                >{t("Change")}</button>
                                             }
                                             {waitChangeAdImageMsg && selectedAdImageIndex === adIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitChangeAdImageMsg}</button>}
+                                            >{t(waitChangeAdImageMsg)}</button>}
                                             {successChangeAdImageMsg && selectedAdImageIndex === adIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successChangeAdImageMsg}</button>}
+                                            >{t(successChangeAdImageMsg)}</button>}
                                             {errorChangeAdImageMsg && selectedAdImageIndex === adIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeAdImageMsg}</button>}
+                                            >{t(errorChangeAdImageMsg)}</button>}
                                         </td>
                                         <td className="update-cell">
                                             {selectedAdIndex !== adIndex && <>
                                                 <button
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
                                                     onClick={() => updateAdInfo(adIndex)}
-                                                >Update</button>
+                                                >{t("Update")}</button>
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteAd(adIndex)}
-                                                >Delete</button>
+                                                >{t("Delete")}</button>
                                             </>}
                                             {waitMsg && selectedAdIndex === adIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg && selectedAdIndex === adIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
+                                            >{t(successMsg)}</button>}
                                             {errorMsg && selectedAdIndex === adIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </section>}
-                    {allAds.length === 0 && <p className="alert alert-danger w-100">Sorry, Can't Find Any Ads !!</p>}
+                    {allAds.length === 0 && <p className="alert alert-danger w-100">{t("Sorry, Can't Find Any Ads")}</p>}
                 </div>
             </>}
             {isLoadingPage && !errorMsgOnLoadingThePage && <LoaderPage />}

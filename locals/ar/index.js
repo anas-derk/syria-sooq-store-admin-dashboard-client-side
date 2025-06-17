@@ -16,6 +16,11 @@ import updateAndDeleteProductCategoriesTranslations from "../ar/pages/update_and
 import addNewCategoryTranslations from "../ar/pages/add_new_category.json";
 import updateAndDeleteCategoriesTranslations from "../ar/pages/update_and_delete_categories.json";
 import updateCategoryParentTranslations from "../ar/pages/update_category_parent.json";
+import addNewBrandTranslations from "../ar/pages/add_new_brand.json";
+import updateAndDeleteBrandsTranslations from "../ar/pages/update_and_delete_brands.json";
+import addNewAdvertimsmentTranslations from "../ar/pages/add_new_advertisment.json";
+import updateAndDeleteAdsTranslations from "../ar/pages/update_and_delete_ads.json";
+import updateAndDeleteOrdersTranslations from "../ar/pages/update_and_delete_orders.json";
 
 export default {
     ...headerTranslations,
@@ -35,5 +40,10 @@ export default {
     ...updateAndDeleteProductCategoriesTranslations,
     ...addNewCategoryTranslations,
     ...updateAndDeleteCategoriesTranslations,
-    ...updateCategoryParentTranslations
+    ...updateCategoryParentTranslations,
+    ...addNewBrandTranslations,
+    ...updateAndDeleteBrandsTranslations,
+    ...addNewAdvertimsmentTranslations,
+    ...updateAndDeleteAdsTranslations,
+    ...updateAndDeleteOrdersTranslations
 }

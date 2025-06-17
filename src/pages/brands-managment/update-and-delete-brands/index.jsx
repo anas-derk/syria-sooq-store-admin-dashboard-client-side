@@ -8,10 +8,11 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import TableLoader from "@/components/TableLoader";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteBrands() {
 
@@ -55,7 +56,14 @@ export default function UpdateAndDeleteBrands() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 10;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -353,22 +361,22 @@ export default function UpdateAndDeleteBrands() {
     return (
         <div className="update-and-delete-brands admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update / Delete Brands</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update / Delete Brands")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Brands Page
+                        {t("Hi, Mr ")}{adminInfo.fullName} {t("In Your Update / Delete Brands Page")}
                     </h1>
                     {allBrandsInsideThePage.length > 0 && !isGetBrands && <section className="brands-box admin-dashbboard-data-box w-100">
                         <table className="brands-table mb-4 managment-table bg-white admin-dashbboard-data-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Image</th>
-                                    <th>Processes</th>
+                                    <th>{t("Name")}</th>
+                                    <th>{t("Image")}</th>
+                                    <th>{t("Processes")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -378,12 +386,12 @@ export default function UpdateAndDeleteBrands() {
                                             <section className="brand-title mb-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter New Brand Title"
+                                                    placeholder={t("Enter New Brand Title")}
                                                     className={`form-control d-block mx-auto p-2 border-2 and-title-field ${formValidationErrors["title"] && brandIndex === selectedBrandIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     defaultValue={brand.title}
                                                     onChange={(e) => changeBrandData(brandIndex, "title", e.target.value.trim())}
                                                 />
-                                                {formValidationErrors["title"] && brandIndex === selectedBrandIndex && <FormFieldErrorBox errorMsg={formValidationErrors["title"]} />}
+                                                {formValidationErrors["title"] && brandIndex === selectedBrandIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["title"])} />}
                                             </section>
                                         </td>
                                         <td className="brand-image-cell">
@@ -401,60 +409,60 @@ export default function UpdateAndDeleteBrands() {
                                                     onChange={(e) => changeBrandData(brandIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && selectedBrandImageIndex === brandIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
+                                                {formValidationErrors["image"] && selectedBrandImageIndex === brandIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["image"])} />}
                                             </section>
                                             {(selectedBrandImageIndex !== brandIndex && selectedBrandIndex !== brandIndex) &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeBrandImage(brandIndex)}
-                                                >Change</button>
+                                                >{t("Change")}</button>
                                             }
                                             {waitChangeBrandImageMsg && selectedBrandImageIndex === brandIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitChangeBrandImageMsg}</button>}
+                                            >{t(waitChangeBrandImageMsg)}</button>}
                                             {successChangeBrandImageMsg && selectedBrandImageIndex === brandIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successChangeBrandImageMsg}</button>}
+                                            >{t(successChangeBrandImageMsg)}</button>}
                                             {errorChangeBrandImageMsg && selectedBrandImageIndex === brandIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeBrandImageMsg}</button>}
+                                            >{t(errorChangeBrandImageMsg)}</button>}
                                         </td>
                                         <td className="update-cell">
                                             {selectedBrandIndex !== brandIndex && <>
                                                 <button
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
                                                     onClick={() => updateBrandInfo(brandIndex)}
-                                                >Update</button>
+                                                >{t("Update")}</button>
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteBrand(brandIndex)}
-                                                >Delete</button>
+                                                >{t("Delete")}</button>
                                             </>}
                                             {waitMsg && selectedBrandIndex === brandIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg && selectedBrandIndex === brandIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
+                                            >{t(successMsg)}</button>}
                                             {errorMsg && selectedBrandIndex === brandIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </section>}
-                    {allBrandsInsideThePage.length === 0 && !isGetBrands && <NotFoundError errorMsg="Sorry, Can't Find Any Brands !!" />}
+                    {allBrandsInsideThePage.length === 0 && !isGetBrands && <NotFoundError errorMsg={t("Sorry, Can't Find Any Brands")} />}
                     {isGetBrands && <TableLoader />}
-                    {errorMsgOnGetBrandsData && <NotFoundError errorMsg={errorMsgOnGetBrandsData} />}
+                    {errorMsgOnGetBrandsData && <NotFoundError errorMsg={t(errorMsgOnGetBrandsData)} />}
                     {totalPagesCount > 1 && !isGetBrands &&
                         <PaginationBar
                             totalPagesCount={totalPagesCount}

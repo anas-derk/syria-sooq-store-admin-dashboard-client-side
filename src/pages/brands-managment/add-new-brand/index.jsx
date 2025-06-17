@@ -7,8 +7,9 @@ import LoaderPage from "@/components/LoaderPage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function AddNewBrand() {
 
@@ -33,6 +34,13 @@ export default function AddNewBrand() {
     const fileElementRef = useRef();
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -144,17 +152,17 @@ export default function AddNewBrand() {
     return (
         <div className="add-new-brand admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Add New Brand</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Add New Brand")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Add New Brand Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Add New Brand Page")}
                     </h1>
                     <form className="add-new-brand-form admin-dashbboard-form" onSubmit={(e) => addNewBrand(e, brandTitle)}>
-                        <h6 className="mb-3 fw-bold">Please Select Brand Image</h6>
+                        <h6 className="mb-3 fw-bold">{t("Please Select Brand Image")}</h6>
                         <section className="brand-image mb-4">
                             <input
                                 type="file"
@@ -164,44 +172,44 @@ export default function AddNewBrand() {
                                 value={fileElementRef.current?.value}
                                 accept=".png, .jpg, .webp"
                             />
-                            {formValidationErrors["brandImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["brandImage"]} />}
+                            {formValidationErrors["brandImage"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["brandImage"])} />}
                         </section>
                         <section className="brand-title mb-4">
                             <input
                                 type="text"
                                 className={`form-control p-2 border-2 brand-title-field ${formValidationErrors["brandTitle"] ? "border-danger mb-3" : "mb-4"}`}
-                                placeholder="Please Enter Brand Title"
+                                placeholder={t("Please Enter Brand Title")}
                                 onChange={(e) => setBrandTitle(e.target.value)}
                                 value={brandTitle}
                             />
-                            {formValidationErrors["brandTitle"] && <FormFieldErrorBox errorMsg={formValidationErrors["brandTitle"]} />}
+                            {formValidationErrors["brandTitle"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["brandTitle"])} />}
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Add Now
+                            {t("Add Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
                     </form>
                 </div>
