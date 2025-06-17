@@ -14,11 +14,13 @@ import {
     getAllProductsInsideThePage,
     getTimeAndDateByLocalTime,
     getDateInUTCFormat,
+    handleSelectUserLanguage,
 } from "../../../../public/global_functions/popular";
 import Link from "next/link";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteProducts() {
 
@@ -63,7 +65,14 @@ export default function UpdateAndDeleteProducts() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 10;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -454,64 +463,64 @@ export default function UpdateAndDeleteProducts() {
     return (
         <div className="update-and-delete-products admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update / Delete Products</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update / Delete Products")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Products Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update / Delete Products Page")}
                     </h1>
                     <section className="filters mb-3 bg-white border-3 border-info p-3 text-start w-100">
-                        <h5 className="section-name fw-bold text-center">Filters: </h5>
+                        <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                         <hr />
                         <div className="row mb-4">
                             <div className="col-md-6">
-                                <h6 className="me-2 fw-bold text-center">Category</h6>
+                                <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Category")}</h6>
                                 <input
                                     type="text"
                                     className={`form-control p-2 border-2 category-name-field ${formValidationErrors["categoryName"] ? "border-danger mb-3" : ""}`}
-                                    placeholder="Please Enter Category Name"
+                                    placeholder={t("Please Enter Category Name")}
                                     onChange={(e) => setFilters({ ...filters, category: e.target.value })}
                                 />
-                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
+                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryName"])} />}
                             </div>
                             <div className="col-md-6">
-                                <h6 className="me-2 fw-bold text-center">Name</h6>
+                                <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Name")}</h6>
                                 <input
                                     type="text"
                                     className={`form-control p-2 border-2 product-name-field ${formValidationErrors["productName"] ? "border-danger mb-3" : ""}`}
-                                    placeholder="Please Enter Product Name"
+                                    placeholder={t("Please Enter Product Name")}
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                 />
-                                {formValidationErrors["productName"] && <FormFieldErrorBox errorMsg={formValidationErrors["productName"]} />}
+                                {formValidationErrors["productName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["productName"])} />}
                             </div>
                         </div>
                         {!isGetProducts && <button
                             className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                             onClick={async () => await filterProducts(filters)}
                         >
-                            Filter
+                            {t("Filter")}
                         </button>}
                         {isGetProducts && <button
                             className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                             disabled
                         >
-                            Filtering ...
+                            {t("Filtering")} ...
                         </button>}
                     </section>
                     {allProductsInsideThePage.length > 0 && !isGetProducts && <div className="products-box admin-dashbboard-data-box w-100 pe-4">
                         <table className="products-table mb-4 managment-table admin-dashbboard-data-table bg-white">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Description</th>
-                                    <th>Discount</th>
-                                    <th>Image</th>
-                                    <th>Processes</th>
+                                    <th>{t("Name")}</th>
+                                    <th>{t("Price")}</th>
+                                    <th>{t("Quantity")}</th>
+                                    <th>{t("Description")}</th>
+                                    <th>{t("Discount")}</th>
+                                    <th>{t("Image")}</th>
+                                    <th>{t("Processes")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -521,24 +530,24 @@ export default function UpdateAndDeleteProducts() {
                                             <section className="product-name mb-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter New Product Name"
+                                                    placeholder={t("Please Enter New Name")}
                                                     defaultValue={product.name}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-name-field ${formValidationErrors["name"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "name", e.target.value.trim())}
                                                 />
-                                                {formValidationErrors["name"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["name"]} />}
+                                                {formValidationErrors["name"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["name"])} />}
                                             </section>
                                         </td>
                                         <td className="product-price-cell">
                                             <section className="product-price mb-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter New Product Price"
+                                                    placeholder={t("Please Enter New Price")}
                                                     defaultValue={product.price}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-price-field ${formValidationErrors["price"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "price", e.target.value)}
                                                 />
-                                                {formValidationErrors["price"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["price"]} />}
+                                                {formValidationErrors["price"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["price"])} />}
                                             </section>
                                         </td>
                                         <td className="product-quantity-cell">
@@ -547,46 +556,46 @@ export default function UpdateAndDeleteProducts() {
                                                 <hr />
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter New Product Quantity"
+                                                    placeholder={t("Please Enter New Quantity")}
                                                     defaultValue={product.quantity}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-quantity-field ${formValidationErrors["quantity"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "quantity", e.target.value)}
                                                 />
-                                                {formValidationErrors["quantity"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["quantity"]} />}
+                                                {formValidationErrors["quantity"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["quantity"])} />}
                                             </section>
                                         </td>
                                         <td className="product-description-cell" width="400">
                                             <section className="product-description mb-4">
                                                 <textarea
-                                                    placeholder="Enter New Product Description"
+                                                    placeholder={t("Please Enter New Description")}
                                                     defaultValue={product.description}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-description-field ${formValidationErrors["description"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "description", e.target.value.trim())}
                                                 ></textarea>
-                                                {formValidationErrors["description"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["description"]} />}
+                                                {formValidationErrors["description"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["description"])} />}
                                             </section>
                                         </td>
                                         <td className="product-price-discount-cell">
                                             <section className="product-price-discount mb-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="Enter New Discount Price"
+                                                    placeholder={t("Please Enter New Discount")}
                                                     defaultValue={product.discount}
                                                     className={`form-control d-block mx-auto p-2 border-2 product-price-discount ${formValidationErrors["discount"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-4"}`}
                                                     onChange={(e) => changeProductData(productIndex, "discount", e.target.value)}
                                                 />
-                                                {formValidationErrors["discount"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["discount"]} />}
+                                                {formValidationErrors["discount"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["discount"])} />}
                                             </section>
                                             <div className="limited-period-box border border-2 p-3 border-dark">
                                                 <div className="period-box">
-                                                    <h6 className="fw-bold">Start Period</h6>
+                                                    <h6 className="fw-bold">{t("Start Period")}</h6>
                                                     <input
                                                         type="datetime-local"
                                                         className="form-control mb-4 border border-dark"
                                                         onChange={(e) => changeProductData(productIndex, "startDiscountPeriod", e.target.value)}
                                                         defaultValue={product.startDiscountPeriod ? getTimeAndDateByLocalTime(product.startDiscountPeriod) : null}
                                                     />
-                                                    <h6 className="fw-bold">End Period</h6>
+                                                    <h6 className="fw-bold">{t("End Period")}</h6>
                                                     <input
                                                         type="datetime-local"
                                                         className="form-control mb-4 border border-dark"
@@ -596,22 +605,22 @@ export default function UpdateAndDeleteProducts() {
                                                     <section className="product-price-discount-in-offer-period mb-4">
                                                         <input
                                                             type="text"
-                                                            placeholder="Enter New Discount Price"
+                                                            placeholder={t("Please Enter New Discount In Offer Period")}
                                                             defaultValue={product.discountInOfferPeriod}
                                                             className={`form-control d-block mx-auto p-2 border-2 product-price-discount-in-offer-period-field ${formValidationErrors["discount"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-2"}`}
                                                             onChange={(e) => changeProductData(productIndex, "discountInOfferPeriod", e.target.value)}
                                                         />
-                                                        {formValidationErrors["discountInOfferPeriod"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["discountInOfferPeriod"]} />}
+                                                        {formValidationErrors["discountInOfferPeriod"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["discountInOfferPeriod"])} />}
                                                     </section>
                                                     <section className="offer-description">
                                                         <input
                                                             type="text"
-                                                            placeholder="Enter New Offer Description"
+                                                            placeholder={t("Please Enter New Offer Description")}
                                                             defaultValue={product.offerDescription}
                                                             className={`form-control d-block mx-auto p-2 border-2 offer-description-field ${formValidationErrors["name"] && productIndex === selectedProductIndex ? "border-danger mb-3" : "mb-2"}`}
                                                             onChange={(e) => changeProductData(productIndex, "offerDescription", e.target.value.trim())}
                                                         />
-                                                        {formValidationErrors["offerDescription"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["offerDescription"]} />}
+                                                        {formValidationErrors["offerDescription"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["offerDescription"])} />}
                                                     </section>
                                                 </div>
                                             </div>
@@ -631,69 +640,69 @@ export default function UpdateAndDeleteProducts() {
                                                     onChange={(e) => changeProductData(productIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
+                                                {formValidationErrors["image"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["image"])} />}
                                             </section>
                                             {(selectedProducImageIndex !== productIndex && selectedProductIndex !== productIndex) &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => updateProductImage(productIndex)}
-                                                >Change</button>
+                                                >{t("Change")}</button>
                                             }
                                             {waitChangeProductImageMsg && selectedProducImageIndex === productIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
-                                            >{waitChangeProductImageMsg}</button>}
+                                            >{t(waitChangeProductImageMsg)}</button>}
                                             {successChangeProductImageMsg && selectedProducImageIndex === productIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successChangeProductImageMsg}</button>}
+                                            >{t(successChangeProductImageMsg)}</button>}
                                             {errorChangeProductImageMsg && selectedProducImageIndex === productIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeProductImageMsg}</button>}
+                                            >{t(errorChangeProductImageMsg)}</button>}
                                         </td>
                                         <td className="update-cell">
                                             {selectedProductIndex !== productIndex && <>
                                                 <Link href={`/products-managment/update-and-delete-gallery-images/${product._id}`}
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                >Show Gallery</Link>
+                                                >{t("Show Gallery Images")}</Link>
                                                 <Link href={`/products-managment/add-new-gallery-images/${product._id}`}
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                >Add New Image To Gallery</Link>
+                                                >{t("Add New Image To Gallery")}</Link>
                                                 <Link href={`/products-managment/update-and-delete-product-categories/${product._id}`}
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                >Show Categories</Link>
+                                                >{t("Show Categories")}</Link>
                                                 <hr />
                                                 <button
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
                                                     onClick={() => updateProductData(productIndex)}
-                                                >Update</button>
+                                                >{t("Update")}</button>
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteProduct(productIndex)}
-                                                >Delete</button>
+                                                >{t("Delete")}</button>
                                             </>}
                                             {waitMsg && selectedProductIndex === productIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg && selectedProductIndex === productIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
+                                            >{t(successMsg)}</button>}
                                             {errorMsg && selectedProductIndex === productIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>}
-                    {allProductsInsideThePage.length === 0 && !isGetProducts && <NotFoundError errorMsg="Sorry, Can't Find Any Products !!" />}
+                    {allProductsInsideThePage.length === 0 && !isGetProducts && <NotFoundError errorMsg={t("Sorry, Can't Find Any Products") + " !!"} />}
                     {isGetProducts && <TableLoader />}
-                    {errorMsgOnGetProductsData && <NotFoundError errorMsg={errorMsgOnGetProductsData} />}
+                    {errorMsgOnGetProductsData && <NotFoundError errorMsg={t(errorMsgOnGetProductsData)} />}
                     {totalPagesCount > 1 && !isGetProducts &&
                         <PaginationBar
                             totalPagesCount={totalPagesCount}

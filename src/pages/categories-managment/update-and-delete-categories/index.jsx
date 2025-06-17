@@ -8,11 +8,12 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getAllCategoriesInsideThePage } from "../../../../public/global_functions/popular";
+import { getAdminInfo, getAllCategoriesInsideThePage, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import TableLoader from "@/components/TableLoader";
 import Link from "next/link";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteCategories() {
 
@@ -57,7 +58,14 @@ export default function UpdateAndDeleteCategories() {
 
     const router = useRouter();
 
+    const { t, i18n } = useTranslation();
+
     const pageSize = 10;
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -386,52 +394,52 @@ export default function UpdateAndDeleteCategories() {
     return (
         <div className="update-and-delete-categories admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update / Delete Categories</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update / Delete Categories")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Categories Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update / Delete Categories Page")}
                     </h1>
                     <section className="filters mb-3 bg-white border-3 border-info p-3 text-start w-100">
-                        <h5 className="section-name fw-bold text-center">Filters: </h5>
+                        <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                         <hr />
                         <div className="row mb-4">
                             <div className="col-md-12">
-                                <h6 className="me-2 fw-bold text-center">Name</h6>
+                                <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Name")}</h6>
                                 <input
                                     type="text"
                                     className={`form-control p-2 border-2 category-name-field ${formValidationErrors["categoryName"] ? "border-danger mb-3" : ""}`}
-                                    placeholder="Please Enter Category Name"
+                                    placeholder={t("Please Enter Category Name")}
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                 />
-                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
+                                {formValidationErrors["categoryName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryName"])} />}
                             </div>
                         </div>
                         {!isGetCategories && <button
                             className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                             onClick={async () => await filterCategories(filters)}
                         >
-                            Filter
+                            {t("Filter")}
                         </button>}
                         {isGetCategories && <button
                             className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
                             disabled
                         >
-                            Filtering ...
+                            {t("Filtering")} ...
                         </button>}
                     </section>
                     {allCategoriesInsideThePage.length > 0 && !isGetCategories && <section className="categories-box w-100">
                         <table className="users-table mb-4 managment-table bg-white w-100">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Color</th>
-                                    <th>Parent</th>
-                                    <th>Image</th>
-                                    <th>Process</th>
+                                    <th>{t("Name")}</th>
+                                    <th>{t("Color")}</th>
+                                    <th>{t("Parent")}</th>
+                                    <th>{t("Image")}</th>
+                                    <th>{t("Processes")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -442,10 +450,11 @@ export default function UpdateAndDeleteCategories() {
                                                 <input
                                                     type="text"
                                                     className={`form-control d-block mx-auto p-2 border-2 brand-title-field ${formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex ? "border-danger mb-3" : "mb-4"}`}
+                                                    placeholder={t("Please Enter New Name")}
                                                     defaultValue={category.name}
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "name", e.target.value.trim())}
                                                 />
-                                                {formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["categoryName"]} />}
+                                                {formValidationErrors["categoryName"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryName"])} />}
                                             </section>
                                         </td>
                                         <td className="category-color-cell">
@@ -456,11 +465,11 @@ export default function UpdateAndDeleteCategories() {
                                                     defaultValue={category.color}
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "color", e.target.value.trim())}
                                                 />
-                                                {formValidationErrors["categoryColor"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["categoryColor"]} />}
+                                                {formValidationErrors["categoryColor"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryColor"])} />}
                                             </section>
                                         </td>
                                         <td className="category-parent-cell">
-                                            {category.parent?._id ? <h6 className="bg-info p-2 fw-bold mb-4">{category.parent.name}</h6> : <h6 className="bg-danger p-2 mb-4 text-white">No Parent</h6>}
+                                            {category.parent?._id ? <h6 className="bg-info p-2 fw-bold mb-4">{category.parent.name}</h6> : <h6 className="bg-danger p-2 mb-4 text-white">{t("No Parent")}</h6>}
                                         </td>
                                         <td className="category-image-cell">
                                             <img
@@ -477,65 +486,65 @@ export default function UpdateAndDeleteCategories() {
                                                     onChange={(e) => changeCategoryInfo(categoryIndex, "image", e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["image"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={formValidationErrors["image"]} />}
+                                                {formValidationErrors["image"] && categoryIndex === selectedCategoryIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["image"])} />}
                                             </section>
                                             {(selectedCateogryImageIndex !== categoryIndex && selectedCategoryIndex !== categoryIndex) &&
                                                 <button
                                                     className="btn btn-success d-block mb-3 w-50 mx-auto global-button"
                                                     onClick={() => changeCateogryImage(categoryIndex)}
-                                                >Change</button>
+                                                >{t("Change")}</button>
                                             }
                                             {waitChangeCategoryImageMsg && selectedCateogryImageIndex === categoryIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitChangeCategoryImageMsg}</button>}
+                                            >{t(waitChangeCategoryImageMsg)}</button>}
                                             {successChangeCategoryImageMsg && selectedCateogryImageIndex === categoryIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successChangeCategoryImageMsg}</button>}
+                                            >{t(successChangeCategoryImageMsg)}</button>}
                                             {errorChangeCategoryImageMsg && selectedCateogryImageIndex === categoryIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorChangeCategoryImageMsg}</button>}
+                                            >{t(errorChangeCategoryImageMsg)}</button>}
                                         </td>
                                         <td className="update-cell">
                                             {selectedCategoryIndex !== categoryIndex && <>
                                                 <button
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
                                                     onClick={() => updateCategory(categoryIndex)}
-                                                >Update</button>
+                                                >{t("Update")}</button>
                                                 <hr />
                                                 <Link
                                                     href={`/categories-managment/update-category-parent/${category._id}`}
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
-                                                >Change Parent</Link>
+                                                >{t("Change Parent")}</Link>
                                                 <hr />
                                                 <button
                                                     className="btn btn-danger global-button"
                                                     onClick={() => deleteCategory(categoryIndex)}
-                                                >Delete</button>
+                                                >{t("Delete")}</button>
                                             </>}
                                             {waitMsg && selectedCategoryIndex === categoryIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg && selectedCategoryIndex === categoryIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
+                                            >{t(successMsg)}</button>}
                                             {errorMsg && selectedCategoryIndex === categoryIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </section>}
-                    {allCategoriesInsideThePage.length === 0 && !isGetCategories && <NotFoundError errorMsg="Sorry, Can't Find Any Categories !!" />}
+                    {allCategoriesInsideThePage.length === 0 && !isGetCategories && <NotFoundError errorMsg={t("Sorry, Can't Find Any Categories")} />}
                     {isGetCategories && <TableLoader />}
-                    {errorMsgOnGetCategoriesData && <NotFoundError errorMsg={errorMsgOnGetCategoriesData} />}
+                    {errorMsgOnGetCategoriesData && <NotFoundError errorMsg={t(errorMsgOnGetCategoriesData)} />}
                     {totalPagesCount > 1 && !isGetCategories &&
                         <PaginationBar
                             totalPagesCount={totalPagesCount}

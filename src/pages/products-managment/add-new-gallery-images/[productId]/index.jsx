@@ -7,8 +7,9 @@ import LoaderPage from "@/components/LoaderPage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function AddNewProductGalleryImage({ productIdAsProperty }) {
 
@@ -31,6 +32,13 @@ export default function AddNewProductGalleryImage({ productIdAsProperty }) {
     const fileElementRef = useRef();
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -133,17 +141,17 @@ export default function AddNewProductGalleryImage({ productIdAsProperty }) {
     return (
         <div className="add-new-gallery-images admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Add New Product Gallery Images</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Add New Product Gallery Images")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Add New Product Gallery Images Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Add New Product Gallery Images Page")}
                     </h1>
                     <form className="add-new-gallery-images-form admin-dashbboard-form" onSubmit={addNewGalleryImages}>
-                        <h6 className="mb-3 fw-bold">Please Select Gallery Images</h6>
+                        <h6 className="mb-3 fw-bold">{t("Please Select New Gallery Images")}</h6>
                         <section className="gallery-image mb-4">
                             <input
                                 type="file"
@@ -154,34 +162,34 @@ export default function AddNewProductGalleryImage({ productIdAsProperty }) {
                                 value={fileElementRef.current?.value}
                                 accept=".png, .jpg, .webp"
                             />
-                            {formValidationErrors["newGalleryImageFiles"] && <FormFieldErrorBox errorMsg={formValidationErrors["newGalleryImageFiles"]} />}
+                            {formValidationErrors["newGalleryImageFiles"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["newGalleryImageFiles"])} />}
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Add Now
+                            {t("Add Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
                     </form>
                 </div>

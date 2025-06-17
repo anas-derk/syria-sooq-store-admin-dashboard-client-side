@@ -23,5 +23,9 @@
     "Deleting Successfull": "نجاح الحذف",
     "Close": "إغلاق",
     "Please Wait": "الرجاء الانتظار",
-    "Updating Successfull": "نجاح التحديث"
+    "Updating Successfull": "نجاح التحديث",
+    "Change": "نغيير",
+    "Change Image Successfull": "تم تغيير الصورة بنجاح",
+    "Update Now": "تحديث الآن",
+    "No Parent": "بدون أب"
 }

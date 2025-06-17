@@ -5,13 +5,13 @@ import axios from "axios";
 import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
-import { getAdminInfo, getAllCategoriesInsideThePage, getProductInfo } from "../../../../../public/global_functions/popular";
+import { getAdminInfo, getAllCategoriesInsideThePage, getProductInfo, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateProductCategories({ productIdAsProperty }) {
 
@@ -36,6 +36,13 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -165,33 +172,33 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
     return (
         <div className="update-product-categories admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update Product Categories</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update / Delete Product Categories")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column pt-5 pb-5 p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update Product Categories Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update / Delete Product Categories Page")}
                     </h1>
                     {productData?._id ? <form className="update-product-categories-form admin-dashbboard-form" onSubmit={updateProductCategories}>
                         <section className="category mb-4 overflow-auto">
-                            <h6 className="mb-3 fw-bold">Please Select Categories</h6>
+                            <h6 className="mb-3 fw-bold">{t("Please Select Categories")}</h6>
                             <div className="select-categories-box select-box">
                                 <input
                                     type="text"
                                     className="search-box form-control p-2 border-2 mb-4"
-                                    placeholder="Please Enter Category Name Or Part Of This"
+                                    placeholder={t("Please Enter Category Name Or Part Of This")}
                                     onChange={handleGetCategoriesByName}
                                 />
                                 <ul className={`categories-list options-list bg-white border ${formValidationErrors["categories"] ? "border-danger mb-4" : "border-dark"}`}>
-                                    <li className="text-center fw-bold border-bottom border-2 border-dark">Seached Categories List</li>
+                                    <li className="text-center fw-bold border-bottom border-2 border-dark">{t("Existed Categories List")}</li>
                                     {searchedCategories.length > 0 && searchedCategories.map((category) => (
                                         <li key={category._id} onClick={() => handleSelectCategory(category)}>{category.name}</li>
                                     ))}
                                 </ul>
-                                {searchedCategories.length === 0 && searchedCategoryName && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Related Categories Match This Name !!</p>}
-                                {formValidationErrors["categories"] && <FormFieldErrorBox errorMsg={formValidationErrors["categories"]} />}
+                                {searchedCategories.length === 0 && searchedCategoryName && <p className="alert alert-danger mt-4">{t("Sorry, Can't Find Any Related Categories Match This Name")}</p>}
+                                {formValidationErrors["categories"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["categories"])} />}
                             </div>
                         </section>
                         {productData.categories.length > 0 ? <div className="selected-categories row mb-4">
@@ -201,38 +208,35 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
                                     <IoIosCloseCircleOutline className="remove-icon" onClick={() => handleRemoveCategoryFromSelectedCategoriesList(category)} />
                                 </div>
                             </div>)}
-                        </div> : <p className="bg-danger p-2 m-0 text-white mb-4">
-                            <span className="me-2"><HiOutlineBellAlert className="alert-icon" /></span>
-                            <span>Sorry, Can't Find Any Categories Added To The Selected Categories List !!</span>
-                        </p>}
+                        </div> : <FormFieldErrorBox errorMsg={t("Sorry, Can't Find Any Categories Added To The Selected Categories List")} />}
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Update Now
+                            {t("Update Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
-                    </form> : <NotFoundError errorMsg="Sorry, This Product Is Not Exist !!" />}
+                    </form> : <NotFoundError errorMsg={t("Sorry, This Product Is Not Exist")} />}
                 </div>
             </>}
             {isLoadingPage && !errorMsgOnLoadingThePage && <LoaderPage />}

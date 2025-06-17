@@ -7,9 +7,10 @@ import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
-import { getAdminInfo } from "../../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
 
@@ -34,6 +35,13 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -119,7 +127,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                 })).data;
                 setWaitMsg("");
                 if (!result.error) {
-                    setSuccessMsg("Change Image Successfull !!");
+                    setSuccessMsg("Change Image Successfull");
                     let successTimeout = setTimeout(async () => {
                         setSuccessMsg("");
                         setSelectedGalleryImageIndex(-1);
@@ -127,7 +135,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong When Updating, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong When Updating, Please Repeate The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedGalleryImageIndex(-1);
@@ -143,7 +151,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedGalleryImageIndex(-1);
@@ -164,7 +172,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
             })).data;
             setWaitMsg("");
             if (!result.error) {
-                setSuccessMsg("Deleting Successfull !!");
+                setSuccessMsg("Deleting Successfull");
                 let successTimeout = setTimeout(async () => {
                     setSuccessMsg("");
                     setSelectedGalleryImageIndex(-1);
@@ -180,7 +188,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedGalleryImageIndex(-1);
@@ -193,22 +201,22 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
     return (
         <div className="update-and-delete-product-gallery-images admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update / Delete Product Gallery Images</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update / Delete Product Gallery Images")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-5">
                     <h1 className="fw-bold w-fit pb-2 mb-4">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update / Delete Product Gallery Images Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update / Delete Product Gallery Images Page")}
                     </h1>
                     {allGalleryImages.length > 0 && <section className="gallery-images-box admin-dashbboard-data-box w-100">
                         <table className="gallery-images-table mb-4 managment-table bg-white admin-dashbboard-data-table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th>Change Image</th>
-                                    <th>Delete Image</th>
+                                    <th>{t("Image")}</th>
+                                    <th>{t("Change Image")}</th>
+                                    <th>{t("Delete Image")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -217,7 +225,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                                         <td className="gallery-image-cell">
                                             <img
                                                 src={`${process.env.BASE_API_URL}/${imagePath}`}
-                                                alt="Gallery Image !!"
+                                                alt={t("Gallery Image")}
                                                 width="100"
                                                 height="100"
                                                 className="d-block mx-auto mb-4"
@@ -231,49 +239,49 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                                                     onChange={(e) => changeGalleryImage(imageIndex, e.target.files[0])}
                                                     accept=".png, .jpg, .webp"
                                                 />
-                                                {formValidationErrors["galleryImage"] && <FormFieldErrorBox errorMsg={formValidationErrors["galleryImage"]} />}
+                                                {formValidationErrors["galleryImage"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["galleryImage"])} />}
                                             </section>
                                             {selectedGalleryImageIndex !== imageIndex && <button
                                                 className="btn btn-success d-block mb-3 mx-auto global-button"
                                                 onClick={() => updateGalleryImage(imageIndex)}
-                                            >Change Image</button>}
+                                            >{t("Change Image")}</button>}
                                             {waitMsg === "Please Wait To Updating ..." && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg === "Change Image Successfull !!" && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
-                                            {errorMsg === "Sorry, Someting Went Wrong When Updating, Please Repeate The Process !!" && selectedGalleryImageIndex === imageIndex && <button
+                                            >{t(successMsg)}</button>}
+                                            {errorMsg === "Sorry, Something Went Wrong When Updating, Please Repeate The Process !!" && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                         <td className="delete-gallery-image-cell">
                                             {(selectedGalleryImageIndex !== imageIndex || formValidationErrors["galleryImage"]) && <button
                                                 className="btn btn-danger global-button"
                                                 onClick={() => deleteImageFromGallery(imageIndex)}
-                                            >Delete</button>}
+                                            >{t("Delete")}</button>}
                                             {waitMsg === "Please Wait To Deleting ..." && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-info d-block mb-3 mx-auto global-button"
                                                 disabled
-                                            >{waitMsg}</button>}
+                                            >{t(waitMsg)}</button>}
                                             {successMsg === "Deleting Successfull !!" && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
-                                            >{successMsg}</button>}
-                                            {errorMsg === "Sorry, Someting Went Wrong When Deleting, Please Repeate The Process !!" && selectedGalleryImageIndex === imageIndex && <button
+                                            >{t(successMsg)}</button>}
+                                            {errorMsg === "Sorry, Something Went Wrong When Deleting, Please Repeate The Process !!" && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
-                                            >{errorMsg}</button>}
+                                            >{t(errorMsg)}</button>}
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </section>}
-                    {allGalleryImages.length === 0 && <NotFoundError errorMsg="Sorry, Can't Find Any Gallery Images For This Product !!" />}
+                    {allGalleryImages.length === 0 && <NotFoundError errorMsg={t("Sorry, Can't Find Any Gallery Images For This Product") + " !!"} />}
                 </div>
             </>}
             {isLoadingPage && !errorMsgOnLoadingThePage && <LoaderPage />}

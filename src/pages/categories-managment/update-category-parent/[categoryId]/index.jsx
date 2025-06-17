@@ -7,8 +7,9 @@ import LoaderPage from "@/components/LoaderPage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
-import { getAdminInfo, getAllCategoriesInsideThePage } from "../../../../../public/global_functions/popular";
+import { getAdminInfo, getAllCategoriesInsideThePage, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
+import { useTranslation } from "react-i18next";
 
 export default function UpdateCategoryParent({ categoryIdAsProperty }) {
 
@@ -37,6 +38,13 @@ export default function UpdateCategoryParent({ categoryIdAsProperty }) {
     const [formValidationErrors, setFormValidationErrors] = useState({});
 
     const router = useRouter();
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        const userLanguage = localStorage.getItem(process.env.adminDashboardlanguageFieldNameInLocalStorage);
+        handleSelectUserLanguage(userLanguage === "ar" || userLanguage === "en" || userLanguage === "tr" || userLanguage === "de" ? userLanguage : process.env.defaultLanguage, i18n.changeLanguage);
+    }, []);
 
     useEffect(() => {
         const adminToken = localStorage.getItem(process.env.adminTokenNameInLocalStorage);
@@ -182,63 +190,63 @@ export default function UpdateCategoryParent({ categoryIdAsProperty }) {
     return (
         <div className="add-new-cateogry admin-dashboard">
             <Head>
-                <title>{process.env.storeName} Admin Dashboard - Update Category Parent</title>
+                <title>{process.env.storeName} {t("Admin Dashboard")} - {t("Update Category Parent")}</title>
             </Head>
             {!isLoadingPage && !errorMsgOnLoadingThePage && <>
                 <AdminPanelHeader isWebsiteOwner={adminInfo.isWebsiteOwner} isMerchant={adminInfo.isMerchant} />
                 <div className="page-content d-flex justify-content-center align-items-center flex-column p-4">
                     <h1 className="fw-bold w-fit pb-2 mb-3">
                         <PiHandWavingThin className="me-2" />
-                        Hi, Mr {adminInfo.fullName} In Your Update Category Parent Page
+                        {t("Hi, Mr")} {adminInfo.fullName} {t("In Your Update Category Parent Page")}
                     </h1>
-                    <h4 className="fw-bold mb-4 border border-3 border-dark p-3 bg-secondary text-white">Category Name: {categoryInfo.name}</h4>
+                    <h4 className="fw-bold mb-4 border border-3 border-dark p-3 bg-secondary text-white">{t("Category Name")}: {categoryInfo.name}</h4>
                     <form className="add-new-category-form admin-dashbboard-form" onSubmit={updateCategoryParent}>
                         <section className="category-parent mb-4">
-                            <h6 className="fw-bold mb-3">Please Select New Category Parent</h6>
-                            <h6 className="bg-secondary p-3 mb-4 text-white border border-2 border-dark">Category Parent: {categoryInfo.parent?.name ? categoryInfo.parent.name : "No Parent"}</h6>
+                            <h6 className="fw-bold mb-3">{t("Please Select New Category Parent")}</h6>
+                            <h6 className="bg-secondary p-3 mb-4 text-white border border-2 border-dark">{t("Category Parent")}: {categoryInfo.parent?.name ? categoryInfo.parent.name : t("No Parent")}</h6>
                             <div className="select-category-box select-box mb-4">
                                 <input
                                     type="text"
                                     className="search-box form-control p-2 border-2 mb-4"
-                                    placeholder="Please Enter Category Parent Name Or Part Of This"
+                                    placeholder={t("Please Enter Category Parent Name Or Part Of This")}
                                     onChange={handleSearchOfCategoryParent}
                                 />
                                 <ul className={`categories-list options-list bg-white border ${formValidationErrors["categoryParent"] ? "border-danger mb-4" : "border-dark"}`}>
-                                    <li onClick={() => handleSelectCategoryParent("")}>No Parent</li>
+                                    <li onClick={() => handleSelectCategoryParent("")}>{t("No Parent")}</li>
                                     {searchedCategories.length > 0 && searchedCategories.map((category) => (
                                         <li key={category._id} onClick={() => handleSelectCategoryParent(category)}>{category.name}</li>
                                     ))}
                                 </ul>
-                                {searchedCategories.length === 0 && searchedCategoryParent && <p className="alert alert-danger mt-4">Sorry, Can't Find Any Category Parent Match This Name !!</p>}
-                                {formValidationErrors["categoryParent"] && <FormFieldErrorBox errorMsg={formValidationErrors["categoryParent"]} />}
+                                {searchedCategories.length === 0 && searchedCategoryParent && <p className="alert alert-danger mt-4">{t("Sorry, Can't Find Any Category Parent Match This Name")}</p>}
+                                {formValidationErrors["categoryParent"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryParent"])} />}
                             </div>
                         </section>
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
                         >
-                            Update Now
+                            {t("Update Now")}
                         </button>}
                         {waitMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {waitMsg}
+                            {t(waitMsg)}
                         </button>}
                         {errorMsg && <button
                             type="button"
                             className="btn btn-danger w-50 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {errorMsg}
+                            {t(errorMsg)}
                         </button>}
                         {successMsg && <button
                             type="button"
                             className="btn btn-success w-75 d-block mx-auto p-2 global-button"
                             disabled
                         >
-                            {successMsg}
+                            {t(successMsg)}
                         </button>}
                     </form>
                 </div>
