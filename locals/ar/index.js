@@ -20,7 +20,8 @@ import updateAndDeleteBrandsTranslations from "../ar/pages/brands/update_and_del
 import addNewAdvertimsmentTranslations from "../ar/pages/ads/add_new_advertisment.translation.json";
 import updateAndDeleteAdsTranslations from "../ar/pages/ads/update_and_delete_ads.translation.json";
 import updateAndDeleteOrdersTranslations from "../ar/pages/orders/update_and_delete_orders.translation.json";
-import billingTranslations from "../ar/pages//orders/billing.translation.json";
+import billingTranslations from "../ar/pages/orders/billing.translation.json";
+import orderDetailsTranslations from "../ar/pages/orders/order_details.translation.json";
 
 export default {
     ...headerTranslations,
@@ -45,5 +46,6 @@ export default {
     ...updateAndDeleteBrandsTranslations,
     ...addNewAdvertimsmentTranslations,
     ...updateAndDeleteAdsTranslations,
-    ...updateAndDeleteOrdersTranslations
+    ...updateAndDeleteOrdersTranslations,
+    ...orderDetailsTranslations
 }
