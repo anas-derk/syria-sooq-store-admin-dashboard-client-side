@@ -6,7 +6,7 @@ const nextConfig = {
         removeConsole: false,
     },
     env: {
-        BASE_API_URL: process.env.NODE_ENV === "development" ? "http://localhost:5200" : "https://api.syriasooq.com",
+        BASE_API_URL: process.env.NODE_ENV === "development" ? "http://localhost:3030" : "https://api.syriasooq.com",
         WEBSITE_URL: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://syriasooq.com",
         adminTokenNameInLocalStorage: "s-s-a-t",
         storeName: "Syria Sooq Store",
@@ -16,7 +16,7 @@ const nextConfig = {
     async headers() {
         return [
             {
-                source: process.env.NODE_ENV === "development" ? "//localhost:5200/(.*)" : "//api.syriasooq.com/(.*)",
+                source: process.env.NODE_ENV === "development" ? "//localhost:3030/(.*)" : "//api.syriasooq.com/(.*)",
                 headers: [
                     { key: "Access-Control-Allow-Credentials", value: "true" },
                     {
