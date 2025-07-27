@@ -8,7 +8,6 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import { getAdminInfo, getAllBrandsInsideThePage, getAllCategoriesInsideThePage, getCategoriesCount, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import NotFoundError from "@/components/NotFoundError";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
@@ -363,7 +362,6 @@ export default function AddNewProduct() {
                 }),
             ]);
             setFormValidationErrors(errorsObject);
-            console.log(errorsObject)
             if (Object.keys(errorsObject).length == 0) {
                 let formData = new FormData();
                 formData.append("name", productData.name);

@@ -205,6 +205,7 @@ export default function StoreDetails({ storeId }) {
                 const result = (await axios.put(`${process.env.BASE_API_URL}/stores/update-store-info/${storeId}?language=${process.env.defaultLanguage}`, {
                     name: storeDetails.name,
                     city: storeDetails.city,
+                    category: storeDetails.category,
                     ownerFullName: storeDetails.ownerFullName,
                     phoneNumber: storeDetails.phoneNumber,
                     email: storeDetails.email,
@@ -368,6 +369,7 @@ export default function StoreDetails({ storeId }) {
                                                 <select
                                                     onChange={(e) => setStoreDetails({ ...storeDetails, category: e.target.value })}
                                                     className={`form-control mx-auto p-2 border-2 store-category-field ${formValidationErrors["category"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    defaultValue={storeDetails.category}
                                                 >
                                                     {storeCategories.map((category) => (
                                                         <option key={category} value={category}>{category}</option>
