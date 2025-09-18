@@ -351,6 +351,27 @@ export default function StoresManagment() {
                     setIsGetStores(false);
                     return;
                 }
+                case "approve-verification": {
+                    setIsGetStores(true);
+                    const result = (await getAllStoresInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllStoresInsideThePage(result.stores);
+                    setIsGetStores(false);
+                    return;
+                }
+                case "reject-verification": {
+                    setIsGetStores(true);
+                    const result = (await getAllStoresInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllStoresInsideThePage(result.stores);
+                    setIsGetStores(false);
+                    return;
+                }
+                case "cancel-verification": {
+                    setIsGetStores(true);
+                    const result = (await getAllStoresInsideThePage(currentPage, pageSize, getFilteringString(filters))).data;
+                    setAllStoresInsideThePage(result.stores);
+                    setIsGetStores(false);
+                    return;
+                }
             }
         }
         catch (err) {
@@ -571,6 +592,45 @@ export default function StoresManagment() {
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "cancel-blocking")}
                                                         >
                                                             {t("Cancel Blocking")}
+                                                        </button>
+                                                    }
+                                                    {
+                                                        !waitMsg &&
+                                                        !successMsg &&
+                                                        !errorMsg &&
+                                                        store.status === "approving" &&
+                                                        !store.isVerified &&
+                                                        <button
+                                                            className="btn btn-danger d-block mx-auto mb-3 global-button"
+                                                            onClick={() => handleDisplayChangeStoreStatusBox(store, "Verification")}
+                                                        >
+                                                            {t("Store Verification")}
+                                                        </button>
+                                                    }
+                                                    {
+                                                        !waitMsg &&
+                                                        !successMsg &&
+                                                        !errorMsg &&
+                                                        store.status === "approving" &&
+                                                        !store.isVerified &&
+                                                        <button
+                                                            className="btn btn-danger d-block mx-auto mb-3 global-button"
+                                                            onClick={() => handleDisplayChangeStoreStatusBox(store, "reject-verification")}
+                                                        >
+                                                            {t("Reject Verification Store")}
+                                                        </button>
+                                                    }
+                                                    {
+                                                        !waitMsg &&
+                                                        !successMsg &&
+                                                        !errorMsg &&
+                                                        store.status === "approving" &&
+                                                        store.isVerified &&
+                                                        <button
+                                                            className="btn btn-danger d-block mx-auto mb-3 global-button"
+                                                            onClick={() => handleDisplayChangeStoreStatusBox(store, "cancel-verification")}
+                                                        >
+                                                            {t("Cancel Verification Store")}
                                                         </button>
                                                     }
                                                     {errorMsg && storeIndex === selectedStoreIndex && <button

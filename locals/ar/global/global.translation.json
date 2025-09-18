@@ -30,5 +30,6 @@
     "No Parent": "بدون أب",
     "Status": "الحالة",
     "Please Enter Status": "الرجاء إدخال الحالة",
-    "pending": "الانتظار"
+    "pending": "الانتظار",
+    "?": "؟"
 }

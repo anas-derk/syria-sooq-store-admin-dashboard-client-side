@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -254,14 +254,150 @@ export default function ChangeStoreStatusBox({
         }
     }
 
+    const verificationStore = async (storeId) => {
+        try {
+            setWaitMsg("Please Wait");
+            const result = (await axios.put(`${process.env.BASE_API_URL}/stores/store-verification/${storeId}?language=${process.env.defaultLanguage}`,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                    }
+                }
+            )).data;
+            setWaitMsg("");
+            if (!result.error) {
+                setSuccessMsg(result.msg);
+                let successTimeout = setTimeout(async () => {
+                    setSuccessMsg("");
+                    handleClosePopupBox();
+                    handleChangeStoreStatus("approve-verification");
+                    clearTimeout(successTimeout);
+                }, 3000);
+            }
+            else {
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+        catch (err) {
+            if (err?.response?.status === 401) {
+                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
+                await router.replace("/login");
+            }
+            else {
+                setWaitMsg("");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+    }
+
+    const rejectStoreVerification = async (storeId, changeStatusReason) => {
+        try {
+            setWaitMsg("Please Wait");
+            const result = (await axios.put(`${process.env.BASE_API_URL}/stores/reject-store-verification/${storeId}?language=${process.env.defaultLanguage}`, {
+                reason: changeStatusReason,
+            },
+                {
+                    headers: {
+                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                    }
+                }
+            )).data;
+            setWaitMsg("");
+            if (!result.error) {
+                setSuccessMsg(result.msg);
+                let successTimeout = setTimeout(async () => {
+                    setSuccessMsg("");
+                    handleClosePopupBox();
+                    handleChangeStoreStatus("reject-verification");
+                    clearTimeout(successTimeout);
+                }, 3000);
+            }
+            else {
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+        catch (err) {
+            if (err?.response?.status === 401) {
+                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
+                await router.replace("/login");
+            }
+            else {
+                setWaitMsg("");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+    }
+
+    const cancelVerificationStore = async (storeId, changeStatusReason) => {
+        try {
+            setWaitMsg("Please Wait");
+            const result = (await axios.put(`${process.env.BASE_API_URL}/stores/cancel-store-verification/${storeId}?language=${process.env.defaultLanguage}`, {
+                reason: changeStatusReason,
+            },
+                {
+                    headers: {
+                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                    }
+                }
+            )).data;
+            setWaitMsg("");
+            if (!result.error) {
+                setSuccessMsg(result.msg);
+                let successTimeout = setTimeout(async () => {
+                    setSuccessMsg("");
+                    handleClosePopupBox();
+                    handleChangeStoreStatus("cancel-verification");
+                    clearTimeout(successTimeout);
+                }, 3000);
+            }
+            else {
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+        catch (err) {
+            if (err?.response?.status === 401) {
+                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
+                await router.replace("/login");
+            }
+            else {
+                setWaitMsg("");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                let errorTimeout = setTimeout(() => {
+                    setErrorMsg("");
+                    clearTimeout(errorTimeout);
+                }, 1500);
+            }
+        }
+    }
+
     return (
         <div className="change-store-status-box popup-box">
             <div className="content-box d-flex align-items-center justify-content-center text-white flex-column p-4 text-center">
                 {!waitMsg && !errorMsg && !successMsg && <GrFormClose className="close-popup-box-icon" onClick={handleClosePopupBox} />}
                 <h2 className="mb-5 pb-3 border-bottom border-white">{t("Change Store Status")}</h2>
-                <h4 className="mb-4">{t("Are You Sure From")}: {t(`${storeAction} Store`)}: ( {selectedStore.name} ) ?</h4>
+                <h4 className="mb-4">{t("Are You Sure From")}: {t(`Store ${storeAction}`)}: ( {selectedStore.name} ) {t("?")}</h4>
                 <form className="change-store-status-form w-50" onSubmit={(e) => e.preventDefault()}>
-                    {storeAction === "blocking" && <section className="change-store-status mb-4">
+                    {["blocking", "reject-verification", "cancel-verification"].includes(storeAction) && <section className="change-store-status mb-4">
                         <input
                             type="text"
                             className={`form-control p-3 border-2 change-status-reason-field ${formValidationErrors["changeStatusReason"] ? "border-danger mb-3" : "mb-4"}`}
@@ -337,6 +473,42 @@ export default function ChangeStoreStatusBox({
                             onClick={() => cancelBlockingStore(selectedStore._id)}
                         >
                             {t("Cancel Blocking")}
+                        </button>
+                    }
+                    {
+                        !waitMsg &&
+                        !errorMsg &&
+                        !successMsg &&
+                        storeAction === "Verification" &&
+                        <button
+                            className="btn btn-success d-block mx-auto mb-4 global-button"
+                            onClick={() => verificationStore(selectedStore._id)}
+                        >
+                            {t("Add Verification Badge")}
+                        </button>
+                    }
+                    {
+                        !waitMsg &&
+                        !errorMsg &&
+                        !successMsg &&
+                        storeAction === "reject-verification" &&
+                        <button
+                            className="btn btn-success d-block mx-auto mb-4 global-button"
+                            onClick={() => rejectStoreVerification(selectedStore._id, changeStatusReason)}
+                        >
+                            {t("Reject Verification")}
+                        </button>
+                    }
+                    {
+                        !waitMsg &&
+                        !errorMsg &&
+                        !successMsg &&
+                        storeAction === "cancel-verification" &&
+                        <button
+                            className="btn btn-success d-block mx-auto mb-4 global-button"
+                            onClick={() => cancelVerificationStore(selectedStore._id, changeStatusReason)}
+                        >
+                            {t("Cancel Verification")}
                         </button>
                     }
                     {waitMsg &&
