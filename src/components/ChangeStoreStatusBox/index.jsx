@@ -257,7 +257,7 @@ export default function ChangeStoreStatusBox({
     const verificationStore = async (storeId) => {
         try {
             setWaitMsg("Please Wait");
-            const result = (await axios.put(`${process.env.BASE_API_URL}/stores/store-verification/${storeId}?language=${process.env.defaultLanguage}`,
+            const result = (await axios.put(`${process.env.BASE_API_URL}/stores/store-verification/${storeId}?language=${process.env.defaultLanguage}`, undefined,
                 {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -283,18 +283,24 @@ export default function ChangeStoreStatusBox({
             }
         }
         catch (err) {
-            if (err?.response?.status === 401) {
-                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
-                await router.replace("/login");
-            }
-            else {
-                setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorMsg("");
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
+            setWaitMsg("");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+            let errorTimeout = setTimeout(() => {
+                setErrorMsg("");
+                clearTimeout(errorTimeout);
+            }, 1500);
+            // if (err?.response?.status === 401) {
+            //     localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
+            //     await router.replace("/login");
+            // }
+            // else {
+            //     setWaitMsg("");
+            //     setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+            //     let errorTimeout = setTimeout(() => {
+            //         setErrorMsg("");
+            //         clearTimeout(errorTimeout);
+            //     }, 1500);
+            // }
         }
     }
 

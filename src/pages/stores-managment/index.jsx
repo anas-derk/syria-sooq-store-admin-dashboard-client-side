@@ -599,7 +599,7 @@ export default function StoresManagment() {
                                                         !successMsg &&
                                                         !errorMsg &&
                                                         store.status === "approving" &&
-                                                        !store.isVerified &&
+                                                        store.verificationStatus !== "approving" &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "Verification")}
@@ -612,7 +612,7 @@ export default function StoresManagment() {
                                                         !successMsg &&
                                                         !errorMsg &&
                                                         store.status === "approving" &&
-                                                        !store.isVerified &&
+                                                        store.verificationStatus !== "approving" &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "reject-verification")}
@@ -625,7 +625,7 @@ export default function StoresManagment() {
                                                         !successMsg &&
                                                         !errorMsg &&
                                                         store.status === "approving" &&
-                                                        store.isVerified &&
+                                                        store.verificationStatus === "approving" &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "cancel-verification")}
