@@ -331,8 +331,7 @@ export default function StoresManagment() {
             switch (newStatus) {
                 case "approving": {
                     setIsGetStores(true);
-                    const filteringString = getFilteringString(filters);
-                    setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, filteringString)).data.stores);
+                    setAllStoresInsideThePage((await getAllStoresInsideThePage(1, pageSize, getFilteringString(filters))).data.stores);
                     setCurrentPage(currentPage);
                     setIsGetStores(false);
                     return;
@@ -612,7 +611,7 @@ export default function StoresManagment() {
                                                         !successMsg &&
                                                         !errorMsg &&
                                                         store.status === "approving" &&
-                                                        store.verificationStatus !== "approving" &&
+                                                        store.verificationStatus === "pending" &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "reject-verification")}
