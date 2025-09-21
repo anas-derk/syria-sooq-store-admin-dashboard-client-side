@@ -308,7 +308,7 @@ export default function ChangeStoreStatusBox({
         try {
             setWaitMsg("Please Wait");
             const result = (await axios.put(`${process.env.BASE_API_URL}/stores/reject-store-verification/${storeId}?language=${process.env.defaultLanguage}`, {
-                reason: changeStatusReason,
+                verificationRejectReason: changeStatusReason,
             },
                 {
                     headers: {
