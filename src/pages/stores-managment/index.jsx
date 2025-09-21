@@ -611,7 +611,7 @@ export default function StoresManagment() {
                                                         !successMsg &&
                                                         !errorMsg &&
                                                         store.status === "approving" &&
-                                                        store.verificationStatus === "pending" &&
+                                                        (store.verificationStatus === "pending" || store.verificationStatus === "cancel-approving") &&
                                                         <button
                                                             className="btn btn-danger d-block mx-auto mb-3 global-button"
                                                             onClick={() => handleDisplayChangeStoreStatusBox(store, "reject-verification")}
