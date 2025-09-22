@@ -528,6 +528,64 @@ export default function StoreDetails({ storeId }) {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th>{t("Deliverability")}</th>
+                                        <td className="cancel-blocking-store-date-cell">
+                                            {storeDetails.isDeliverable ? t("Yes") : t("No")}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>{t("Business Status")}</th>
+                                        <td className="cancel-blocking-store-date-cell">
+                                            {storeDetails.isClosed ? t("Closed") : t("Open")}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>{t("Verification Status")}</th>
+                                        <td className="verification-status-date-cell">
+                                            {t(storeDetails.verificationStatus)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>{t("Verification Approve Date")}</th>
+                                        <td className="verification-approve-date-cell">
+                                            {storeDetails.verificationDate ? getDateFormated(storeDetails.verificationDate) : "-----"}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>{t("Verification Reject Date")}</th>
+                                        <td className="verification-reject-date-cell">
+                                            {storeDetails.dateOfRejectVerification ? getDateFormated(storeDetails.dateOfRejectVerification) : "-----"}
+                                        </td>
+                                    </tr>
+                                    {storeDetails.verificationRejectReason && <tr>
+                                        <th>{t("Verification Reject Reason")}</th>
+                                        <td className="verification-reject-reason-cell">
+                                            {storeDetails.verificationRejectReason}
+                                        </td>
+                                    </tr>}
+                                    <tr>
+                                        <th>{t("Verification Cancel Date")}</th>
+                                        <td className="verification-reject-date-cell">
+                                            {storeDetails.dateOfCancelVerification ? getDateFormated(storeDetails.dateOfCancelVerification) : "-----"}
+                                        </td>
+                                    </tr>
+                                    {storeDetails.verificationCancelReason && <tr>
+                                        <th>{t("Verification Cancel Reason")}</th>
+                                        <td className="verification-cancel-reason-cell">
+                                            {storeDetails.verificationCancelReason}
+                                        </td>
+                                    </tr>}
+                                    <tr>
+                                        <th>{t("Working Hours")}</th>
+                                        <td className="working-hours-cell">
+                                            {storeDetails.workingHours.map((hours, hoursIndex) => (
+                                                <div className={`day border border-2 border-dark p-3 text-white ${hoursIndex !== storeDetails.workingHours.length - 1 ? "mb-3 bg-success" : "bg-danger"}`} key={hoursIndex}>
+                                                    {t(hours.day)}: {hours.openTime.time !== "" && hours.closeTime.time !== "" ? `${t("From")} ${hours.openTime.time} ${hours.openTime.period} - $ ${hours.closeTime.time} ${hours.closeTime.period}` : t("vacation")}
+                                                </div>
+                                            ))}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>{t("Processes")}</th>
                                         <td>
                                             {!waitMsg && !errorMsg && !successMsg && <button
