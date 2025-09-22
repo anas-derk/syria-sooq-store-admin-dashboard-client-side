@@ -43,6 +43,8 @@ export default function UsersManagment() {
         _id: "",
         firstName: "",
         lastName: "",
+        registerationMethod: "",
+        registerationAgent: ""
     });
 
     const router = useRouter();
@@ -101,6 +103,8 @@ export default function UsersManagment() {
         if (filters.email) filteringString += `email=${filters.email}&`;
         if (filters.firstName) filteringString += `firstName=${filters.firstName}&`;
         if (filters.lastName) filteringString += `lastName=${filters.lastName}&`;
+        if (filters.registerationMethod) filteringString += `registerationMethod=${filters.registerationMethod}&`;
+        if (filters.registerationAgent) filteringString += `registerationAgent=${filters.registerationAgent}&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
     }
@@ -310,6 +314,30 @@ export default function UsersManagment() {
                                         onChange={(e) => setFilters({ ...filters, fullName: e.target.value.trim() })}
                                     />
                                 </div>
+                                <div className="col-md-4 mt-4">
+                                    <h6 className="me-2 fw-bold text-center">{t("Registeration Method")}</h6>
+                                    <select
+                                        className="select-order-status form-select"
+                                        onChange={(e) => setFilters({ ...filters, registerationMethod: e.target.value })}
+                                    >
+                                        <option value="" hidden>{t("Please Select Registeration Method")}</option>
+                                        <option value="">{t("All")}</option>
+                                        <option value="google">{t("Google")}</option>
+                                        <option value="traditional">{t("Traditional")}</option>
+                                    </select>
+                                </div>
+                                <div className="col-md-4 mt-4">
+                                    <h6 className="me-2 fw-bold text-center">{t("Registeration Agent")}</h6>
+                                    <select
+                                        className="select-order-status form-select"
+                                        onChange={(e) => setFilters({ ...filters, registerationAgent: e.target.value })}
+                                    >
+                                        <option value="" hidden>{t("Please Select Registeration Agent")}</option>
+                                        <option value="">{t("All")}</option>
+                                        <option value="mobile-app">{t("Mobile App")}</option>
+                                        <option value="web-app">{t("Web App")}</option>
+                                    </select>
+                                </div>
                             </div>
                             {!isGetUsers && <button
                                 className="btn btn-success d-block w-25 mx-auto mt-2 global-button"
@@ -332,23 +360,31 @@ export default function UsersManagment() {
                                         <th>{t("Email")}</th>
                                         <th>{t("Full Name")}</th>
                                         <th>{t("Date Of Creation")}</th>
+                                        <th>{t("Regiteration Method")}</th>
+                                        <th>{t("Regiteration Agent")}</th>
                                         <th>{t("Processes")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {allUsersInsideThePage.map((user, userIndex) => (
                                         <tr key={user._id}>
-                                            <td className="user-id-cell">
+                                            <td className="id-cell">
                                                 {user._id}
                                             </td>
-                                            <td className="user-email-cell">
+                                            <td className="email-cell">
                                                 {user.email}
                                             </td>
-                                            <td className="user-full-name-cell">
+                                            <td className="full-name-cell">
                                                 {user.fullName}
                                             </td>
-                                            <td className="user-email-cell">
+                                            <td className="date-of-creation-cell">
                                                 {getDateFormated(user.dateOfCreation)}
+                                            </td>
+                                            <td className="registeration-method-cell">
+                                                {t(user.registerationMethod)}
+                                            </td>
+                                            <td className="registeration-agent-cell">
+                                                {t(user.registerationAgent)}
                                             </td>
                                             <td className="update-cell">
                                                 {selectedUserIndex !== userIndex && <>

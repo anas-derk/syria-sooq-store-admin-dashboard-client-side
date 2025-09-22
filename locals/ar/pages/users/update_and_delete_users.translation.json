@@ -3,5 +3,20 @@
     "In Your Users Managment Page": "في صفحة إدارة المستخدمين الخاصة بك",
     "User Id": "معرّف المستخدم",
     "Date Of Creation": "تاريخ الإنشاء",
-    "Sorry, Can't Find Any Users": "عذراً ، لا يوجد أي مستخدمين"
+    "Sorry, Can't Find Any Users": "عذراً ، لا يوجد أي مستخدمين",
+    "Registeration Method": "طريقة التسجيل",
+    "Please Select Registeration Method": "الرجاء إدخال طريقة التسجيل",
+    "Google": "غوغل",
+    "Traditional": "تقليدية",
+    "Mobile App": "تطبيق الجوال",
+    "Web App": "تطبيق الويب",
+    "Registeration Agent": "عميل التسجيل",
+    "Please Select Registeration Agent": "الرجاء إدخال عميل التسجيل",
+    "Regiteration Method": "'طريقة' التسجيل",
+    "google": "غوغل",
+    "traditional": "تقليدية",
+    "Regiteration Agent": "عميل التسجيل",
+    "monile-app": "تطبيق الجوال",
+    "web-app": "تطبيق الويب",
+    "unknown": "غير معروف"
 }
