@@ -580,7 +580,7 @@ export default function StoreDetails({ storeId }) {
                                         <td className="working-hours-cell">
                                             {storeDetails.workingHours.map((hours, hoursIndex) => (
                                                 <div className={`day border border-2 border-dark p-3 text-white ${hoursIndex !== storeDetails.workingHours.length - 1 ? "mb-3 bg-success" : "bg-danger"}`} key={hoursIndex}>
-                                                    {t(hours.day)}: {hours.openTime.time !== "" && hours.closeTime.time !== "" ? `${t("From")} ${hours.openTime.time} ${hours.openTime.period} - $ ${hours.closeTime.time} ${hours.closeTime.period}` : t("vacation")}
+                                                    {t(hours.day)}: {hours.openTime.time !== "" && hours.closeTime.time !== "" ? `${t("From")} ${hours.openTime.time} ${t(hours.openTime.period)} - ${t("To")} ${hours.closeTime.time} ${t(hours.closeTime.period)}` : t("vacation")}
                                                 </div>
                                             ))}
                                         </td>
