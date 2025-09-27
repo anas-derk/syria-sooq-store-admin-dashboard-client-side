@@ -32,6 +32,7 @@ export default function AddNewProduct() {
         categories: [],
         discount: "",
         quantity: "",
+        gender: "",
         isAvailableForDelivery: false,
         hasCustomizes: false,
         image: null,
