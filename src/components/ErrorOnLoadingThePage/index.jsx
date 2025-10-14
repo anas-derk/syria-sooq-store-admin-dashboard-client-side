@@ -2,6 +2,7 @@ import { PiSmileySad } from "react-icons/pi";
 import AdminPanelHeader from "../AdminPanelHeader";
 import { handleSelectUserLanguage } from "../../../public/global_functions/popular";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export default function ErrorOnLoadingThePage({ errorMsg }) {
 
