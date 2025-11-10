@@ -58,7 +58,8 @@ export default function UpdateAndDeleteProducts() {
 
     const [filters, setFilters] = useState({
         category: "",
-        name: ""
+        name: "",
+        gender: "",
     });
 
     const [formValidationErrors, setFormValidationErrors] = useState({});
@@ -173,6 +174,7 @@ export default function UpdateAndDeleteProducts() {
         let filteringString = "";
         if (filters.category) filteringString += `category=${filters.category}&`;
         if (filters.name) filteringString += `name=${filters.name}&`;
+        if (filters.gender) filteringString += `gender=${filters.gender}&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
     }
@@ -357,6 +359,15 @@ export default function UpdateAndDeleteProducts() {
                         },
                     },
                 },
+                {
+                    name: "gender",
+                    value: allProductsInsideThePage[productIndex].gender,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
+                },
             ]);
             setFormValidationErrors(errorsObject);
             setSelectedProductIndex(productIndex);
@@ -372,6 +383,7 @@ export default function UpdateAndDeleteProducts() {
                     endDiscountPeriod: allProductsInsideThePage[productIndex].endDiscountPeriod,
                     discountInOfferPeriod: Number(allProductsInsideThePage[productIndex].discountInOfferPeriod),
                     offerDescription: allProductsInsideThePage[productIndex].offerDescription,
+                    gender: allProductsInsideThePage[productIndex].gender,
                 }, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -476,7 +488,7 @@ export default function UpdateAndDeleteProducts() {
                         <h5 className="section-name fw-bold text-center">{t("Filters")}: </h5>
                         <hr />
                         <div className="row mb-4">
-                            <div className="col-md-6">
+                            <div className="col-md-6 mb-4">
                                 <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Category")}</h6>
                                 <input
                                     type="text"
@@ -494,6 +506,20 @@ export default function UpdateAndDeleteProducts() {
                                     placeholder={t("Please Enter Product Name")}
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                 />
+                                {formValidationErrors["productName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["productName"])} />}
+                            </div>
+                            <div className="col-md-6">
+                                <h6 className={`fw-bold text-center ${i18n.language !== "ar" ? "me-2" : "ms-2"}`}>{t("Gender")}</h6>
+                                <select
+                                    className="select-gender form-select"
+                                    onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
+                                >
+                                    <option value="" hidden>{t("Please Select Gender")}</option>
+                                    <option value="male">{t("Male")}</option>
+                                    <option value="female">{t("Female")}</option>
+                                    <option value="all">{t("All Genders")}</option>
+                                    <option value="">{t("All")}</option>
+                                </select>
                                 {formValidationErrors["productName"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["productName"])} />}
                             </div>
                         </div>
@@ -520,6 +546,7 @@ export default function UpdateAndDeleteProducts() {
                                     <th>{t("Description")}</th>
                                     <th>{t("Discount")}</th>
                                     <th>{t("Image")}</th>
+                                    <th>{t("Gender")}</th>
                                     <th>{t("Processes")}</th>
                                 </tr>
                             </thead>
@@ -659,6 +686,22 @@ export default function UpdateAndDeleteProducts() {
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
                                             >{t(errorChangeProductImageMsg)}</button>}
+                                        </td>
+                                        <td className="gender-cell">
+                                            <h6 className="fw-bold bg-danger p-2 text-white mb-4">{t("Current Gender")}: {t(product.gender)}</h6>
+                                            <section className="gender mb-4">
+                                                <select
+                                                    className="select-gender form-select"
+                                                    onChange={(e) => changeProductData(productIndex, "gender", e.target.value)}
+                                                    defaultValue={product.gender}
+                                                >
+                                                    <option value="" hidden>{t("Please Select New Gender")}</option>
+                                                    <option value="male">{t("Male")}</option>
+                                                    <option value="female">{t("Female")}</option>
+                                                    <option value="all">{t("All Genders")}</option>
+                                                </select>
+                                                {formValidationErrors["gender"] && productIndex === selectedProductIndex && <FormFieldErrorBox errorMsg={t(formValidationErrors["gender"])} />}
+                                            </section>
                                         </td>
                                         <td className="update-cell">
                                             {selectedProductIndex !== productIndex && <>

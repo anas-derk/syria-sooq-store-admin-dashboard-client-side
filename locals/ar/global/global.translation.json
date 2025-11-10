@@ -36,7 +36,12 @@
     "No": "لا",
     "From": "من",
     "To": "إلى",
+    "Gender": "الجنس",
     "Please Select Gender": "الرجاء اختيار الجنس",
     "Male": "ذكر",
-    "Female": "أنثى"
+    "Female": "أنثى",
+    "Please Select New Gender": "الرجاء اختيار الجنس الجديد",
+    "Current Gender": "الجنس الحالي",
+    "all": "الكل",
+    "All Genders": "كلا الجنسين معاً"
 }
