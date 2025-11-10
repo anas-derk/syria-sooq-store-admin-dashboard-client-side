@@ -37,6 +37,7 @@ export default function AddNewProduct() {
         hasCustomizes: false,
         image: null,
         galleryImages: [],
+        gender: "",
     });
 
     const [customizes, setCustomizes] = useState({
@@ -321,6 +322,15 @@ export default function AddNewProduct() {
                     },
                 },
                 {
+                    name: "gender",
+                    value: productData.gender,
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                    },
+                },
+                {
                     name: "image",
                     value: productData.image,
                     rules: {
@@ -382,6 +392,7 @@ export default function AddNewProduct() {
                 if (selectedRelatedBrand?._id) {
                     formData.append("brand", selectedRelatedBrand._id);
                 }
+                formData.append("gender", productData.gender);
                 if (customizes.colors.length > 0 && colorImages.length > 0) {
                     for (let colorImage of colorImages) {
                         formData.append("colorImages", colorImage);
@@ -408,6 +419,7 @@ export default function AddNewProduct() {
                             isAvailableForDelivery: false,
                             image: null,
                             galleryImages: [],
+                            gender: "",
                         });
                         setSearchedCategoryName("");
                         productImageFileElementRef.current.value = "";
@@ -1079,6 +1091,19 @@ export default function AddNewProduct() {
                                 </div>
                             </div>}
                         </section>
+                        <h6 className="mb-3 fw-bold">{t("Please Select Gender")}</h6>
+                        <section className="gender mb-4">
+                            <select
+                                className="select-gender form-select"
+                                onChange={(e) => setProductData({ ...productData, gender: e.target.value })}
+                            >
+                                <option value="" hidden>{t("Please Select Gender")}</option>
+                                <option value="">{t("All")}</option>
+                                <option value="male">{t("Male")}</option>
+                                <option value="female">{t("Female")}</option>
+                            </select>
+                        </section>
+                        {formValidationErrors["gender"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["gender"])} />}
                         <h6 className="mb-3 fw-bold">{t("Please Select Product Image")}</h6>
                         <section className="image mb-4">
                             <input
