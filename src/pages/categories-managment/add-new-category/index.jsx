@@ -29,6 +29,8 @@ export default function AddNewCategory() {
 
     const [selectedCategoryParent, setSelectedCategoryParent] = useState("");
 
+    const [categoryAge, setCategoryAge] = useState({ min: null, max: null });
+
     const [waitMsg, setWaitMsg] = useState(false);
 
     const [errorMsg, setErrorMsg] = useState("");
@@ -116,6 +118,7 @@ export default function AddNewCategory() {
 
     const handleSelectCategoryParent = (categoryParent) => {
         setSelectedCategoryParent(categoryParent ? categoryParent : { name: "No Parent", _id: "" });
+        setCategoryAge({ min: null, max: null });
     }
 
     const addNewCategory = async (e) => {
@@ -162,6 +165,33 @@ export default function AddNewCategory() {
                         },
                     },
                 },
+                selectedCategoryParent?._id ? (
+                    {
+                        name: "minCategoryAge",
+                        value: categoryAge.min,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: 0,
+                                msg: "Sorry, Minimum Value Can't Be Less Than Zero !!",
+                            },
+                        },
+                    },
+                    {
+                        name: "maxCategoryAge",
+                        value: categoryAge.max,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: Number(categoryAge.max) > 0 ? 1.1 * Number(categoryAge.min) : 0.1,
+                                msg: `Sorry, Minimum Value Can't Be Less Than ${Number(categoryAge.max) > 0 ? 1.1 * Number(categoryAge.min) : 0.1} !!`,
+                            },
+                        },
+                    }) : null,
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
@@ -171,6 +201,10 @@ export default function AddNewCategory() {
                 formData.append("name", categoryName);
                 formData.append("parent", selectedCategoryParent._id);
                 formData.append("color", categoryColor);
+                if (selectedCategoryParent?._id) {
+                    formData.append("minAge", categoryAge.min);
+                    formData.append("maxAge", categoryAge.max);
+                }
                 const result = (await axios.post(`${process.env.BASE_API_URL}/categories/add-new-category?language=${process.env.defaultLanguage}`, formData, {
                     headers: {
                         Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
@@ -182,6 +216,12 @@ export default function AddNewCategory() {
                     let successTimeout = setTimeout(() => {
                         setSuccessMsg("");
                         setCategoryName("");
+                        setCategoryColor("");
+                        setSelectedCategoryParent("");
+                        setSearchedCategories("");
+                        fileElementRef.current.value = "";
+                        fileElementRef.current.value = "";
+                        setCategoryAge({ min: null, max: null });
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
@@ -278,6 +318,31 @@ export default function AddNewCategory() {
                             />
                             {formValidationErrors["categoryImage"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["categoryImage"])} />}
                         </section>
+                        {selectedCategoryParent?._id && <section className="category-age mb-4">
+                            <h6 className="fw-bold mb-3">{t("Please Enter Suitable Age")}</h6>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <input
+                                        type="text"
+                                        className={`form-control p-2 border-2 category-age-field ${formValidationErrors["minCategoryAge"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder={t("Please Enter Minimum Age")}
+                                        onChange={(e) => setCategoryAge({ ...categoryAge, min: (e.target.value || e.target.value == 0) ? e.target.value.trim() : "" })}
+                                        value={categoryAge?.min ?? ""}
+                                    />
+                                    {formValidationErrors["minCategoryAge"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["minCategoryAge"])} />}
+                                </div>
+                                <div className="col-md-6">
+                                    <input
+                                        type="text"
+                                        className={`form-control p-2 border-2 category-age-field ${formValidationErrors["maxCategoryAge"] ? "border-danger mb-3" : "mb-4"}`}
+                                        placeholder={t("Please Enter Maximum Age")}
+                                        onChange={(e) => setCategoryAge({ ...categoryAge, max: (e.target.value || e.target.value == 0) ? e.target.value.trim() : "" })}
+                                        value={categoryAge?.max ?? ""}
+                                    />
+                                    {formValidationErrors["maxCategoryAge"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["maxCategoryAge"])} />}
+                                </div>
+                            </div>
+                        </section>}
                         {!waitMsg && !successMsg && !errorMsg && <button
                             type="submit"
                             className="btn btn-success w-50 d-block mx-auto p-2 global-button"
