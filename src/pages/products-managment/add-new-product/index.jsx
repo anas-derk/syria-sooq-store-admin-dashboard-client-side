@@ -1098,7 +1098,7 @@ export default function AddNewProduct() {
                                 onChange={(e) => setProductData({ ...productData, gender: e.target.value })}
                             >
                                 <option value="" hidden>{t("Please Select Gender")}</option>
-                                <option value="">{t("All")}</option>
+                                <option value="all">{t("All")}</option>
                                 <option value="male">{t("Male")}</option>
                                 <option value="female">{t("Female")}</option>
                             </select>
