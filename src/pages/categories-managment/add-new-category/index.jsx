@@ -29,7 +29,7 @@ export default function AddNewCategory() {
 
     const [selectedCategoryParent, setSelectedCategoryParent] = useState("");
 
-    const [categoryAge, setCategoryAge] = useState({ min: null, max: null });
+    const [categoryAge, setCategoryAge] = useState({ min: 1, max: 90 });
 
     const [waitMsg, setWaitMsg] = useState(false);
 
@@ -118,7 +118,7 @@ export default function AddNewCategory() {
 
     const handleSelectCategoryParent = (categoryParent) => {
         setSelectedCategoryParent(categoryParent ? categoryParent : { name: "No Parent", _id: "" });
-        setCategoryAge({ min: null, max: null });
+        setCategoryAge({ min: 1, max: 90 });
     }
 
     const addNewCategory = async (e) => {
@@ -221,7 +221,7 @@ export default function AddNewCategory() {
                         setSearchedCategories("");
                         fileElementRef.current.value = "";
                         fileElementRef.current.value = "";
-                        setCategoryAge({ min: null, max: null });
+                        setCategoryAge({ min: 1, max: 90 });
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
@@ -322,6 +322,7 @@ export default function AddNewCategory() {
                             <h6 className="fw-bold mb-3">{t("Please Enter Suitable Age")}</h6>
                             <div className="row">
                                 <div className="col-md-6">
+                                    <h6 className="fw-bold mb-3">{t("Please Enter Minimum Age")}</h6>
                                     <input
                                         type="text"
                                         className={`form-control p-2 border-2 category-age-field ${formValidationErrors["minCategoryAge"] ? "border-danger mb-3" : "mb-4"}`}
@@ -332,6 +333,7 @@ export default function AddNewCategory() {
                                     {formValidationErrors["minCategoryAge"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["minCategoryAge"])} />}
                                 </div>
                                 <div className="col-md-6">
+                                    <h6 className="fw-bold mb-3">{t("Please Enter Maximum Age")}</h6>
                                     <input
                                         type="text"
                                         className={`form-control p-2 border-2 category-age-field ${formValidationErrors["maxCategoryAge"] ? "border-danger mb-3" : "mb-4"}`}
