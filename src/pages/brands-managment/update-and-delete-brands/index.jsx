@@ -8,7 +8,7 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { useRouter } from "next/router";
 import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
+import { getAdminInfo, handleSelectUserLanguage, getAllBrandsInsideThePage } from "../../../../public/global_functions/popular";
 import TableLoader from "@/components/TableLoader";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
@@ -108,15 +108,6 @@ export default function UpdateAndDeleteBrands() {
         if (filters.storeId) filteringString += `storeId=${filters.storeId}&`;
         if (filteringString) filteringString = filteringString.substring(0, filteringString.length - 1);
         return filteringString;
-    }
-
-    const getAllBrandsInsideThePage = async (pageNumber, pageSize, filters) => {
-        try {
-            return (await axios.get(`${process.env.BASE_API_URL}/brands/all-brands-inside-the-page?pageNumber=${pageNumber}&pageSize=${pageSize}&language=${process.env.defaultLanguage}&${filters ? filters : ""}`)).data;
-        }
-        catch (err) {
-            throw err;
-        }
     }
 
     const getPreviousPage = async () => {
