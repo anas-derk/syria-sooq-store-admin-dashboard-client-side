@@ -119,7 +119,7 @@ export default function StoresManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Stores Data" : "Sorry, Something Went Wrong When Get Stores Data, Please Repeat The Process !!");
             }
         }
     }
@@ -139,7 +139,7 @@ export default function StoresManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Stores Data" : "Sorry, Something Went Wrong When Get Stores Data, Please Repeat The Process !!");
             }
         }
     }
@@ -158,7 +158,7 @@ export default function StoresManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetStoresData(err?.message === "Network Error" ? "Network Error When Get Stores Data" : "Sorry, Something Went Wrong When Get Stores Data, Please Repeat The Process !!");
             }
         }
     }
@@ -193,7 +193,7 @@ export default function StoresManagment() {
             else {
                 setIsGetStores(false);
                 setCurrentPage(-1);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -230,7 +230,7 @@ export default function StoresManagment() {
                     value: allStoresInsideThePage[storeIndex].email,
                     rules: {
                         isEmail: {
-                            msg: "Sorry, Invalid Email !!",
+                            msg: "Sorry, This Email Is Not Valid !!",
                         },
                     },
                 },
@@ -256,7 +256,7 @@ export default function StoresManagment() {
                         clearTimeout(successTimeout);
                     }, 3000);
                 } else {
-                    setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedStoreIndex(-1);
@@ -272,7 +272,7 @@ export default function StoresManagment() {
                 return;
             }
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
             let errorTimeout = setTimeout(() => {
                 setErrorMsg("");
                 setSelectedStoreIndex(-1);
@@ -297,12 +297,12 @@ export default function StoresManagment() {
                     setSuccessMsg("");
                     setSelectedStoreIndex(-1);
                     setIsGetStores(true);
-                    setAllStoresInsideThePage(allStoresInsideThePage.filter((store, index) => index !== storeIndex));
+                    setAllStoresInsideThePage(allStoresInsideThePage.filter((_, index) => index !== storeIndex));
                     setIsGetStores(false);
                     clearTimeout(successTimeout);
                 }, 3000);
             } else {
-                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedStoreIndex(-1);
@@ -317,7 +317,7 @@ export default function StoresManagment() {
                 return;
             }
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
             let errorTimeout = setTimeout(() => {
                 setErrorMsg("");
                 setSelectedStoreIndex(-1);

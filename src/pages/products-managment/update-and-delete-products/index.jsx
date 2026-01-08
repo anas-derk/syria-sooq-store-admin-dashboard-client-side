@@ -10,7 +10,6 @@ import PaginationBar from "@/components/PaginationBar";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
 import {
     getAdminInfo,
-    getProductsCount,
     getAllProductsInsideThePage,
     getTimeAndDateByLocalTime,
     getDateInUTCFormat,
@@ -126,7 +125,7 @@ export default function UpdateAndDeleteProducts() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Products Data" : "Sorry, Something Went Wrong When Get Products Data, Please Repeat The Process !!");
             }
         }
     }
@@ -146,7 +145,7 @@ export default function UpdateAndDeleteProducts() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Products Data" : "Sorry, Something Went Wrong When Get Products Data, Please Repeat The Process !!");
             }
         }
     }
@@ -165,7 +164,7 @@ export default function UpdateAndDeleteProducts() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetProductsData(err?.message === "Network Error" ? "Network Error When Get Products Data" : "Sorry, Something Went Wrong When Get Products Data, Please Repeat The Process !!");
             }
         }
     }
@@ -197,7 +196,7 @@ export default function UpdateAndDeleteProducts() {
                 setIsGetProducts(false);
                 setCurrentPage(-1);
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -229,7 +228,7 @@ export default function UpdateAndDeleteProducts() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or Webp Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -255,7 +254,7 @@ export default function UpdateAndDeleteProducts() {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorChangeProductImageMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeProductImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeProductImageMsg("");
                         setSelectedProducImageIndex(-1);
@@ -271,7 +270,7 @@ export default function UpdateAndDeleteProducts() {
             }
             else {
                 setWaitChangeProductImageMsg("");
-                setErrorChangeProductImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorChangeProductImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeProductImageMsg("");
                     setSelectedProducImageIndex(-1);
@@ -398,7 +397,7 @@ export default function UpdateAndDeleteProducts() {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedProductIndex(-1);
@@ -414,7 +413,7 @@ export default function UpdateAndDeleteProducts() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedProductIndex(-1);
@@ -447,7 +446,7 @@ export default function UpdateAndDeleteProducts() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedProductIndex(-1);
@@ -462,7 +461,7 @@ export default function UpdateAndDeleteProducts() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedProductIndex(-1);

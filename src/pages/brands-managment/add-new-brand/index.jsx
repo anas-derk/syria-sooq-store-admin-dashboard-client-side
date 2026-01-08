@@ -88,7 +88,7 @@ export default function AddNewBrand() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or Webp Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -140,7 +140,7 @@ export default function AddNewBrand() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);

@@ -142,7 +142,7 @@ export default function UpdateAndDeleteAds() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -169,7 +169,7 @@ export default function UpdateAndDeleteAds() {
                     }, 1500);
                 } else {
                     setWaitChangeAdImageMsg("");
-                    setErrorChangeAdImageMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeAdImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeAdImageMsg("");
                         setSelectedAdImageIndex(-1);
@@ -185,7 +185,7 @@ export default function UpdateAndDeleteAds() {
             }
             else {
                 setWaitChangeAdImageMsg("");
-                setErrorChangeAdImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorChangeAdImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setWaitChangeAdImageMsg("");
                     setSelectedAdImageIndex(-1);
@@ -247,7 +247,7 @@ export default function UpdateAndDeleteAds() {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedAdIndex(-1);
@@ -264,7 +264,7 @@ export default function UpdateAndDeleteAds() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdIndex(-1);
@@ -293,7 +293,7 @@ export default function UpdateAndDeleteAds() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdIndex(-1);
@@ -308,7 +308,7 @@ export default function UpdateAndDeleteAds() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdIndex(-1);

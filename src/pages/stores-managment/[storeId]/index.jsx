@@ -194,7 +194,7 @@ export default function StoreDetails({ storeId }) {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isEmail: {
-                            msg: "Sorry, Invalid Email !!",
+                            msg: "Sorry, This Email Is Not Valid !!",
                         },
                     },
                 },
@@ -222,7 +222,7 @@ export default function StoreDetails({ storeId }) {
                         clearTimeout(successTimeout);
                     }, 3000);
                 } else {
-                    setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         clearTimeout(errorTimeout);
@@ -237,7 +237,7 @@ export default function StoreDetails({ storeId }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -260,7 +260,7 @@ export default function StoreDetails({ storeId }) {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -285,7 +285,7 @@ export default function StoreDetails({ storeId }) {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorChangeStoreImageMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeStoreImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeStoreImageMsg("");
                         clearTimeout(errorTimeout);
@@ -300,7 +300,7 @@ export default function StoreDetails({ storeId }) {
             }
             else {
                 setWaitChangeStoreImageMsg("");
-                setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeStoreImageMsg("");
                     clearTimeout(errorTimeout);

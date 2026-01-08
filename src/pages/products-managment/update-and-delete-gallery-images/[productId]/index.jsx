@@ -109,7 +109,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or Webp Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -135,7 +135,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Something Went Wrong When Updating, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong When Updating, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedGalleryImageIndex(-1);
@@ -151,7 +151,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedGalleryImageIndex(-1);
@@ -188,7 +188,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedGalleryImageIndex(-1);
@@ -253,7 +253,7 @@ export default function UpdateAndDeleteGalleryImages({ productIdAsProperty }) {
                                                 className="btn btn-success d-block mx-auto global-button"
                                                 disabled
                                             >{t(successMsg)}</button>}
-                                            {errorMsg === "Sorry, Something Went Wrong When Updating, Please Repeate The Process !!" && selectedGalleryImageIndex === imageIndex && <button
+                                            {errorMsg === "Sorry, Something Went Wrong When Updating, Please Repeat The Process !!" && selectedGalleryImageIndex === imageIndex && <button
                                                 className="btn btn-danger d-block mx-auto global-button"
                                                 disabled
                                             >{t(errorMsg)}</button>}

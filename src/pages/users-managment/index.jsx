@@ -150,7 +150,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Users Data" : "Sorry, Something Went Wrong When Get Users Data, Please Repeat The Process !!");
             }
         }
     }
@@ -170,7 +170,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Users Data" : "Sorry, Something Went Wrong When Get Users Data, Please Repeat The Process !!");
             }
         }
     }
@@ -189,7 +189,7 @@ export default function UsersManagment() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetUsersData(err?.message === "Network Error" ? "Network Error When Get Users Data" : "Sorry, Something Went Wrong When Get Users Data, Please Repeat The Process !!");
             }
         }
     }
@@ -217,7 +217,7 @@ export default function UsersManagment() {
             }
             else {
                 setIsGetUsers(false);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -245,7 +245,7 @@ export default function UsersManagment() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedUserIndex(-1);
@@ -260,7 +260,7 @@ export default function UsersManagment() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedUserIndex(-1);

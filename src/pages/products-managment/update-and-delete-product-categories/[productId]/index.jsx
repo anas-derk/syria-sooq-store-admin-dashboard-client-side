@@ -111,7 +111,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         clearTimeout(errorTimeout);
@@ -126,7 +126,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -149,7 +149,7 @@ export default function UpdateProductCategories({ productIdAsProperty }) {
         }
         catch (err) {
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Someting Went Wrong, Please Repeate The Search !!");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Something Went Wrong, Please Repeat The Search !!");
             let errorTimeout = setTimeout(() => {
                 setErrorMsg("");
                 clearTimeout(errorTimeout);

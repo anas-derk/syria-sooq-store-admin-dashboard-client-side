@@ -441,12 +441,11 @@ export default function AddNewProduct() {
                 await router.replace("/login");
             }
             else {
-                console.log(err);
                 setWaitMsg("");
                 if (err?.response?.data?.msg === "Sorry, Please Send Valid Discount Value !!") {
                     setErrorMsg(err.response.data.msg);
                 }
-                else setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                else setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -469,7 +468,7 @@ export default function AddNewProduct() {
         }
         catch (err) {
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Something Went Wrong, Please Repeate The Search !!");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Something Went Wrong, Please Repeat The Search !!");
             let errorTimeout = setTimeout(() => {
                 setErrorMsg("");
                 clearTimeout(errorTimeout);
@@ -503,7 +502,7 @@ export default function AddNewProduct() {
         }
         catch (err) {
             setWaitMsg("");
-            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Something Went Wrong, Please Repeate The Search !!");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error On Search !!" : "Sorry, Something Went Wrong, Please Repeat The Search !!");
             let errorTimeout = setTimeout(() => {
                 setErrorMsg("");
                 clearTimeout(errorTimeout);

@@ -128,7 +128,7 @@ export default function UpdateAndDeleteCategories() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Categories Data" : "Sorry, Something Went Wrong When Get Categories Data, Please Repeat The Process !!");
             }
         }
     }
@@ -148,7 +148,7 @@ export default function UpdateAndDeleteCategories() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Categories Data" : "Sorry, Something Went Wrong When Get Categories Data, Please Repeat The Process !!");
             }
         }
     }
@@ -167,7 +167,7 @@ export default function UpdateAndDeleteCategories() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetCategoriesData(err?.message === "Network Error" ? "Network Error When Get Categories Data" : "Sorry, Something Went Wrong When Get Categories Data, Please Repeat The Process !!");
             }
         }
     }
@@ -192,7 +192,7 @@ export default function UpdateAndDeleteCategories() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 },
@@ -220,7 +220,7 @@ export default function UpdateAndDeleteCategories() {
                 }
                 else {
                     setWaitChangeCategoryImageMsg("");
-                    setErrorChangeCategoryImageMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeCategoryImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeCategoryImageMsg("");
                         setSelectedCategoryImageIndex(-1);
@@ -236,7 +236,7 @@ export default function UpdateAndDeleteCategories() {
             }
             else {
                 setWaitChangeCategoryImageMsg("");
-                setErrorChangeCategoryImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorChangeCategoryImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeCategoryImageMsg("");
                     setSelectedCategoryImageIndex(-1);
@@ -267,7 +267,7 @@ export default function UpdateAndDeleteCategories() {
             }
             else {
                 setIsGetCategories(false);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -321,7 +321,7 @@ export default function UpdateAndDeleteCategories() {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedCategoryIndex(-1);
@@ -337,7 +337,7 @@ export default function UpdateAndDeleteCategories() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedCategoryIndex(-1);
@@ -366,7 +366,7 @@ export default function UpdateAndDeleteCategories() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedCategoryIndex(-1);
@@ -381,7 +381,7 @@ export default function UpdateAndDeleteCategories() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedCategoryIndex(-1);

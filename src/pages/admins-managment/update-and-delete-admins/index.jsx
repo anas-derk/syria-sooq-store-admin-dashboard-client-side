@@ -123,7 +123,7 @@ export default function UpdateAndDeleteAdmins() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Someting Went Wrong When Get Admins Data, Please Repeate The Process !!");
+                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Something Went Wrong When Get Admins Data, Please Repeat The Process !!");
             }
         }
     }
@@ -143,7 +143,7 @@ export default function UpdateAndDeleteAdmins() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Someting Went Wrong When Get Admins Data, Please Repeate The Process !!");
+                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Something Went Wrong When Get Admins Data, Please Repeat The Process !!");
             }
         }
     }
@@ -162,7 +162,7 @@ export default function UpdateAndDeleteAdmins() {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Someting Went Wrong When Get Admins Data, Please Repeate The Process !!");
+                setErrorMsgOnGetAdminsData(err?.message === "Network Error" ? "Network Error When Get Admins Data" : "Sorry, Something Went Wrong When Get Admins Data, Please Repeat The Process !!");
             }
         }
     }
@@ -193,7 +193,7 @@ export default function UpdateAndDeleteAdmins() {
             }
             else {
                 setIsGetAdmins(false);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -257,7 +257,7 @@ export default function UpdateAndDeleteAdmins() {
                         clearTimeout(successTimeout);
                     }, 3000);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedAdminIndex(-1);
@@ -273,7 +273,7 @@ export default function UpdateAndDeleteAdmins() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdminIndex(-1);
@@ -304,7 +304,7 @@ export default function UpdateAndDeleteAdmins() {
                     clearTimeout(successTimeout);
                 }, 3000);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdminIndex(-1);
@@ -319,7 +319,7 @@ export default function UpdateAndDeleteAdmins() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedAdminIndex(-1);

@@ -102,7 +102,7 @@ export default function AddNewAdmin() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isEmail: {
-                            msg: "Sorry, Invalid Email !!",
+                            msg: "Sorry, This Email Is Not Valid !!",
                         },
                     },
                 },
@@ -114,7 +114,7 @@ export default function AddNewAdmin() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isValidPassword: {
-                            msg: "Sorry, The Password Must Be At Least 8 Characters Long, With At Least One Number, At Least One Lowercase Letter, And At Least One Uppercase Letter."
+                            msg: "Sorry, The Password Must Be At Least 8 Characters Long, With At Least One Number, At Least One Lowercase Letter, And At Least One Uppercase Letter !!"
                         },
                     },
                 },
@@ -155,7 +155,7 @@ export default function AddNewAdmin() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);

@@ -156,7 +156,7 @@ export default function OrdersManagment({ ordersType }) {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Orders Data" : "Sorry, Something Went Wrong When Get Orders Data, Please Repeat The Process !!");
             }
         }
     }
@@ -176,7 +176,7 @@ export default function OrdersManagment({ ordersType }) {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Orders Data" : "Sorry, Something Went Wrong When Get Orders Data, Please Repeat The Process !!");
             }
         }
     }
@@ -195,7 +195,7 @@ export default function OrdersManagment({ ordersType }) {
                 await router.replace("/login");
             }
             else {
-                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetOrdersData(err?.message === "Network Error" ? "Network Error When Get Orders Data" : "Sorry, Something Went Wrong When Get Orders Data, Please Repeat The Process !!");
             }
         }
     }
@@ -232,7 +232,7 @@ export default function OrdersManagment({ ordersType }) {
             }
             else {
                 setIsGetOrders(false);
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     clearTimeout(errorTimeout);
@@ -270,7 +270,7 @@ export default function OrdersManagment({ ordersType }) {
                     clearTimeout(successTimeout);
                 }, 3000);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedOrderIndex(-1);
@@ -285,7 +285,7 @@ export default function OrdersManagment({ ordersType }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedOrderIndex(-1);
@@ -314,7 +314,7 @@ export default function OrdersManagment({ ordersType }) {
                     clearTimeout(successTimeout);
                 }, 3000);
             } else {
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedOrderIndex(-1);
@@ -329,7 +329,7 @@ export default function OrdersManagment({ ordersType }) {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedOrderIndex(-1);

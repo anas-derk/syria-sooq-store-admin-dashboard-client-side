@@ -126,7 +126,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setIsGetBrands(false);
-                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeat The Process !!");
             }
         }
     }
@@ -147,7 +147,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setIsGetBrands(false);
-                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeat The Process !!");
             }
         }
     }
@@ -167,7 +167,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setIsGetBrands(false);
-                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Someting Went Wrong When Get Brands Data, Please Repeate The Process !!");
+                setErrorMsgOnGetBrandsData(err?.message === "Network Error" ? "Network Error When Get Brands Data" : "Sorry, Something Went Wrong When Get Brands Data, Please Repeat The Process !!");
             }
         }
     }
@@ -192,7 +192,7 @@ export default function UpdateAndDeleteBrands() {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
                         isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Image File !!",
+                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
                         },
                     },
                 }
@@ -219,7 +219,7 @@ export default function UpdateAndDeleteBrands() {
                     }, 1500);
                 } else {
                     setWaitChangeBrandImageMsg(false);
-                    setErrorChangeBrandImageMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorChangeBrandImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorChangeBrandImageMsg("");
                         setSelectedBrandImageIndex(-1);
@@ -235,7 +235,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setWaitChangeBrandImageMsg(false);
-                setErrorChangeBrandImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorChangeBrandImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorChangeBrandImageMsg("");
                     setSelectedBrandImageIndex(-1);
@@ -279,7 +279,7 @@ export default function UpdateAndDeleteBrands() {
                         clearTimeout(successTimeout);
                     }, 1500);
                 } else {
-                    setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                    setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                     let errorTimeout = setTimeout(() => {
                         setErrorMsg("");
                         setSelectedBrandIndex(-1);
@@ -295,7 +295,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedBrandIndex(-1);
@@ -324,7 +324,7 @@ export default function UpdateAndDeleteBrands() {
                     clearTimeout(successTimeout);
                 }, 1500);
             } else {
-                setErrorMsg("Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedBrandIndex(-1);
@@ -339,7 +339,7 @@ export default function UpdateAndDeleteBrands() {
             }
             else {
                 setWaitMsg("");
-                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Someting Went Wrong, Please Repeate The Process !!");
+                setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
                 let errorTimeout = setTimeout(() => {
                     setErrorMsg("");
                     setSelectedBrandIndex(-1);
