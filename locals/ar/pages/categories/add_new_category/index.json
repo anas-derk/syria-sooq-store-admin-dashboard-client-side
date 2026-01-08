@@ -1,0 +1,11 @@
+{
+    "Add New Category": "إضافة تصنيف جديد",
+    "In Your Add New Category Page": "في صفحة إضافة تصنيف جديد",
+    "Please Select Category Color": "الرجاء اختيار لون التصنيف",
+    "Please Select Category Parent": "الرجاء اختيار التصيف الأب",
+    "Please Enter Category Parent Name Or Part Of This": "الرجاء إدخال اسم  التصنيف الأب أو جزء منه",
+    "Sorry, Can't Find Any Category Parent Match This Name": "عذراً، لا يوجد أي تصنيف أب مطابق لهذا الاسم",
+    "Please Enter Suitable Age": "الرجاء إدخال العمر المناسب",
+    "Please Enter Minimum Age": "الرجاء إدخال الحد الادنى للعمر",
+    "Please Enter Maximum Age": "الرجاء إدخال الحد الأعلى للعمر"
+}

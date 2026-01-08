@@ -1096,6 +1096,7 @@ export default function AddNewProduct() {
                             <select
                                 className="select-gender form-select"
                                 onChange={(e) => setProductData({ ...productData, gender: e.target.value })}
+                                value={productData.gender}
                             >
                                 <option value="" hidden>{t("Please Select Gender")}</option>
                                 <option value="all">{t("All")}</option>
