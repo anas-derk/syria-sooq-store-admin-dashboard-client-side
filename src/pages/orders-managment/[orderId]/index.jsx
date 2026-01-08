@@ -119,6 +119,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                         <th>{t("Total Amount Before Discount")}</th>
                                         <th>{t("Total")}</th>
                                         <th>{t("Image")}</th>
+                                        {ordersType === "normal" && <th width="400">{t("Extra Data")}</th>}
                                         {ordersType === "return" && <>
                                             <th>{t("Return Reason")}</th>
                                             <th>{t("Approved Quantity")}</th>
@@ -160,6 +161,16 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                     height="100"
                                                 />
                                             </td>
+                                            {ordersType === "normal" && <td>
+                                                <h6 className="mb-4 fw-bold">{t("Message")}:</h6>
+                                                <h6 className="mb-4 fw-bold">{orderProduct.message ?? "-------"}</h6>
+                                                <hr />
+                                                <h6 className="mb-4 fw-bold">{t("Custom Text")}:</h6>
+                                                <h6 className="mb-4 fw-bold">{orderProduct.extraData.customText ?? "-------"}</h6>
+                                                <hr />
+                                                <h6 className="mb-4 fw-bold">{t("Additional Notes")}:</h6>
+                                                <h6 className="mb-4 fw-bold">{orderProduct.extraData.additionalNotes ?? "-------"}</h6>
+                                            </td>}
                                             {ordersType === "return" && <>
                                                 <td>{<span className="text-danger fw-bold">{orderProduct.returnReason}</span>}</td>
                                                 <td>{orderProduct.approvedQuantity}</td>
@@ -214,7 +225,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">{t("Customer Info")}</h4>
                                 <div className="row">
                                     <div className="col-md-12 bg-white border border-2 border-dark">
-                                        <div className="customer-info-box text-start p-3">
+                                        <div className={`customer-info-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
                                             <p className="city fw-bold">{t("City")}: {ordersType === "normal" ? orderDetails.city : orderDetails.originalOrder.city}</p>
                                             <p className="address fw-bold">{t("Address")}: {ordersType === "normal" ? orderDetails.address : orderDetails.originalOrder.address}</p>
                                             <p className="address-details fw-bold">{t("Address Details")}: {ordersType === "normal" ? orderDetails.addressDetails : orderDetails.originalOrder.addressDetails}</p>
@@ -232,7 +243,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                 <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">{t("Shipping Info")}</h4>
                                 <div className="row">
                                     <div className="col-md-12 bg-white border border-2 border-dark">
-                                        <div className="shipping-cost-box text-start p-3">
+                                        <div className={`shipping-cost-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
                                             <h6 className="fw-bold">{t("Shipping Cost")}</h6>
                                             <hr />
                                             <p className="shipping-cost fw-bold">{t("Shipping Cost")}: {ordersType === "normal" ? orderDetails.shippingCost : orderDetails.originalOrder.shippingCost}</p>
@@ -240,21 +251,31 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                     </div>
                                 </div>
                             </section>
-                            <section className="other-info mb-4">
+                            <section className="other-info mb-5">
                                 <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">{t("Other Info")}</h4>
                                 <div className="row">
                                     <div className="col-md-6 bg-white border border-2 border-dark">
-                                        <div className="creator-box text-start p-3">
+                                        <div className={`creator-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
                                             <h6 className="fw-bold m-0">{t("User Id")}: {ordersType === "normal" ? orderDetails.userId : orderDetails.originalOrder.userId}</h6>
                                         </div>
                                     </div>
                                     <div className="col-md-6 bg-white border border-2 border-dark">
-                                        <div className="payment-gateway-box text-start p-3">
+                                        <div className={`payment-gateway-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
                                             <h6 className="fw-bold m-0">{t("Payment Gateway")}: {ordersType === "normal" ? t(orderDetails.paymentGateway) : t(orderDetails.originalOrder.paymentGateway)}</h6>
                                         </div>
                                     </div>
                                 </div>
                             </section>
+                            {/* <section className="extra-data mb-4">
+                                <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">{t("Extra Data")}</h4>
+                                <div className="row">
+                                    <div className="col-md-12 bg-white border border-2 border-dark">
+                                        <div className={`message-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
+                                            <h6 className="fw-bold m-0">{t("Message")}: {(orderDetails.mess ? orderDetails.closestPoint : "-------")}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section> */}
                         </div>}
                     </div>
                 </section>

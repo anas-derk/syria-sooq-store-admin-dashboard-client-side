@@ -31,5 +31,8 @@
     "Payment Gateway": "بوابة الدفع",
     "Wallet": "المحفظة",
     "Credit Card": "البطاقة الائتمانية",
-    "Upon Receipt": "عند الاستلام"
+    "Upon Receipt": "عند الاستلام",
+    "Extra Data": "بيانات إضافية",
+    "Message": "الرسالة",
+    "Custom Text": "نص إضافي"
 }
