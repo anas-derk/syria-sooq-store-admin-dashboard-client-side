@@ -713,6 +713,9 @@ export default function UpdateAndDeleteProducts() {
                                                 <Link href={`/products-managment/update-and-delete-product-categories/${product._id}`}
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
                                                 >{t("Show Categories")}</Link>
+                                                <Link href={`/products-managment/update-and-delete-product-customizations/${product._id}`}
+                                                    className="btn btn-success d-block mb-3 mx-auto global-button"
+                                                >{t("Show Customizations")}</Link>
                                                 <hr />
                                                 <button
                                                     className="btn btn-success d-block mb-3 mx-auto global-button"
