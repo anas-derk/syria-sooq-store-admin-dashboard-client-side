@@ -197,9 +197,9 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Custom Text")}:</h6>
                                                 <h6 className="mb-4 fw-bold">{orderProduct?.extraData?.customText ? orderProduct.extraData.customText : "-------"}</h6>
-                                                <hr />
+                                                {/* <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Additional Notes")}:</h6>
-                                                <h6 className="mb-4 fw-bold">{orderProduct?.extraData?.additionalNotes ? orderProduct.extraData.customText : "-------"}</h6>
+                                                <h6 className="mb-4 fw-bold">{orderProduct?.extraData?.additionalNotes ? orderProduct.extraData.additionalNotes : "-------"}</h6> */}
                                                 <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Additional Files")}:</h6>
                                                 {/* {orderProduct?.extraData?.additionalFiles?.length > 0 ? <div className="mb-4 fw-bold additional-files">
