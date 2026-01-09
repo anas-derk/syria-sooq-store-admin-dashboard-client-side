@@ -7,6 +7,7 @@ import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { getAdminInfo, getOrderDetails, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
 import ReturnOrderProductStatusChangeBox from "@/components/ReturnOrderStatusChangeBox";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 export default function OrderDetails({ orderIdAsProperty, ordersType }) {
 
@@ -19,6 +20,8 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
     const [orderDetails, setOrderDetails] = useState({});
 
     const [selectedOrderProductIndex, setSelectedOrderProductIndex] = useState(-1);
+
+    const [selectedFileIndex, setSelectedFileIndex] = useState(-1);
 
     const [waitMsg, setWaitMsg] = useState("");
 
@@ -77,6 +80,33 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                 });
         } else router.replace("/login");
     }, [ordersType]);
+
+    const downloadFile = async (URL, productName, selectedProductIndex, selectedFileIndex) => {
+        try {
+            setSelectedOrderProductIndex(selectedProductIndex);
+            setSelectedFileIndex(selectedFileIndex);
+            setWaitMsg("Please Wait");
+            const res = await axios.get(URL, { responseType: "blob" });
+            const imageAsBlob = res.data;
+            const localURL = window.URL.createObjectURL(imageAsBlob);
+            const tempAnchorLink = document.createElement("a");
+            tempAnchorLink.href = localURL;
+            tempAnchorLink.download = `file${selectedFileIndex}ForProduct${productName}_${Date.now()}.webp`;
+            tempAnchorLink.click();
+            setSelectedOrderProductIndex(-1);
+            setSelectedFileIndex(-1);
+            setWaitMsg("");
+        } catch (err) {
+            setWaitMsg("");
+            setErrorMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
+            let errorTimeout = setTimeout(() => {
+                setSelectedOrderProductIndex(-1);
+                setSelectedFileIndex(-1);
+                setErrorMsg("");
+                clearTimeout(errorTimeout);
+            }, 4000);
+        }
+    }
 
     const handleChangeReturnOrderProductStatus = (productIndex, action) => {
         setSelectedOrderProductIndex(productIndex);
@@ -170,6 +200,32 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Additional Notes")}:</h6>
                                                 <h6 className="mb-4 fw-bold">{orderProduct.extraData.additionalNotes ?? "-------"}</h6>
+                                                <hr />
+                                                <h6 className="mb-4 fw-bold">{t("Additional Files")}:</h6>
+                                                {orderProduct.extraData.additionalFiles.length > 0 ? <div className="mb-4 fw-bold additional-files">
+                                                    {orderProduct.extraData.additionalFiles.map((file, fileIndex) => (
+                                                        <div className="file-download-box mb-3" key={fileIndex}>
+                                                            {!waitMsg && !errorMsg && selectedOrderProductIndex !== orderProductIndex && selectedFileIndex !== fileIndex && <button
+                                                                className="btn btn-success"
+                                                                onClick={() => downloadFile(`${process.env.BASE_API_URL}/${file}`, orderProduct.name, orderProductIndex, fileIndex)}
+                                                            >
+                                                                {t("Download File") + ` ${fileIndex + 1}`}
+                                                            </button>}
+                                                            {waitMsg && selectedOrderProductIndex === orderProductIndex && selectedFileIndex === fileIndex && <button
+                                                                className="btn btn-info"
+                                                                disabled
+                                                            >
+                                                                {t(waitMsg)}
+                                                            </button>}
+                                                            {errorMsg && selectedOrderProductIndex === orderProductIndex && selectedFileIndex === fileIndex && <button
+                                                                className="btn btn-danger"
+                                                                disabled
+                                                            >
+                                                                {t(errorMsg)}
+                                                            </button>}
+                                                        </div>
+                                                    ))}
+                                                </div> : <h6 className="mb-4 fw-bold">-------</h6>}
                                             </td>}
                                             {ordersType === "return" && <>
                                                 <td>{<span className="text-danger fw-bold">{orderProduct.returnReason}</span>}</td>
@@ -266,16 +322,6 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                     </div>
                                 </div>
                             </section>
-                            {/* <section className="extra-data mb-4">
-                                <h4 className="fw-bold mb-4 border border-2 border-dark bg-white p-3">{t("Extra Data")}</h4>
-                                <div className="row">
-                                    <div className="col-md-12 bg-white border border-2 border-dark">
-                                        <div className={`message-box ${i18n.language !== "ar" ? "text-start" : "text-end"} p-3`}>
-                                            <h6 className="fw-bold m-0">{t("Message")}: {(orderDetails.mess ? orderDetails.closestPoint : "-------")}</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section> */}
                         </div>}
                     </div>
                 </section>
@@ -283,7 +329,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
             </>}
             {isLoadingPage && !errorMsgOnLoadingThePage && <LoaderPage />}
             {errorMsgOnLoadingThePage && <ErrorOnLoadingThePage errorMsg={errorMsgOnLoadingThePage} />}
-        </div>
+        </div >
     );
 }
 

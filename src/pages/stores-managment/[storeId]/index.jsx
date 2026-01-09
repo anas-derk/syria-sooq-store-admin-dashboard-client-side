@@ -132,7 +132,7 @@ export default function StoreDetails({ storeId }) {
 
     const downloadFile = async (URL) => {
         try {
-            setWaitMsg("Downloading File Now ...");
+            setWaitMsg("Please Wait");
             const res = await axios.get(URL, { responseType: "blob" });
             const imageAsBlob = res.data;
             const localURL = window.URL.createObjectURL(imageAsBlob);
