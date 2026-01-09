@@ -192,7 +192,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                 />
                                             </td>
                                             {ordersType === "normal" && <td>
-                                                <h6 className="mb-4 fw-bold">{t("Message")}:</h6>
+                                                {/* <h6 className="mb-4 fw-bold">{t("Message")}:</h6>
                                                 <h6 className="mb-4 fw-bold">{orderProduct?.message ?? "-------"}</h6>
                                                 <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Custom Text")}:</h6>
@@ -225,7 +225,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                                             </button>}
                                                         </div>
                                                     ))}
-                                                </div> : <h6 className="mb-4 fw-bold">-------</h6>}
+                                                </div> : <h6 className="mb-4 fw-bold">-------</h6>} */}
                                             </td>}
                                             {ordersType === "return" && <>
                                                 <td>{<span className="text-danger fw-bold">{orderProduct.returnReason}</span>}</td>
