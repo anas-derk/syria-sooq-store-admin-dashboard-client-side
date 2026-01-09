@@ -193,7 +193,7 @@ export default function OrderDetails({ orderIdAsProperty, ordersType }) {
                                             </td>
                                             {ordersType === "normal" && <td>
                                                 <h6 className="mb-4 fw-bold">{t("Message")}:</h6>
-                                                <h6 className="mb-4 fw-bold">{orderProduct?.message !== "" ?? "-------"}</h6>
+                                                <h6 className="mb-4 fw-bold">{orderProduct?.message ? orderProduct.message : "-------"}</h6>
                                                 {/* <hr />
                                                 <h6 className="mb-4 fw-bold">{t("Custom Text")}:</h6>
                                                 <h6 className="mb-4 fw-bold">{orderProduct?.extraData?.customText ?? "-------"}</h6>
