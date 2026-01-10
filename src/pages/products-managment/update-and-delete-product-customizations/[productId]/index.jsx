@@ -248,36 +248,36 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                 }),
             ]);
             setFormValidationErrors(errorsObject);
-            // if (Object.keys(errorsObject).length == 0) {
-            //     let formData = new FormData();
-            //     formData.append("hasCustomizes", productData.hasCustomizes);
-            //     formData.append("customizes", JSON.stringify(customizes));
-            //     if (customizes.colors.length > 0 && colorImages.length > 0) {
-            //         for (let colorImage of colorImages) {
-            //             formData.append("colorImages", colorImage);
-            //         }
-            //     }
-            //     setWaitMsg("Please Wait");
-            //     const result = (await axios.put(`${process.env.BASE_API_URL}/products/add-new-product?language=${process.env.defaultLanguage}`, formData, {
-            //         headers: {
-            //             Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-            //         }
-            //     })).data;
-            //     setWaitMsg("");
-            //     if (!result.error) {
-            //         setSuccessMsg(result.msg);
-            //         let successTimeout = setTimeout(() => {
-            //             setSuccessMsg("");
-            //             clearTimeout(successTimeout);
-            //         }, 1500);
-            //     } else {
-            //         setErrorMsg(result.msg);
-            //         let errorTimeout = setTimeout(() => {
-            //             setErrorMsg("");
-            //             clearTimeout(errorTimeout);
-            //         }, 1500);
-            //     }
-            // }
+            if (Object.keys(errorsObject).length == 0) {
+                let formData = new FormData();
+                formData.append("hasCustomizes", productData.hasCustomizes);
+                formData.append("customizes", JSON.stringify(customizes));
+                if (customizes.colors.length > 0 && colorImages.length > 0) {
+                    for (let colorImage of colorImages) {
+                        formData.append("colorImages", colorImage);
+                    }
+                }
+                setWaitMsg("Please Wait");
+                const result = (await axios.put(`${process.env.BASE_API_URL}/products/update-product-customizes/${productIdAsProperty}?language=${process.env.defaultLanguage}`, formData, {
+                    headers: {
+                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
+                    }
+                })).data;
+                setWaitMsg("");
+                if (!result.error) {
+                    setSuccessMsg(result.msg);
+                    let successTimeout = setTimeout(() => {
+                        setSuccessMsg("");
+                        clearTimeout(successTimeout);
+                    }, 1500);
+                } else {
+                    setErrorMsg(result.msg);
+                    let errorTimeout = setTimeout(() => {
+                        setErrorMsg("");
+                        clearTimeout(errorTimeout);
+                    }, 1500);
+                }
+            }
         }
         catch (err) {
             if (err?.response?.status === 401) {
