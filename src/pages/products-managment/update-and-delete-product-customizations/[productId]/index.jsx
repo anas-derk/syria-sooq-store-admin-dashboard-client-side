@@ -6,7 +6,7 @@ import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../../public/global_functions/validations";
-import { getAdminInfo, getProductInfo, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
+import { getAdminInfo, getProductInfo, getTimeAndDateByLocalTime, handleSelectUserLanguage } from "../../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import NotFoundError from "@/components/NotFoundError";
 import FormFieldErrorBox from "@/components/FormFieldErrorBox";
@@ -356,6 +356,7 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                                     className={`form-control p-2 border-2 product-color-field ${formValidationErrors["colorHex"] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder="Please Enter Color"
                                                     onChange={(e) => handleSelectColor(e.target.value, "hex", colorIndex)}
+                                                    value={customizes.colors[colorIndex]}
                                                 />
                                                 {formValidationErrors["colorHex"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["colorHex"])} />}
                                             </div>
@@ -538,6 +539,7 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                         className={`form-control p-2 border-2 product-weight-details-field ${formValidationErrors["unit"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder="Please Enter Weight Unit"
                                         onChange={(e) => handleSelectWeightDetails(e.target.value, "unit")}
+                                        value={customizes.weightDetails.unit}
                                     >
                                         <option value="" hidden>{t("Please Select Unit")}</option>
                                         <option value="gr">{t("Gram")}</option>
@@ -579,6 +581,7 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                         className={`form-control p-2 border-2 product-dimentions-unit-field ${formValidationErrors["dimentionsUnit"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Dimentions Unit")}
                                         onChange={(e) => handleSelectDimentions(e.target.value, "unit")}
+                                        value={customizes.dimentionsDetails.unit}
                                     >
                                         <option value="" hidden>{t("Please Select Unit")}</option>
                                         <option value="cm">{t("Cm")}</option>
@@ -644,7 +647,7 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                         className={`form-control p-2 border-2 product-production-date-field ${formValidationErrors["productionDate"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Production Date")}
                                         onChange={(e) => handleSelectProductionDate(e.target.value)}
-                                        value={customizes.productionDate}
+                                        value={customizes.productionDate ? getTimeAndDateByLocalTime(customizes.productionDate) : null}
                                     />
                                     {formValidationErrors["productionDate"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["productionDate"])} />}
                                 </div>
@@ -672,7 +675,8 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                         className={`form-control p-2 border-2 product-expiry-date-field ${formValidationErrors["expiryDate"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Expiry Date")}
                                         onChange={(e) => handleSelectExpiryDate(e.target.value)}
-                                        value={customizes.expiryDate}
+                                        value={customizes.expiryDate ? getTimeAndDateByLocalTime(customizes.expiryDate) : null}
+
                                     />
                                     {formValidationErrors["expiryDate"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["expiryDate"])} />}
                                 </div>
@@ -739,6 +743,7 @@ export default function UpdateAndDeleteProductCustomizations({ productIdAsProper
                                                     className={`form-control p-2 border-2 product-caption-field ${formValidationErrors["caption"] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder={t("Please Enter Caption")}
                                                     onChange={(e) => handleEnterCaption(e.target.value, captionIndex)}
+                                                    value={customizes.additionalDetails[captionIndex]}
                                                 />
                                                 {formValidationErrors["caption"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["caption"])} />}
                                             </div>
