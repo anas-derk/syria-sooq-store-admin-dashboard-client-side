@@ -27,5 +27,5 @@
     "Sorry, Something Went Wrong When Get Stores Data, Please Repeat The Process !!": "عذراً ، حدث خطأ ما عند جلب بيانات المتاجر ، الرجاء تكرار العملية !!",
     "Network Error When Get Users Data": "خطأ في الشبكة عند جلب بيانات المستخدمين",
     "Sorry, Something Went Wrong When Get Users Data, Please Repeat The Process !!": "عذراً ، حدث خطأ ما عند جلب بيانات المستخدمين ، الرجاء تكرار العملية !!",
-    "Sorry, This Length Not Match Colors Count !!": "عذراً ، هذا العدد غير مطابق لعدد الألوان !!"
+    "Sorry, Minimum Value Is: {{value}} !!": "عذراً ، أقل قيمة هي: {{value}}"
 }

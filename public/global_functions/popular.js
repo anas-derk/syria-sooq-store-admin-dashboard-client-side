@@ -225,6 +225,27 @@ const getAllBrandsInsideThePage = async (pageNumber, pageSize, filters) => {
     }
 }
 
+const getSuitableWeight = (unit) => {
+    return unit === "gr" ? 1 : 0.1;
+}
+
+const getSuitableDimention = (unit) => {
+    switch (unit) {
+        case "cm": {
+            return 1;
+        }
+        case "m": {
+            return 0.1;
+        }
+        case "cm2": {
+            return 0.1;
+        }
+        case "m2": {
+            return 0.1;
+        }
+    }
+}
+
 export {
     getProductsCount,
     getAllProductsInsideThePage,
@@ -244,5 +265,7 @@ export {
     getOrderDetails,
     handleSelectUserLanguage,
     getProductInfo,
-    getAllBrandsInsideThePage
+    getAllBrandsInsideThePage,
+    getSuitableWeight,
+    getSuitableDimention
 }

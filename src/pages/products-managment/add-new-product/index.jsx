@@ -6,7 +6,7 @@ import LoaderPage from "@/components/LoaderPage";
 import ErrorOnLoadingThePage from "@/components/ErrorOnLoadingThePage";
 import AdminPanelHeader from "@/components/AdminPanelHeader";
 import { inputValuesValidation } from "../../../../public/global_functions/validations";
-import { getAdminInfo, getAllBrandsInsideThePage, getAllCategoriesInsideThePage, getCategoriesCount, handleSelectUserLanguage } from "../../../../public/global_functions/popular";
+import { getAdminInfo, getAllBrandsInsideThePage, getAllCategoriesInsideThePage, getCategoriesCount, handleSelectUserLanguage, getSuitableWeight, getSuitableDimention } from "../../../../public/global_functions/popular";
 import { useRouter } from "next/router";
 import NotFoundError from "@/components/NotFoundError";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -354,23 +354,145 @@ export default function AddNewProduct() {
                         },
                     },
                 },
-                (customizes.colors.length > 0 &&
+                ...customizes.hasColors ?
+                    customizes.colors.map((_, colorIndex) => (
+                        {
+                            name: `colorImage${colorIndex}`,
+                            value: colorImages[colorIndex],
+                            rules: {
+                                isRequired: {
+                                    msg: "Sorry, This Field Can't Be Empty !!",
+                                },
+                                isImage: {
+                                    msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
+                                },
+                            },
+                        }
+                    )) : [],
+                customizes.hasSizes &&
                 {
-                    name: "colorImages",
-                    value: colorImages,
+                    name: "sizes",
+                    value: Object.entries(customizes.sizes).map(([_, value]) => value).includes(true) ? [true] : [],
                     rules: {
                         isRequired: {
                             msg: "Sorry, This Field Can't Be Empty !!",
                         },
-                        isImages: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
+                    },
+                },
+                customizes.hasAdditionalCost &&
+                {
+                    name: "additionalCost",
+                    value: Number(customizes.additionalCost),
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
                         },
-                        eqLength: {
-                            msg: "Sorry, This Length Not Match Colors Count !!",
-                            value: customizes.colors.length,
+                        minNumber: {
+                            value: 1,
+                            msg: `Sorry, Minimum Value Is: {{value}} !!`,
                         }
                     },
-                }),
+                },
+                customizes.hasAdditionalTime &&
+                {
+                    name: "additionalTime",
+                    value: Number(customizes.additionalTime),
+                    rules: {
+                        isRequired: {
+                            msg: "Sorry, This Field Can't Be Empty !!",
+                        },
+                        minNumber: {
+                            value: 1,
+                            msg: `Sorry, Minimum Value Is: {{value}} !!`,
+                        }
+                    },
+                },
+                ...customizes.hasWeight ? ([
+                    {
+                        name: "unit",
+                        value: customizes.weightDetails.unit,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                        },
+                    },
+                    {
+                        name: "weight",
+                        value: Number(customizes.weightDetails.weight),
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: getSuitableWeight(customizes.weightDetails.unit),
+                                msg: `Sorry, Minimum Value Is: {{value}} !!`,
+                            }
+                        },
+                    },
+                    ...customizes.hasAdditionalDetails > 0 &&
+                    customizes.additionalDetails.map((_, captionIndex) => (
+                        {
+                            name: `caption${captionIndex}`,
+                            value: customizes.additionalDetails[captionIndex],
+                            rules: {
+                                isRequired: {
+                                    msg: "Sorry, This Field Can't Be Empty !!",
+                                },
+                            },
+                        }
+                    )),
+                ]) : [],
+                ...customizes.hasDimentions ? ([
+                    {
+                        name: "dimentionsUnit",
+                        value: customizes.dimentionsDetails.unit,
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                        },
+                    },
+                    {
+                        name: "length",
+                        value: Number(customizes.dimentionsDetails.length),
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: getSuitableDimention(customizes.dimentionsDetails.unit),
+                                msg: `Sorry, Minimum Value Is: {{value}} !!`,
+                            }
+                        },
+                    },
+                    {
+                        name: "width",
+                        value: Number(customizes.dimentionsDetails.width),
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: getSuitableDimention(customizes.dimentionsDetails.unit),
+                                msg: `Sorry, Minimum Value Is: {{value}} !!`,
+                            }
+                        },
+                    },
+                    {
+                        name: "height",
+                        value: Number(customizes.dimentionsDetails.height),
+                        rules: {
+                            isRequired: {
+                                msg: "Sorry, This Field Can't Be Empty !!",
+                            },
+                            minNumber: {
+                                value: getSuitableDimention(customizes.dimentionsDetails.unit),
+                                msg: `Sorry, Minimum Value Is: {{value}} !!`,
+                            }
+                        },
+                    },
+                ]) : []
             ]);
             setFormValidationErrors(errorsObject);
             if (Object.keys(errorsObject).length == 0) {
@@ -436,6 +558,7 @@ export default function AddNewProduct() {
             }
         }
         catch (err) {
+            console.log(err);
             if (err?.response?.status === 401) {
                 localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
                 await router.replace("/login");
@@ -668,6 +791,7 @@ export default function AddNewProduct() {
                                                     className={`form-control p-2 border-2 product-color-field ${formValidationErrors["colorHex"] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder="Please Enter Color"
                                                     onChange={(e) => handleSelectColor(e.target.value, "hex", colorIndex)}
+                                                    value={customizes.colors[colorIndex]}
                                                 />
                                                 {formValidationErrors["colorHex"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["colorHex"])} />}
                                             </div>
@@ -676,11 +800,11 @@ export default function AddNewProduct() {
                                             <div className="product-image-with-color mb-4">
                                                 <input
                                                     type="file"
-                                                    className={`form-control p-2 border-2 product-image-with-color-field ${formValidationErrors["colorImage"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    className={`form-control p-2 border-2 product-image-with-color-field ${formValidationErrors[[`colorImage${colorIndex}`]] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder={t("Please Enter Color Image")}
                                                     onChange={(e) => handleSelectColor(e.target.files[0], "file", colorIndex)}
                                                 />
-                                                {formValidationErrors["colorImage"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["colorImage"])} />}
+                                                {formValidationErrors[`colorImage${colorIndex}`] && <FormFieldErrorBox errorMsg={t(formValidationErrors[`colorImage${colorIndex}`])} />}
                                             </div>
                                         </div>
                                         <div className="col-md-2">
@@ -725,6 +849,7 @@ export default function AddNewProduct() {
                                         </div>
                                     )}
                                 </div>
+                                {formValidationErrors["sizes"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["sizes"])} />}
                             </div>}
                             <div className="allow-custom-text  mb-4">
                                 <h6 className="fw-bold mb-3">{t("Allow Custom Text ?")}</h6>
@@ -796,7 +921,7 @@ export default function AddNewProduct() {
                                         onChange={(e) => handleSelectAdditionalCost(e.target.value)}
                                         value={customizes.additionalCost}
                                     />
-                                    {formValidationErrors["additionalCost"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["additionalCost"])} />}
+                                    {formValidationErrors["additionalCost"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["additionalCost"], { value: 1 })} />}
                                 </div>
                             </div>}
                             <div className="has-additional-time  mb-4">
@@ -824,7 +949,7 @@ export default function AddNewProduct() {
                                         onChange={(e) => handleSelectAdditionalTime(e.target.value)}
                                         value={customizes.additionalTime}
                                     />
-                                    {formValidationErrors["additionalTime"] && <FormFieldErrorBox errorMsg={formValidationErrors["additionalTime"]} />}
+                                    {formValidationErrors["additionalTime"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["additionalTime"], { value: 1 })} />}
                                 </div>
                             </div>}
                             <div className="has-weight mb-4">
@@ -850,6 +975,7 @@ export default function AddNewProduct() {
                                         className={`form-control p-2 border-2 product-weight-details-field ${formValidationErrors["unit"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder="Please Enter Weight Unit"
                                         onChange={(e) => handleSelectWeightDetails(e.target.value, "unit")}
+                                        value={customizes.weightDetails.unit}
                                     >
                                         <option value="" hidden>{t("Please Select Unit")}</option>
                                         <option value="gr">{t("Gram")}</option>
@@ -865,7 +991,7 @@ export default function AddNewProduct() {
                                         onChange={(e) => handleSelectWeightDetails(e.target.value, "weight")}
                                         value={customizes.weightDetails.weight}
                                     />
-                                    {formValidationErrors["weight"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["weight"])} />}
+                                    {formValidationErrors["weight"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["weight"], { value: getSuitableWeight(customizes.weightDetails.unit) })} />}
                                 </div>
                             </div>}
                             <div className="has-dimentions mb-4">
@@ -891,6 +1017,7 @@ export default function AddNewProduct() {
                                         className={`form-control p-2 border-2 product-dimentions-unit-field ${formValidationErrors["dimentionsUnit"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Dimentions Unit")}
                                         onChange={(e) => handleSelectDimentions(e.target.value, "unit")}
+                                        value={customizes.dimentionsDetails.unit}
                                     >
                                         <option value="" hidden>{t("Please Select Unit")}</option>
                                         <option value="cm">{t("Cm")}</option>
@@ -909,7 +1036,7 @@ export default function AddNewProduct() {
                                             onChange={(e) => handleSelectDimentions(e.target.value, "length")}
                                             value={customizes.dimentionsDetails.length}
                                         />
-                                        {formValidationErrors["length"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["length"])} />}
+                                        {formValidationErrors["length"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["length"], { value: getSuitableDimention(customizes.dimentionsDetails.unit) })} />}
                                     </div>
                                     <div className="col-md-4">
                                         <input
@@ -919,7 +1046,7 @@ export default function AddNewProduct() {
                                             onChange={(e) => handleSelectDimentions(e.target.value, "width")}
                                             value={customizes.dimentionsDetails.width}
                                         />
-                                        {formValidationErrors["width"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["width"])} />}
+                                        {formValidationErrors["width"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["width"], { value: getSuitableDimention(customizes.dimentionsDetails.unit) })} />}
                                     </div>
                                     <div className="col-md-4">
                                         <input
@@ -929,7 +1056,7 @@ export default function AddNewProduct() {
                                             onChange={(e) => handleSelectDimentions(e.target.value, "height")}
                                             value={customizes.dimentionsDetails.height}
                                         />
-                                        {formValidationErrors["height"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["height"])} />}
+                                        {formValidationErrors["height"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["height"], { value: getSuitableDimention(customizes.dimentionsDetails.unit) })} />}
                                     </div>
                                 </div>
                             </div>}
@@ -952,11 +1079,11 @@ export default function AddNewProduct() {
                                 <h6 className="fw-bold mb-3">{t("Please Enter Production Date")}</h6>
                                 <div className="production-date mb-4">
                                     <input
-                                        type="date"
+                                        type="datetime-local"
                                         className={`form-control p-2 border-2 product-production-date-field ${formValidationErrors["productionDate"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Production Date")}
                                         onChange={(e) => handleSelectProductionDate(e.target.value)}
-                                        value={customizes.productionDate}
+                                        value={customizes.productionDate ? getTimeAndDateByLocalTime(customizes.productionDate) : null}
                                     />
                                     {formValidationErrors["productionDate"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["productionDate"])} />}
                                 </div>
@@ -980,11 +1107,11 @@ export default function AddNewProduct() {
                                 <h6 className="fw-bold mb-3">{t("Please Enter Expiry Date")}</h6>
                                 <div className="expiry-date mb-4">
                                     <input
-                                        type="date"
+                                        type="datetime-local"
                                         className={`form-control p-2 border-2 product-expiry-date-field ${formValidationErrors["expiryDate"] ? "border-danger mb-3" : "mb-4"}`}
                                         placeholder={t("Please Enter Expiry Date")}
                                         onChange={(e) => handleSelectExpiryDate(e.target.value)}
-                                        value={customizes.expiryDate}
+                                        value={customizes.expiryDate ? getTimeAndDateByLocalTime(customizes.expiryDate) : null}
                                     />
                                     {formValidationErrors["expiryDate"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["expiryDate"])} />}
                                 </div>
@@ -1048,11 +1175,12 @@ export default function AddNewProduct() {
                                             <div className="product-caption mb-4">
                                                 <input
                                                     type="text"
-                                                    className={`form-control p-2 border-2 product-caption-field ${formValidationErrors["caption"] ? "border-danger mb-3" : "mb-4"}`}
+                                                    className={`form-control p-2 border-2 product-caption-field ${formValidationErrors[`caption${captionIndex}`] ? "border-danger mb-3" : "mb-4"}`}
                                                     placeholder={t("Please Enter Caption")}
                                                     onChange={(e) => handleEnterCaption(e.target.value, captionIndex)}
+                                                    value={customizes.additionalDetails[captionIndex]}
                                                 />
-                                                {formValidationErrors["caption"] && <FormFieldErrorBox errorMsg={t(formValidationErrors["caption"])} />}
+                                                {formValidationErrors[`caption${captionIndex}`] && <FormFieldErrorBox errorMsg={t(formValidationErrors[`caption${captionIndex}`])} />}
                                             </div>
                                         </div>
                                         <div className="col-md-2">
