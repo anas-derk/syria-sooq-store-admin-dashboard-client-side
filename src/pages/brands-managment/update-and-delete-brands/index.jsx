@@ -30,7 +30,7 @@ export default function UpdateAndDeleteBrands() {
 
     const [selectedBrandIndex, setSelectedBrandIndex] = useState(-1);
 
-    const [waitChangeBrandImageMsg, setWaitChangeBrandImageMsg] = useState(false);
+    const [waitChangeBrandImageMsg, setWaitChangeBrandImageMsg] = useState("");
 
     const [errorChangeBrandImageMsg, setErrorChangeBrandImageMsg] = useState("");
 
