@@ -138,7 +138,8 @@ export default function StoreDetails({ storeId }) {
             const localURL = window.URL.createObjectURL(imageAsBlob);
             const tempAnchorLink = document.createElement("a");
             tempAnchorLink.href = localURL;
-            tempAnchorLink.download = "file.png";
+            const ext = URL.split(".").pop().toLowerCase();
+            tempAnchorLink.download = `file.${ext}`;
             tempAnchorLink.click();
             setWaitMsg("");
         } catch (err) {
