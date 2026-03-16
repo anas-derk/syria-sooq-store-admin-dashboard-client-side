@@ -246,69 +246,6 @@ export default function StoreDetails({ storeId }) {
         }
     }
 
-    const changeStoreImage = async (storeId, type) => {
-        try {
-            setFormValidationErrors({});
-            const imageName = `${type}Image`;
-            const imageFile = storeDetails[imageName];
-            const errorsObject = inputValuesValidation([
-                {
-                    name: imageName,
-                    value: imageFile,
-                    rules: {
-                        isRequired: {
-                            msg: "Sorry, This Field Can't Be Empty !!",
-                        },
-                        isImage: {
-                            msg: "Sorry, Invalid Image Type, Please Upload JPG Or PNG Or WEBP Image File !!",
-                        },
-                    },
-                },
-            ]);
-            setFormValidationErrors(errorsObject);
-            if (Object.keys(errorsObject).length == 0) {
-                setWaitChangeStoreImageMsg("");
-                let formData = new FormData();
-                formData.append(imageName, imageFile);
-                const result = (await axios.put(`${process.env.BASE_API_URL}/stores/change-store-image/${storeId}?language=${process.env.defaultLanguage}`, formData, {
-                    headers: {
-                        Authorization: localStorage.getItem(process.env.adminTokenNameInLocalStorage),
-                    }
-                })).data;
-                if (!result.error) {
-                    setWaitChangeStoreImageMsg("");
-                    setSuccessChangeStoreImageMsg(result.msg);
-                    let successTimeout = setTimeout(async () => {
-                        setSuccessChangeStoreImageMsg("");
-                        storeImageFileElementRef.current.value = "";
-                        setStoreDetails({ ...storeDetails, imagePath: result.data.newStoreImagePath });
-                        clearTimeout(successTimeout);
-                    }, 1500);
-                } else {
-                    setErrorChangeStoreImageMsg("Sorry, Something Went Wrong, Please Repeat The Process !!");
-                    let errorTimeout = setTimeout(() => {
-                        setErrorChangeStoreImageMsg("");
-                        clearTimeout(errorTimeout);
-                    }, 1500);
-                }
-            }
-        }
-        catch (err) {
-            if (err?.response?.status === 401) {
-                localStorage.removeItem(process.env.adminTokenNameInLocalStorage);
-                await router.replace("/login");
-            }
-            else {
-                setWaitChangeStoreImageMsg("");
-                setErrorChangeStoreImageMsg(err?.message === "Network Error" ? "Network Error" : "Sorry, Something Went Wrong, Please Repeat The Process !!");
-                let errorTimeout = setTimeout(() => {
-                    setErrorChangeStoreImageMsg("");
-                    clearTimeout(errorTimeout);
-                }, 1500);
-            }
-        }
-    }
-
     return (
         <div className="store-details admin-dashboard">
             <Head>
